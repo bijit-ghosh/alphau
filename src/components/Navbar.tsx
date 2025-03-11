@@ -1,6 +1,5 @@
-
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Brain, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -38,10 +37,22 @@ export function Navbar() {
       )}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <a href="#" className="flex items-center space-x-2">
-          <span className="font-display text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-alpha-blue to-alpha-purple">
-            AlphaU
-          </span>
+        <a href="#" className="flex items-center space-x-2 group">
+          <div className="relative flex items-center justify-center">
+            <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-alpha-blue to-alpha-purple opacity-70 blur-sm group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="relative bg-alpha-darknavy rounded-full p-1.5 flex items-center justify-center">
+              <Brain className="h-6 w-6 text-white group-hover:text-alpha-purple transition-colors duration-300" />
+              <Zap className="h-4 w-4 absolute -top-1 -right-1 text-alpha-yellow" />
+            </div>
+          </div>
+          <div className="flex flex-col">
+            <span className="font-display text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-alpha-blue to-alpha-purple">
+              AlphaU
+            </span>
+            <span className="text-[10px] text-gray-400 -mt-1 leading-tight tracking-wider">
+              A <span className="text-alpha-blue font-semibold">Quantum</span> Company
+            </span>
+          </div>
         </a>
         
         {isMobile ? (
