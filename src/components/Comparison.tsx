@@ -1,8 +1,8 @@
-
 import { useEffect, useRef } from "react";
-import { Check, X } from "lucide-react";
+import { Check, X, Brain, Cpu, LineChart, Database } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { GlassCard } from "@/components/ui/GlassCard";
+import { AIWorkflow } from "./AIWorkflow";
 
 export function Comparison() {
   const comparisonRef = useRef<HTMLDivElement>(null);
@@ -37,76 +37,76 @@ export function Comparison() {
   const comparisonData = [
     {
       feature: "Deal Sourcing",
-      traditional: "Manual, slow, human-driven",
-      alphau: "AI-powered, real-time",
-      impact: "10x faster deal processing",
+      traditional: "Manual research and outreach",
+      alphau: "AI-powered real-time deal discovery",
+      impact: "3.5x higher deal flow volume",
+      metrics: [
+        "Process 10,000+ potential deals/month",
+        "85% reduction in sourcing time",
+        "$2M annual cost savings"
+      ],
       highlight: true,
     },
     {
       feature: "Financial Modeling",
-      traditional: "Excel-based, limited scope",
-      alphau: "AI-first, automated scenario modeling",
-      impact: "95% reduction in modeling time",
+      traditional: "Excel-based manual modeling",
+      alphau: "AI-automated scenario modeling",
+      impact: "95% faster analysis time",
+      metrics: [
+        "200+ scenarios analyzed per deal",
+        "99.9% calculation accuracy",
+        "60% cost reduction"
+      ],
       highlight: true,
     },
     {
       feature: "Risk Intelligence",
-      traditional: "Static & reactive",
-      alphau: "AI-driven, predictive insights",
-      impact: "Identify 40% more risk factors",
+      traditional: "Limited risk factor analysis",
+      alphau: "AI-driven predictive insights",
+      impact: "40% better risk prediction",
+      metrics: [
+        "2.8x more risk factors identified",
+        "75% faster risk assessment",
+        "50% lower default rate"
+      ],
       highlight: true,
     },
     {
       feature: "Decision Execution",
-      traditional: "Human bias & inefficiencies",
-      alphau: "Automated Buy/Hold/Reject scoring",
-      impact: "Eliminate 85% of decision bias",
+      traditional: "Subjective decision making",
+      alphau: "Data-driven AlphaScore™",
+      impact: "85% more accurate decisions",
+      metrics: [
+        "30% higher portfolio returns",
+        "60% faster decision cycles",
+        "90% reduction in human bias"
+      ],
       highlight: true,
-    },
-    {
-      feature: "Processing Time",
-      traditional: "Weeks to months",
-      alphau: "70% faster processing",
-      impact: "From months to days",
-      highlight: false,
-    },
-    {
-      feature: "Accuracy",
-      traditional: "Highly variable",
-      alphau: "50% improved investment accuracy",
-      impact: "Higher portfolio performance",
-      highlight: false,
-    },
-    {
-      feature: "Scalability",
-      traditional: "Limited by human resources",
-      alphau: "Infinitely scalable",
-      impact: "No limits on deal volume",
-      highlight: false,
-    },
+    }
   ];
   
   return (
-    <div id="comparison" className="py-20 px-4 md:px-8 bg-alpha-navy">
-      <div className="max-w-5xl mx-auto">
+    <div id="comparison" className="py-20 px-4 md:px-8 bg-gradient-to-b from-transparent to-alpha-navy/5">
+      <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             The <span className="bg-clip-text text-transparent bg-gradient-to-r from-alpha-blue to-alpha-purple">AlphaU</span> Advantage
           </h2>
           <p className="max-w-2xl mx-auto text-gray-300">
-            See how AlphaU's AI-powered platform transforms traditional investment processes
+            Quantifiable business impact through AI-powered investment intelligence
           </p>
         </div>
         
-        <GlassCard className="p-0 overflow-hidden">
+        <GlassCard className="p-0 overflow-hidden mb-16">
           <div className="mt-0 overflow-x-auto" ref={comparisonRef}>
             <table className="w-full border-collapse">
               <thead>
                 <tr className="text-left border-b border-white/20 bg-gradient-to-r from-alpha-blue/20 to-alpha-purple/20">
                   <th className="px-6 py-4 text-white font-medium">Feature</th>
-                  <th className="px-6 py-4 text-white font-medium">Traditional Investment Process</th>
-                  <th className="px-6 py-4 text-white font-medium">AlphaU AI Execution</th>
-                  <th className="px-6 py-4 text-white font-medium">Business Impact</th>
+                  <th className="px-6 py-4 text-white font-medium">Traditional Process</th>
+                  <th className="px-6 py-4 text-white font-medium">AlphaU Solution</th>
+                  <th className="px-6 py-4 text-white font-medium">Impact</th>
+                  <th className="px-6 py-4 text-white font-medium">Key Metrics</th>
                 </tr>
               </thead>
               <tbody>
@@ -136,6 +136,16 @@ export function Comparison() {
                         {row.impact}
                       </span>
                     </td>
+                    <td className="px-6 py-5">
+                      <ul className="space-y-2">
+                        {row.metrics.map((metric, index) => (
+                          <li key={index} className="text-sm text-gray-300 flex items-center">
+                            <div className="w-1.5 h-1.5 rounded-full bg-alpha-purple/50 mr-2" />
+                            {metric}
+                          </li>
+                        ))}
+                      </ul>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -143,22 +153,7 @@ export function Comparison() {
           </div>
         </GlassCard>
         
-        <div className="mt-12 rounded-xl overflow-hidden border border-white/10 backdrop-blur-sm">
-          <div className="p-6 bg-alpha-blue/20">
-            <div className="flex flex-col md:flex-row items-center justify-between">
-              <div>
-                <h3 className="text-2xl font-bold text-white mb-2">Ready to transform your investment process?</h3>
-                <p className="text-gray-300">Experience the power of AI-driven investment intelligence</p>
-              </div>
-              <a 
-                href="#contact" 
-                className="mt-4 md:mt-0 inline-flex items-center justify-center h-12 px-8 rounded-full bg-gradient-to-r from-alpha-blue to-alpha-purple text-white font-medium transition-all hover:shadow-neon hover:brightness-110"
-              >
-                Request a Demo
-              </a>
-            </div>
-          </div>
-        </div>
+        <AIWorkflow />
       </div>
     </div>
   );
