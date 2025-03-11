@@ -1,5 +1,6 @@
+
 import { useState, useEffect } from "react";
-import { Menu, X, Brain } from "lucide-react";
+import { Menu, X, Brain, BrainCog } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -39,7 +40,7 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <a href="#" className="flex items-center space-x-2 group">
           <div className="relative h-8 w-8 flex items-center justify-center">
-            <Brain className="w-full h-full stroke-[1.5] text-transparent bg-clip-text bg-gradient-to-r from-[#FF3BFF] via-[#5C24FF] to-[#00E7FF]" />
+            <BrainCog className="w-full h-full stroke-[1.5] text-transparent bg-clip-text bg-gradient-to-r from-[#FF3BFF] via-[#5C24FF] to-[#00E7FF]" />
           </div>
           <span className="font-display text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#FF3BFF] to-[#00E7FF]">
             AlphaU
