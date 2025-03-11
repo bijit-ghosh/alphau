@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from "react";
 import { GlassCard } from "./ui/GlassCard";
 import { CircularProgress } from "./ui/CircularProgress";
@@ -74,13 +73,17 @@ export function Features() {
   ];
   
   return (
-    <div id="features" className="relative py-20 px-4 md:px-8 bg-features-pattern">
+    <div id="features" className="relative py-20 px-4 md:px-8 bg-features-pattern overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-alpha-navy to-transparent"></div>
       
-      <div className="max-w-7xl mx-auto">
+      <div className="absolute inset-0 bg-grid-white/[0.02] bg-[length:50px_50px]"></div>
+      <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-gradient-to-br from-alpha-blue/10 to-alpha-purple/10 filter blur-[120px] animate-float"></div>
+      <div className="absolute -bottom-40 -left-40 w-[600px] h-[600px] rounded-full bg-gradient-to-br from-alpha-purple/10 to-alpha-blue/10 filter blur-[120px] animate-float" style={{ animationDelay: '2s' }}></div>
+      
+      <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Revolutionary Investment <span className="bg-clip-text text-transparent bg-gradient-to-r from-alpha-blue to-alpha-purple">Intelligence</span>
+            Revolutionary Investment <span className="bg-clip-text text-transparent bg-gradient-to-r from-alpha-blue to-alpha-purple animate-pulse">Intelligence</span>
           </h2>
           <p className="max-w-2xl mx-auto text-gray-300">
             AlphaU's platform combines advanced AI technologies to transform your investment process with unparalleled speed and accuracy.
@@ -91,11 +94,11 @@ export function Features() {
           {features.map((feature, i) => (
             <GlassCard 
               key={i} 
-              className="feature-card opacity-0 h-full"
+              className="feature-card opacity-0 h-full transform transition-all duration-300 hover:translate-y-[-4px]"
               highlightTop
               highlightColor={feature.color}
             >
-              <div className={`mb-4 rounded-full p-3 inline-flex bg-gradient-to-br ${feature.color}`}>
+              <div className={`mb-4 rounded-full p-3 inline-flex bg-gradient-to-br ${feature.color} transform transition-all duration-300 hover:scale-110 hover:rotate-6`}>
                 {feature.icon}
               </div>
               <h3 className="text-xl font-semibold text-white mb-2">{feature.title}</h3>
@@ -106,7 +109,7 @@ export function Features() {
         
         <div className="mt-16 pt-8 border-t border-white/10">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center transform transition-all duration-300 hover:scale-105">
               <CircularProgress 
                 value={70} 
                 max={100}
@@ -119,7 +122,7 @@ export function Features() {
               <p className="mt-2 text-gray-300">Compared to traditional methods</p>
             </div>
             
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center transform transition-all duration-300 hover:scale-105">
               <CircularProgress 
                 value={50} 
                 max={100}
@@ -132,7 +135,7 @@ export function Features() {
               <p className="mt-2 text-gray-300">More accurate than human analysts</p>
             </div>
             
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center transform transition-all duration-300 hover:scale-105">
               <CircularProgress 
                 value={100} 
                 max={100}

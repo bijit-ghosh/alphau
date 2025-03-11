@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from "react";
 import { GlassCard } from "./ui/GlassCard";
 import { CircleAnimation } from "./CircleAnimation";
@@ -63,14 +62,14 @@ export function HowItWorks() {
   
   return (
     <div id="how-it-works" className="relative py-20 px-4 md:px-8 bg-alpha-darknavy overflow-hidden">
-      {/* Background elements */}
-      <div className="absolute -top-20 -right-20 w-96 h-96 rounded-full bg-alpha-purple/10 filter blur-[100px]"></div>
-      <div className="absolute -bottom-20 -left-20 w-96 h-96 rounded-full bg-alpha-blue/10 filter blur-[100px]"></div>
+      <div className="absolute -top-20 -right-20 w-96 h-96 rounded-full bg-gradient-to-br from-alpha-purple/20 to-alpha-blue/20 filter blur-[100px] animate-pulse"></div>
+      <div className="absolute -bottom-20 -left-20 w-96 h-96 rounded-full bg-gradient-to-br from-alpha-blue/20 to-alpha-purple/20 filter blur-[100px] animate-pulse" style={{ animationDelay: '1s' }}></div>
+      <div className="absolute inset-0 bg-grid-white/[0.02] bg-[length:50px_50px]"></div>
       
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-12">
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="text-center mb-12 animate-on-scroll">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            How <span className="bg-clip-text text-transparent bg-gradient-to-r from-alpha-blue to-alpha-purple">AlphaU</span> Works
+            How <span className="bg-clip-text text-transparent bg-gradient-to-r from-alpha-blue to-alpha-purple animate-pulse">AlphaU</span> Works
           </h2>
           <p className="max-w-2xl mx-auto text-gray-300">
             AlphaScore™, AI-Powered Modeling, and Decision Automation
@@ -83,11 +82,11 @@ export function HowItWorks() {
               {features.map((feature, i) => (
                 <GlassCard 
                   key={i} 
-                  className="how-it-works-card opacity-0 transition-all duration-500" 
+                  className="how-it-works-card opacity-0 transition-all duration-500 hover:translate-x-2" 
                   highlightTop
                 >
                   <div className="flex items-start">
-                    <div className="mr-4 rounded-full p-3 bg-gradient-to-br from-alpha-blue to-alpha-purple text-white">
+                    <div className="mr-4 rounded-full p-3 bg-gradient-to-br from-alpha-blue to-alpha-purple text-white transform transition-all duration-300 hover:scale-110 hover:rotate-6">
                       {feature.icon}
                     </div>
                     <div>
@@ -99,7 +98,7 @@ export function HowItWorks() {
                           ) : (
                             <span key={i}>
                               {part}
-                              <span className="text-alpha-blue font-medium">{feature.highlight}</span>
+                              <span className="text-alpha-blue font-medium animate-pulse">{feature.highlight}</span>
                             </span>
                           )
                         ))}
