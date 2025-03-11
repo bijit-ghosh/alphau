@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
 
@@ -132,7 +131,6 @@ export default {
 			},
 			backgroundImage: {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-				'hero-pattern': 'linear-gradient(to right bottom, rgba(10, 25, 47, 0.8), rgba(5, 11, 22, 0.9)), url("/lovable-uploads/c07772de-f11a-42ec-abf0-6488ec1b131f.png")',
 				'features-pattern': 'linear-gradient(to right bottom, rgba(10, 25, 47, 0.9), rgba(5, 11, 22, 1))',
 			},
 			boxShadow: {

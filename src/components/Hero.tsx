@@ -1,3 +1,4 @@
+
 import { useEffect, useRef } from "react";
 import { ChevronDown, ArrowRight } from "lucide-react";
 
@@ -33,7 +34,7 @@ export function Hero() {
   }, []);
   
   return (
-    <div ref={heroRef} id="home" className="relative min-h-screen pt-20 flex flex-col items-center justify-center bg-hero-pattern bg-cover bg-center overflow-hidden px-4 md:px-8">
+    <div ref={heroRef} id="home" className="relative min-h-screen pt-20 flex flex-col items-center justify-center bg-gradient-to-b from-alpha-darknavy via-alpha-navy to-alpha-darknavy overflow-hidden px-4 md:px-8">
       <div className="absolute inset-0 backdrop-blur-sm bg-gradient-to-b from-alpha-blue/5 via-alpha-purple/5 to-alpha-navy/10 z-0" />
       
       <div className="absolute top-1/4 -left-1/4 w-[600px] h-[600px] rounded-full bg-gradient-to-r from-alpha-blue/20 to-alpha-purple/20 filter blur-[120px] animate-float opacity-40 z-0" />
