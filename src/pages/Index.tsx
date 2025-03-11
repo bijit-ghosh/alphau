@@ -35,15 +35,32 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-alpha-navy text-white overflow-hidden">
-      <Navbar />
-      <Hero />
-      <Features />
-      <HowItWorks />
-      <Comparison />
-      <CTASection />
-      <Footer />
-    </div>
+    <>
+      <style>
+        {`
+          @keyframes gradient-x {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+          }
+          .animate-gradient-x {
+            animation: gradient-x 15s linear infinite;
+          }
+          .mask-gradient-to-r {
+            mask-image: linear-gradient(to right, transparent, white, transparent);
+          }
+        `}
+      </style>
+      <div className="min-h-screen bg-alpha-navy text-white overflow-hidden">
+        <Navbar />
+        <Hero />
+        <Features />
+        <HowItWorks />
+        <Comparison />
+        <CTASection />
+        <Footer />
+      </div>
+    </>
   );
 };
 
