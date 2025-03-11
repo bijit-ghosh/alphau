@@ -1,8 +1,9 @@
 
 import { useState, useEffect } from "react";
-import { Menu, X, Brain, BrainCog } from "lucide-react";
+import { Menu, X, BrainCog, LayoutDashboard } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Link } from "react-router-dom";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -28,6 +29,7 @@ export function Navbar() {
     { name: "Features", href: "#features" },
     { name: "How It Works", href: "#how-it-works" },
     { name: "Comparison", href: "#comparison" },
+    { name: "Dashboard", href: "/dashboard", isExternal: true },
   ];
   
   return (
@@ -59,14 +61,26 @@ export function Navbar() {
           <div className="flex items-center space-x-8">
             <div className="hidden md:flex items-center space-x-8">
               {navLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  className="text-sm text-gray-200 hover:text-white font-medium transition-colors relative group"
-                >
-                  {link.name}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#FF3BFF] to-[#00E7FF] group-hover:w-full transition-all duration-300"></span>
-                </a>
+                link.isExternal ? (
+                  <Link
+                    key={link.name}
+                    to={link.href}
+                    className="text-sm text-gray-200 hover:text-white font-medium transition-colors relative group flex items-center"
+                  >
+                    {link.name}
+                    {link.name === "Dashboard" && <LayoutDashboard className="ml-1 h-3 w-3" />}
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#FF3BFF] to-[#00E7FF] group-hover:w-full transition-all duration-300"></span>
+                  </Link>
+                ) : (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    className="text-sm text-gray-200 hover:text-white font-medium transition-colors relative group"
+                  >
+                    {link.name}
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#FF3BFF] to-[#00E7FF] group-hover:w-full transition-all duration-300"></span>
+                  </a>
+                )
               ))}
             </div>
             
@@ -89,15 +103,30 @@ export function Navbar() {
         >
           <div className="px-4 py-4 flex flex-col space-y-4">
             {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="text-gray-200 hover:text-white font-medium py-2 transition-colors relative group flex items-center"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <span className="w-1 h-0 group-hover:h-full absolute left-0 top-1/2 transform -translate-y-1/2 bg-gradient-to-b from-alpha-blue to-alpha-purple transition-all duration-300 rounded-r-md"></span>
-                <span className="ml-2">{link.name}</span>
-              </a>
+              link.isExternal ? (
+                <Link
+                  key={link.name}
+                  to={link.href}
+                  className="text-gray-200 hover:text-white font-medium py-2 transition-colors relative group flex items-center"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <span className="w-1 h-0 group-hover:h-full absolute left-0 top-1/2 transform -translate-y-1/2 bg-gradient-to-b from-alpha-blue to-alpha-purple transition-all duration-300 rounded-r-md"></span>
+                  <span className="ml-2 flex items-center">
+                    {link.name}
+                    {link.name === "Dashboard" && <LayoutDashboard className="ml-1 h-3 w-3" />}
+                  </span>
+                </Link>
+              ) : (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className="text-gray-200 hover:text-white font-medium py-2 transition-colors relative group flex items-center"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <span className="w-1 h-0 group-hover:h-full absolute left-0 top-1/2 transform -translate-y-1/2 bg-gradient-to-b from-alpha-blue to-alpha-purple transition-all duration-300 rounded-r-md"></span>
+                  <span className="ml-2">{link.name}</span>
+                </a>
+              )
             ))}
             <a
               href="#contact"

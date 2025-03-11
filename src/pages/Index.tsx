@@ -49,6 +49,18 @@ const Index = () => {
           .mask-gradient-to-r {
             mask-image: linear-gradient(to right, transparent, white, transparent);
           }
+          @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+          }
+          @keyframes float-slow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+          }
+          .animate-float-slow {
+            animation: float-slow 8s ease-in-out infinite;
+          }
         `}
       </style>
       <div className="min-h-screen bg-alpha-navy text-white overflow-hidden">
