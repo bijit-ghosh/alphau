@@ -1,4 +1,3 @@
-
 import React, { useCallback, useRef, useEffect } from 'react';
 import {
   ReactFlow,
@@ -8,6 +7,9 @@ import {
   Panel,
   useReactFlow,
   ReactFlowProvider,
+  Node,
+  Edge,
+  XYPosition
 } from '@xyflow/react';
 import { useAgent } from './AgentContext';
 import { nodeTypes, edgeTypes, ConnectionLine } from './nodes';
@@ -17,7 +19,6 @@ import { MarketplacePanel } from './MarketplacePanel';
 
 import '@xyflow/react/dist/style.css';
 
-// Wrap the internal component with the ReactFlowProvider
 function AgentWorkflowContent() {
   const { 
     nodes, 
@@ -34,7 +35,6 @@ function AgentWorkflowContent() {
   const reactFlowWrapper = useRef(null);
   const reactFlowInstance = useReactFlow();
 
-  // Effect to fit view whenever nodes change
   useEffect(() => {
     const timer = setTimeout(() => {
       reactFlowInstance.fitView({ padding: 0.2 });
@@ -65,21 +65,19 @@ function AgentWorkflowContent() {
 
       console.log('Dropping node of type:', type);
 
-      // Get the position where the node was dropped
       const reactFlowBounds = reactFlowWrapper.current?.getBoundingClientRect();
       if (!reactFlowBounds) {
         console.error('Could not get flow container bounds');
         return;
       }
 
-      const position = reactFlowInstance.project({
+      const position: XYPosition = reactFlowInstance.screenToFlowPosition({
         x: event.clientX - reactFlowBounds.left,
         y: event.clientY - reactFlowBounds.top,
       });
 
       console.log('Drop position:', position);
 
-      // Use the addNode function from the context that we destructured above
       addNode(type as any, position);
 
       toast({
@@ -156,7 +154,6 @@ function AgentWorkflowContent() {
   );
 }
 
-// Export component wrapped in ReactFlowProvider to fix the zustand error
 export function AgentWorkflow() {
   return (
     <ReactFlowProvider>

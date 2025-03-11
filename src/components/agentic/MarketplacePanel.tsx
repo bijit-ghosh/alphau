@@ -1,9 +1,8 @@
-
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { 
-  Robot, 
+  Bot, 
   Database, 
   Workflow, 
   LayoutGrid, 
@@ -293,7 +292,7 @@ export function MarketplacePanel() {
         <Tabs defaultValue="models" className="w-full">
           <TabsList className="w-full flex justify-start px-4 bg-alpha-darknavy border-b border-white/10">
             <TabsTrigger value="models" className="data-[state=active]:bg-alpha-blue/10">
-              <Robot className="h-4 w-4 mr-2" />
+              <Bot className="h-4 w-4 mr-2" />
               AI Models
             </TabsTrigger>
             <TabsTrigger value="tools" className="data-[state=active]:bg-alpha-green/10">
