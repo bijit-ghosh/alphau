@@ -78,6 +78,25 @@ export function Comparison() {
           </p>
         </div>
         
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+          {comparisonData.map((item, i) => (
+            <GlassCard key={i} className="flex flex-col p-6 space-y-4">
+              <h3 className="text-xl font-semibold text-white">{item.feature}</h3>
+              <div className="flex items-center text-gray-300">
+                <div className="flex-shrink-0 p-1 mr-3 rounded-full bg-green-500/20">
+                  <Check className="h-4 w-4 text-green-400" />
+                </div>
+                {item.alphau}
+              </div>
+              <div className="mt-auto">
+                <span className="inline-block px-4 py-2 rounded-full text-sm bg-gradient-to-r from-alpha-blue/30 to-alpha-purple/30 border border-alpha-purple/20">
+                  {item.impact}
+                </span>
+              </div>
+            </GlassCard>
+          ))}
+        </div>
+        
         <GlassCard className="p-0 overflow-hidden mb-16">
           <div className="mt-0 overflow-x-auto" ref={comparisonRef}>
             <table className="w-full border-collapse">
