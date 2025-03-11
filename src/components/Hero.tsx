@@ -43,8 +43,8 @@ export function Hero() {
       
       <div className="max-w-5xl mx-auto text-center z-10 pt-10">
         <div className="inline-block px-4 py-1.5 mb-6 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 opacity-0" data-animate>
-          <span className="text-xs font-medium text-gray-200">
-            AI-FIRST INVESTMENT INTELLIGENCE ENGINE
+          <span className="text-sm font-medium bg-gradient-to-r from-alpha-lightblue to-alpha-purple bg-clip-text text-transparent">
+            AI-First Investment Intelligence Engine
           </span>
         </div>
         
