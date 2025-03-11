@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -212,14 +211,18 @@ export function SidebarMenuButton({
   }
   
   if (asChild) {
-    // Fix: Properly type the props by removing className from the cloneElement call
-    // and instead handling it in the component's children
+    // Create a new element with the correct className
     return React.cloneElement(child, {
       ...child.props,
       onClick,
-      style: {
-        ...(child.props.style || {}),
-      },
+      className: cn(
+        "flex items-center w-full px-2 py-2 rounded-md text-sm transition-colors",
+        expanded ? "justify-start" : "justify-center",
+        active
+          ? "bg-alpha-blue/20 text-white"
+          : "text-gray-400 hover:text-white hover:bg-white/10",
+        child.props.className
+      ) as React.HTMLAttributes<HTMLElement>
     });
   }
   
@@ -244,7 +247,7 @@ export function SidebarMenuButton({
                   "h-5 w-5",
                   child.props.className
                 ),
-              });
+              } as React.HTMLAttributes<HTMLElement>);
             }
             return child;
           }
