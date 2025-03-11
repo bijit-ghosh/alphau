@@ -40,11 +40,6 @@ export function Comparison() {
       traditional: "Manual research and outreach",
       alphau: "AI-powered real-time deal discovery",
       impact: "3.5x higher deal flow volume",
-      metrics: [
-        "Process 10,000+ potential deals/month",
-        "85% reduction in sourcing time",
-        "$2M annual cost savings"
-      ],
       highlight: true,
     },
     {
@@ -52,11 +47,6 @@ export function Comparison() {
       traditional: "Excel-based manual modeling",
       alphau: "AI-automated scenario modeling",
       impact: "95% faster analysis time",
-      metrics: [
-        "200+ scenarios analyzed per deal",
-        "99.9% calculation accuracy",
-        "60% cost reduction"
-      ],
       highlight: true,
     },
     {
@@ -64,11 +54,6 @@ export function Comparison() {
       traditional: "Limited risk factor analysis",
       alphau: "AI-driven predictive insights",
       impact: "40% better risk prediction",
-      metrics: [
-        "2.8x more risk factors identified",
-        "75% faster risk assessment",
-        "50% lower default rate"
-      ],
       highlight: true,
     },
     {
@@ -76,11 +61,6 @@ export function Comparison() {
       traditional: "Subjective decision making",
       alphau: "Data-driven AlphaScore™",
       impact: "85% more accurate decisions",
-      metrics: [
-        "30% higher portfolio returns",
-        "60% faster decision cycles",
-        "90% reduction in human bias"
-      ],
       highlight: true,
     }
   ];
@@ -106,7 +86,6 @@ export function Comparison() {
                   <th className="px-6 py-4 text-white font-medium">Traditional Process</th>
                   <th className="px-6 py-4 text-white font-medium">AlphaU Solution</th>
                   <th className="px-6 py-4 text-white font-medium">Impact</th>
-                  <th className="px-6 py-4 text-white font-medium">Key Metrics</th>
                 </tr>
               </thead>
               <tbody>
@@ -135,16 +114,6 @@ export function Comparison() {
                       <span className="px-3 py-1 rounded-full text-sm bg-gradient-to-r from-alpha-blue/30 to-alpha-purple/30 border border-alpha-purple/20">
                         {row.impact}
                       </span>
-                    </td>
-                    <td className="px-6 py-5">
-                      <ul className="space-y-2">
-                        {row.metrics.map((metric, index) => (
-                          <li key={index} className="text-sm text-gray-300 flex items-center">
-                            <div className="w-1.5 h-1.5 rounded-full bg-alpha-purple/50 mr-2" />
-                            {metric}
-                          </li>
-                        ))}
-                      </ul>
                     </td>
                   </tr>
                 ))}
