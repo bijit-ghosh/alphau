@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from "react";
 import { ChevronDown, ArrowRight } from "lucide-react";
 
@@ -35,11 +34,11 @@ export function Hero() {
   
   return (
     <div ref={heroRef} id="home" className="relative min-h-screen pt-20 flex flex-col items-center justify-center bg-hero-pattern bg-cover bg-center overflow-hidden px-4 md:px-8">
-      <div className="absolute inset-0 bg-gradient-to-b from-alpha-darknavy/30 to-alpha-navy z-0"></div>
+      <div className="absolute inset-0 backdrop-blur-sm bg-gradient-to-b from-alpha-blue/5 via-alpha-purple/5 to-alpha-navy/10 z-0" />
       
-      {/* Glowing orbs */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-alpha-purple/20 filter blur-[100px] animate-float opacity-60 z-0"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-alpha-blue/20 filter blur-[100px] animate-float opacity-60 z-0" style={{ animationDelay: "1s" }}></div>
+      <div className="absolute top-1/4 -left-1/4 w-[600px] h-[600px] rounded-full bg-gradient-to-r from-alpha-blue/20 to-alpha-purple/20 filter blur-[120px] animate-float opacity-40 z-0" />
+      <div className="absolute -bottom-1/4 -right-1/4 w-[600px] h-[600px] rounded-full bg-gradient-to-l from-alpha-purple/20 to-alpha-blue/20 filter blur-[120px] animate-float opacity-40 z-0" style={{ animationDelay: "2s" }} />
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-alpha-blue/10 filter blur-[100px] animate-float opacity-30 z-0" style={{ animationDelay: "1s" }} />
       
       <div className="max-w-5xl mx-auto text-center z-10 pt-10">
         <div className="inline-block px-4 py-1.5 mb-6 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 opacity-0" data-animate>
