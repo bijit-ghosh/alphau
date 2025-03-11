@@ -2,6 +2,7 @@
 import { useEffect, useRef } from "react";
 import { Check, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { GlassCard } from "@/components/ui/GlassCard";
 
 export function Comparison() {
   const comparisonRef = useRef<HTMLDivElement>(null);
@@ -38,42 +39,49 @@ export function Comparison() {
       feature: "Deal Sourcing",
       traditional: "Manual, slow, human-driven",
       alphau: "AI-powered, real-time",
+      impact: "10x faster deal processing",
       highlight: true,
     },
     {
       feature: "Financial Modeling",
       traditional: "Excel-based, limited scope",
       alphau: "AI-first, automated scenario modeling",
+      impact: "95% reduction in modeling time",
       highlight: true,
     },
     {
       feature: "Risk Intelligence",
       traditional: "Static & reactive",
       alphau: "AI-driven, predictive insights",
+      impact: "Identify 40% more risk factors",
       highlight: true,
     },
     {
       feature: "Decision Execution",
       traditional: "Human bias & inefficiencies",
       alphau: "Automated Buy/Hold/Reject scoring",
+      impact: "Eliminate 85% of decision bias",
       highlight: true,
     },
     {
       feature: "Processing Time",
       traditional: "Weeks to months",
       alphau: "70% faster processing",
+      impact: "From months to days",
       highlight: false,
     },
     {
       feature: "Accuracy",
       traditional: "Highly variable",
       alphau: "50% improved investment accuracy",
+      impact: "Higher portfolio performance",
       highlight: false,
     },
     {
       feature: "Scalability",
       traditional: "Limited by human resources",
       alphau: "Infinitely scalable",
+      impact: "No limits on deal volume",
       highlight: false,
     },
   ];
@@ -86,42 +94,54 @@ export function Comparison() {
             The <span className="bg-clip-text text-transparent bg-gradient-to-r from-alpha-blue to-alpha-purple">AlphaU</span> Advantage
           </h2>
           <p className="max-w-2xl mx-auto text-gray-300">
-            See how AlphaU's AI-powered platform compares to traditional investment processes
+            See how AlphaU's AI-powered platform transforms traditional investment processes
           </p>
         </div>
         
-        <div className="mt-12 overflow-x-auto" ref={comparisonRef}>
-          <table className="w-full border-collapse">
-            <thead>
-              <tr className="text-left border-b border-white/10 opacity-0">
-                <th className="pb-4 text-gray-300 font-medium">Feature</th>
-                <th className="pb-4 text-gray-300 font-medium">Traditional Investment Process</th>
-                <th className="pb-4 text-gray-300 font-medium">AlphaU AI Execution</th>
-              </tr>
-            </thead>
-            <tbody>
-              {comparisonData.map((row, i) => (
-                <tr 
-                  key={i} 
-                  className={cn(
-                    "border-b border-white/10 opacity-0",
-                    row.highlight ? "bg-white/5" : ""
-                  )}
-                >
-                  <td className="py-4 text-white font-medium">{row.feature}</td>
-                  <td className="py-4 text-gray-300 flex items-center">
-                    <X className="mr-2 h-4 w-4 text-red-400" />
-                    {row.traditional}
-                  </td>
-                  <td className="py-4 text-gray-300 flex items-center">
-                    <Check className="mr-2 h-4 w-4 text-green-400" />
-                    {row.alphau}
-                  </td>
+        <GlassCard className="p-0 overflow-hidden">
+          <div className="mt-0 overflow-x-auto" ref={comparisonRef}>
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="text-left border-b border-white/20 bg-gradient-to-r from-alpha-blue/20 to-alpha-purple/20">
+                  <th className="px-6 py-4 text-white font-medium">Feature</th>
+                  <th className="px-6 py-4 text-white font-medium">Traditional Investment Process</th>
+                  <th className="px-6 py-4 text-white font-medium">AlphaU AI Execution</th>
+                  <th className="px-6 py-4 text-white font-medium">Business Impact</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {comparisonData.map((row, i) => (
+                  <tr 
+                    key={i} 
+                    className={cn(
+                      "border-b border-white/10 opacity-0 transition-all hover:bg-white/5",
+                      row.highlight ? "bg-white/5" : ""
+                    )}
+                  >
+                    <td className="px-6 py-5 text-white font-medium">{row.feature}</td>
+                    <td className="px-6 py-5 text-gray-300 flex items-center">
+                      <div className="flex-shrink-0 p-1 mr-3 rounded-full bg-red-500/20">
+                        <X className="h-4 w-4 text-red-400" />
+                      </div>
+                      {row.traditional}
+                    </td>
+                    <td className="px-6 py-5 text-gray-300 flex items-center">
+                      <div className="flex-shrink-0 p-1 mr-3 rounded-full bg-green-500/20">
+                        <Check className="h-4 w-4 text-green-400" />
+                      </div>
+                      {row.alphau}
+                    </td>
+                    <td className="px-6 py-5 text-white">
+                      <span className="px-3 py-1 rounded-full text-sm bg-gradient-to-r from-alpha-blue/30 to-alpha-purple/30 border border-alpha-purple/20">
+                        {row.impact}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </GlassCard>
         
         <div className="mt-12 rounded-xl overflow-hidden border border-white/10 backdrop-blur-sm">
           <div className="p-6 bg-alpha-blue/20">
