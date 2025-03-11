@@ -11,7 +11,17 @@ import {
   Search, 
   Star, 
   CloudLightning,
-  X
+  X,
+  FileSpreadsheet,
+  ChartBar,
+  ChartLine,
+  Share,
+  FileInput,
+  Server,
+  Code,
+  LayoutDashboard,
+  Network,
+  Layers
 } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -20,6 +30,9 @@ import { useAgent } from './AgentContext';
 
 // Model type categories
 type ModelCategory = 'popular' | 'language' | 'vision' | 'specialized';
+
+// Tool categories
+type ToolCategory = 'finance' | 'data-integration' | 'analytics' | 'bi' | 'utility';
 
 interface ModelItem {
   id: string;
@@ -36,7 +49,7 @@ interface ToolItem {
   id: string;
   name: string;
   description: string;
-  category: string;
+  category: ToolCategory;
   tags: string[];
   isPopular?: boolean;
 }
@@ -131,6 +144,7 @@ const models: ModelItem[] = [
 ];
 
 const tools: ToolItem[] = [
+  // Finance tools
   {
     id: 'market-data-api',
     name: 'Market Data API',
@@ -160,9 +174,106 @@ const tools: ToolItem[] = [
     name: 'Portfolio Optimizer',
     description: 'Advanced portfolio optimization algorithms',
     category: 'finance',
-    tags: ['optimization', 'risk'],
+    tags: ['optimization', 'risk']
+  },
+  
+  // Data Integration tools
+  {
+    id: 'database-connector',
+    name: 'Database Connector',
+    description: 'Connect to SQL, NoSQL, and other database systems',
+    category: 'data-integration',
+    tags: ['database', 'ETL'],
     isPopular: true
   },
+  {
+    id: 'api-integration',
+    name: 'API Integration Hub',
+    description: 'Connect to thousands of APIs with pre-built connectors',
+    category: 'data-integration',
+    tags: ['api', 'rest', 'graphql'],
+    isPopular: true
+  },
+  {
+    id: 'data-transformation',
+    name: 'Data Transformation Engine',
+    description: 'Transform, clean, and prepare data from any source',
+    category: 'data-integration',
+    tags: ['etl', 'cleaning']
+  },
+  {
+    id: 'file-parser',
+    name: 'File Parser',
+    description: 'Extract structured data from PDF, CSV, Excel, and more',
+    category: 'data-integration',
+    tags: ['file', 'extraction']
+  },
+  
+  // Analytics tools
+  {
+    id: 'time-series-analysis',
+    name: 'Time Series Analysis',
+    description: 'Advanced time series forecasting and pattern detection',
+    category: 'analytics',
+    tags: ['forecasting', 'trends'],
+    isPopular: true
+  },
+  {
+    id: 'ml-modeling',
+    name: 'ML Modeling',
+    description: 'Build and deploy machine learning models without code',
+    category: 'analytics',
+    tags: ['machine learning', 'prediction'],
+    isPopular: true
+  },
+  {
+    id: 'correlation-analyzer',
+    name: 'Correlation Analyzer',
+    description: 'Discover relationships between variables and datasets',
+    category: 'analytics',
+    tags: ['correlation', 'analysis']
+  },
+  {
+    id: 'anomaly-detection',
+    name: 'Anomaly Detection',
+    description: 'Identify outliers and abnormal patterns in your data',
+    category: 'analytics',
+    tags: ['anomaly', 'detection']
+  },
+  
+  // BI tools
+  {
+    id: 'dashboard-builder',
+    name: 'Dashboard Builder',
+    description: 'Create interactive dashboards with drag-and-drop simplicity',
+    category: 'bi',
+    tags: ['visualization', 'dashboard'],
+    isPopular: true
+  },
+  {
+    id: 'report-generator',
+    name: 'Report Generator',
+    description: 'Generate customized reports with scheduling capabilities',
+    category: 'bi',
+    tags: ['reporting', 'scheduling'],
+    isPopular: true
+  },
+  {
+    id: 'data-visualization',
+    name: 'Data Visualization',
+    description: 'Create stunning visualizations for complex data',
+    category: 'bi',
+    tags: ['charts', 'graphs']
+  },
+  {
+    id: 'bi-connector',
+    name: 'BI Connector',
+    description: 'Connect to popular BI tools like Tableau, Power BI, and Looker',
+    category: 'bi',
+    tags: ['integration', 'export']
+  },
+  
+  // Utility tools
   {
     id: 'data-connector',
     name: 'Data Connector',
@@ -218,6 +329,30 @@ export function MarketplacePanel() {
     
     return matchesSearch && matchesCategory;
   });
+
+  // Function to get the appropriate icon for a tool category
+  const getCategoryIcon = (category: ToolCategory) => {
+    switch(category) {
+      case 'finance': return <Database className="h-4 w-4 text-white" />;
+      case 'data-integration': return <Share className="h-4 w-4 text-white" />;
+      case 'analytics': return <ChartLine className="h-4 w-4 text-white" />;
+      case 'bi': return <LayoutDashboard className="h-4 w-4 text-white" />;
+      case 'utility': return <Zap className="h-4 w-4 text-white" />;
+      default: return <Zap className="h-4 w-4 text-white" />;
+    }
+  };
+
+  // Function to get background color based on tool category
+  const getCategoryColor = (category: ToolCategory) => {
+    switch(category) {
+      case 'finance': return 'bg-alpha-green/20';
+      case 'data-integration': return 'bg-blue-500/20';
+      case 'analytics': return 'bg-purple-500/20';
+      case 'bi': return 'bg-amber-500/20';
+      case 'utility': return 'bg-alpha-blue/20';
+      default: return 'bg-alpha-blue/20';
+    }
+  };
 
   if (!isExpanded) {
     return (
@@ -284,6 +419,9 @@ export function MarketplacePanel() {
             <SelectItem value="vision">Vision Models</SelectItem>
             <SelectItem value="specialized">Specialized Models</SelectItem>
             <SelectItem value="finance">Finance Tools</SelectItem>
+            <SelectItem value="data-integration">Data Integration</SelectItem>
+            <SelectItem value="analytics">Analytics</SelectItem>
+            <SelectItem value="bi">Business Intelligence</SelectItem>
             <SelectItem value="utility">Utility Tools</SelectItem>
           </SelectContent>
         </Select>
@@ -357,53 +495,121 @@ export function MarketplacePanel() {
             )}
           </TabsContent>
           
-          <TabsContent value="tools" className="p-4 grid grid-cols-3 gap-4">
-            {filteredTools.length > 0 ? filteredTools.map(tool => (
-              <div key={tool.id} className="bg-alpha-navy/30 border border-white/10 rounded-md p-4 hover:border-white/20 transition-colors">
-                <div className="flex justify-between items-start mb-2">
-                  <div className="flex items-center">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-2 ${
-                      tool.category === 'finance' ? 'bg-alpha-green/20' : 'bg-alpha-blue/20'
-                    }`}>
-                      {tool.category === 'finance' ? 
-                        <Database className="h-4 w-4 text-white" /> :
-                        <Zap className="h-4 w-4 text-white" />
-                      }
+          <TabsContent value="tools" className="p-4">
+            <div className="grid grid-cols-4 gap-2 mb-4">
+              <Button 
+                size="sm" 
+                variant={categoryFilter === 'all' ? 'default' : 'outline'}
+                className="h-8 text-xs"
+                onClick={() => setCategoryFilter('all')}
+              >
+                All Tools
+              </Button>
+              <Button 
+                size="sm" 
+                variant={categoryFilter === 'finance' ? 'default' : 'outline'}
+                className="h-8 text-xs"
+                onClick={() => setCategoryFilter('finance')}
+              >
+                <Database className="h-3 w-3 mr-1" />
+                Finance
+              </Button>
+              <Button 
+                size="sm" 
+                variant={categoryFilter === 'data-integration' ? 'default' : 'outline'}
+                className="h-8 text-xs"
+                onClick={() => setCategoryFilter('data-integration')}
+              >
+                <Share className="h-3 w-3 mr-1" />
+                Data Integration
+              </Button>
+              <Button 
+                size="sm" 
+                variant={categoryFilter === 'analytics' ? 'default' : 'outline'}
+                className="h-8 text-xs"
+                onClick={() => setCategoryFilter('analytics')}
+              >
+                <ChartLine className="h-3 w-3 mr-1" />
+                Analytics
+              </Button>
+              <Button 
+                size="sm" 
+                variant={categoryFilter === 'bi' ? 'default' : 'outline'}
+                className="h-8 text-xs"
+                onClick={() => setCategoryFilter('bi')}
+              >
+                <LayoutDashboard className="h-3 w-3 mr-1" />
+                Business Intelligence
+              </Button>
+              <Button 
+                size="sm" 
+                variant={categoryFilter === 'utility' ? 'default' : 'outline'}
+                className="h-8 text-xs"
+                onClick={() => setCategoryFilter('utility')}
+              >
+                <Zap className="h-3 w-3 mr-1" />
+                Utility
+              </Button>
+              <Button 
+                size="sm" 
+                variant={categoryFilter === 'popular' ? 'default' : 'outline'}
+                className="h-8 text-xs"
+                onClick={() => setCategoryFilter('popular')}
+              >
+                <Star className="h-3 w-3 mr-1" />
+                Popular
+              </Button>
+            </div>
+            
+            <div className="grid grid-cols-3 gap-4">
+              {filteredTools.length > 0 ? filteredTools.map(tool => (
+                <div key={tool.id} className="bg-alpha-navy/30 border border-white/10 rounded-md p-4 hover:border-white/20 transition-colors">
+                  <div className="flex justify-between items-start mb-2">
+                    <div className="flex items-center">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-2 ${getCategoryColor(tool.category)}`}>
+                        {getCategoryIcon(tool.category)}
+                      </div>
+                      <h4 className="text-white font-medium">{tool.name}</h4>
                     </div>
-                    <h4 className="text-white font-medium">{tool.name}</h4>
+                    {tool.isPopular && (
+                      <Badge variant="outline" className="bg-alpha-yellow/10 text-alpha-yellow border-alpha-yellow/20 text-[10px]">
+                        <Star className="h-3 w-3 mr-1" /> Popular
+                      </Badge>
+                    )}
                   </div>
-                  {tool.isPopular && (
-                    <Badge variant="outline" className="bg-alpha-yellow/10 text-alpha-yellow border-alpha-yellow/20 text-[10px]">
-                      <Star className="h-3 w-3 mr-1" /> Popular
-                    </Badge>
-                  )}
+                  <p className="text-white/70 text-sm mb-3 line-clamp-2">{tool.description}</p>
+                  <div className="flex flex-wrap gap-1 mb-3">
+                    {tool.tags.map(tag => (
+                      <Badge key={tag} variant="outline" className="bg-alpha-navy text-white/60 border-white/20 text-[10px]">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                  <div className="flex justify-between items-center mt-2">
+                    <span className="text-white/50 text-xs capitalize">{tool.category.replace('-', ' ')}</span>
+                    <Button 
+                      size="sm" 
+                      variant="outline"
+                      className={`h-7 text-xs ${
+                        tool.category === 'finance' ? 'border-alpha-green text-alpha-green hover:bg-alpha-green/10' : 
+                        tool.category === 'data-integration' ? 'border-blue-400 text-blue-400 hover:bg-blue-400/10' :
+                        tool.category === 'analytics' ? 'border-purple-400 text-purple-400 hover:bg-purple-400/10' :
+                        tool.category === 'bi' ? 'border-amber-400 text-amber-400 hover:bg-amber-400/10' :
+                        'border-alpha-blue text-alpha-blue hover:bg-alpha-blue/10'
+                      }`}
+                    >
+                      <Zap className="h-3 w-3 mr-1" />
+                      Add to Flow
+                    </Button>
+                  </div>
                 </div>
-                <p className="text-white/70 text-sm mb-3 line-clamp-2">{tool.description}</p>
-                <div className="flex flex-wrap gap-1 mb-3">
-                  {tool.tags.map(tag => (
-                    <Badge key={tag} variant="outline" className="bg-alpha-navy text-white/60 border-white/20 text-[10px]">
-                      {tag}
-                    </Badge>
-                  ))}
+              )) : (
+                <div className="col-span-3 flex flex-col items-center justify-center py-10 text-white/50">
+                  <Search className="h-10 w-10 mb-2 opacity-20" />
+                  <p>No tools found matching your search criteria</p>
                 </div>
-                <div className="flex justify-between items-center mt-2">
-                  <span className="text-white/50 text-xs">Category: {tool.category}</span>
-                  <Button 
-                    size="sm" 
-                    variant="outline"
-                    className="h-7 text-xs border-alpha-green text-alpha-green hover:bg-alpha-green/10"
-                  >
-                    <Zap className="h-3 w-3 mr-1" />
-                    Add to Flow
-                  </Button>
-                </div>
-              </div>
-            )) : (
-              <div className="col-span-3 flex flex-col items-center justify-center py-10 text-white/50">
-                <Search className="h-10 w-10 mb-2 opacity-20" />
-                <p>No tools found matching your search criteria</p>
-              </div>
-            )}
+              )}
+            </div>
           </TabsContent>
           
           <TabsContent value="workflows" className="p-4">
