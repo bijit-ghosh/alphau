@@ -45,14 +45,9 @@ export function Navbar() {
               <Zap className="h-4 w-4 absolute -top-1 -right-1 text-alpha-yellow" />
             </div>
           </div>
-          <div className="flex flex-col">
-            <span className="font-display text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-alpha-blue to-alpha-purple">
-              AlphaU
-            </span>
-            <span className="text-[10px] text-gray-400 -mt-1 leading-tight tracking-wider">
-              A <span className="text-alpha-blue font-semibold">Quantum</span> Company
-            </span>
-          </div>
+          <span className="font-display text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-alpha-blue to-alpha-purple">
+            AlphaU
+          </span>
         </a>
         
         {isMobile ? (
@@ -86,7 +81,6 @@ export function Navbar() {
         )}
       </div>
       
-      {/* Mobile menu */}
       {isMobile && (
         <div
           className={cn(
