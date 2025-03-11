@@ -53,7 +53,7 @@ export function ImpactBarChart({ data }: ImpactBarChartProps) {
               }}
               labelStyle={{ color: 'white', fontWeight: 'bold', marginBottom: '5px' }}
               itemStyle={{ color: 'white', padding: '2px 0' }}
-              formatter={(value) => [`${value}%`, 'Improvement']}
+              formatter={(value: number) => [`${value}%`, 'Improvement']}
               cursor={{ fill: 'rgba(255, 255, 255, 0.05)' }}
             />
             <Bar dataKey="value" radius={[0, 4, 4, 0]}>

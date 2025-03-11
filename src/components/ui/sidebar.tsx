@@ -186,40 +186,74 @@ export function SidebarMenuButton({
 }) {
   const { expanded } = useSidebar();
   
-  const Component = asChild ? React.Children.only(children) : "button";
-  const props = asChild
-    ? { ...Component.props }
-    : { onClick, type: "button" };
+  // Handle the case where children is a string
+  if (typeof children === 'string') {
+    return (
+      <button
+        onClick={onClick}
+        className={cn(
+          "flex items-center w-full px-2 py-2 rounded-md text-sm transition-colors",
+          expanded ? "justify-start" : "justify-center",
+          active
+            ? "bg-alpha-blue/20 text-white"
+            : "text-gray-400 hover:text-white hover:bg-white/10"
+        )}
+      >
+        {children}
+      </button>
+    );
+  }
   
-  return React.createElement(
-    Component.type || "button",
-    {
-      ...props,
+  // Handle when children is a ReactElement
+  const child = React.isValidElement(children) ? children : null;
+  
+  if (!child) {
+    return <>{children}</>;
+  }
+  
+  if (asChild) {
+    return React.cloneElement(child, {
+      ...child.props,
       className: cn(
         "flex items-center w-full px-2 py-2 rounded-md text-sm transition-colors",
         expanded ? "justify-start" : "justify-center",
         active
           ? "bg-alpha-blue/20 text-white"
           : "text-gray-400 hover:text-white hover:bg-white/10",
-        asChild ? Component.props.className : ""
+        child.props.className
       ),
-    },
-    React.Children.map(asChild ? Component.props.children : children, (child) => {
-      if (React.isValidElement(child) && (child.type === "span" || typeof child.type !== "string")) {
-        if (expanded) {
-          return child;
+    });
+  }
+  
+  return (
+    <button
+      onClick={onClick}
+      type="button"
+      className={cn(
+        "flex items-center w-full px-2 py-2 rounded-md text-sm transition-colors",
+        expanded ? "justify-start" : "justify-center",
+        active
+          ? "bg-alpha-blue/20 text-white"
+          : "text-gray-400 hover:text-white hover:bg-white/10"
+      )}
+    >
+      {React.Children.map(children, (child) => {
+        if (React.isValidElement(child)) {
+          if (expanded || typeof child.type !== 'string') {
+            if (typeof child.type !== 'string') {
+              return React.cloneElement(child, {
+                className: cn(
+                  "h-5 w-5",
+                  child.props.className
+                ),
+              });
+            }
+            return child;
+          }
+          return null;
         }
-        if (React.isValidElement(child) && typeof child.type !== "string") {
-          return React.cloneElement(child as React.ReactElement, {
-            className: cn(
-              "h-5 w-5",
-              React.isValidElement(child) ? child.props.className : ""
-            ),
-          });
-        }
-        return null;
-      }
-      return child;
-    })
+        return child;
+      })}
+    </button>
   );
 }
