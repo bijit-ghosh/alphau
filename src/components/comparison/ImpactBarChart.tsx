@@ -20,9 +20,14 @@ export function ImpactBarChart({ data }: ImpactBarChartProps) {
         <h3 className="text-xl font-semibold text-white">Impact</h3>
       </div>
       <p className="text-gray-300 mb-6 px-2">Performance improvement over traditional methods</p>
-      <div className="h-64">
+      <div className="h-96">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={data} layout="vertical" barGap={8} margin={{ right: 30 }}>
+          <BarChart 
+            data={data} 
+            layout="vertical" 
+            barGap={8} 
+            margin={{ right: 30, left: 10, bottom: 20 }}
+          >
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
             <XAxis 
               type="number" 
@@ -55,9 +60,7 @@ export function ImpactBarChart({ data }: ImpactBarChartProps) {
               {data.map((entry, index) => (
                 <Cell 
                   key={`cell-${index}`} 
-                  fill={index === 0 ? '#0057B7' : 
-                        index === 1 ? '#1D85FF' : 
-                        index === 2 ? '#6C4BEF' : '#22C55E'}
+                  fill={entry.fill}
                   radius={[0, 4, 4, 0]}
                 />
               ))}

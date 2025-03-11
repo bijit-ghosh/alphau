@@ -1,5 +1,5 @@
 
-import { PieChart, Pie, Cell, Legend, Tooltip, ResponsiveContainer, Sector } from "recharts";
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Sector } from "recharts";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Zap } from "lucide-react";
 import { useState } from "react";
@@ -38,10 +38,10 @@ const renderActiveShape = (props: any) => {
         fill={fill}
         opacity={0.4}
       />
-      <text x={cx} y={cy - 10} dy={8} textAnchor="middle" fill="#ffffff" fontSize="16px" fontWeight="bold">
+      <text x={cx} y={cy - 15} dy={8} textAnchor="middle" fill="#ffffff" fontSize="16px" fontWeight="bold">
         {payload.name}
       </text>
-      <text x={cx} y={cy + 10} dy={8} textAnchor="middle" fill="#ffffff" fontSize="14px">
+      <text x={cx} y={cy + 15} dy={8} textAnchor="middle" fill="#ffffff" fontSize="14px">
         {`${value}%`}
       </text>
     </g>
@@ -55,28 +55,6 @@ export function EnergyEfficiencyPieChart({ data }: EnergyEfficiencyPieChartProps
     setActiveIndex(index);
   };
 
-  const customLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index, name }: any) => {
-    const radius = innerRadius + (outerRadius - innerRadius) * 1.4;
-    const x = cx + radius * Math.cos(-midAngle * Math.PI / 180);
-    const y = cy + radius * Math.sin(-midAngle * Math.PI / 180);
-    const isActive = index === activeIndex;
-
-    return (
-      <text 
-        x={x} 
-        y={y} 
-        textAnchor={x > cx ? 'start' : 'end'} 
-        dominantBaseline="central"
-        fill="white"
-        fontSize={isActive ? "13px" : "12px"}
-        fontWeight={isActive ? "bold" : "normal"}
-        opacity={isActive ? 1 : 0.9}
-      >
-        {name}: {`${(percent * 100).toFixed(0)}%`}
-      </text>
-    );
-  };
-
   return (
     <GlassCard className="p-6 animate-on-scroll" highlightTop highlightColor="from-alpha-yellow to-alpha-purple">
       <div className="flex items-center mb-4">
@@ -86,19 +64,17 @@ export function EnergyEfficiencyPieChart({ data }: EnergyEfficiencyPieChartProps
       <p className="text-gray-300 mb-6 mx-auto text-center max-w-[90%]">
         Resource optimization by implementation area
       </p>
-      <div className="h-64">
+      <div className="h-96">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
               data={data}
               cx="50%"
               cy="50%"
-              innerRadius={60}
-              outerRadius={80}
+              innerRadius={70}
+              outerRadius={100}
               paddingAngle={5}
               dataKey="value"
-              labelLine={false}
-              label={customLabel}
               activeIndex={activeIndex}
               activeShape={renderActiveShape}
               onMouseEnter={onPieEnter}
@@ -127,14 +103,32 @@ export function EnergyEfficiencyPieChart({ data }: EnergyEfficiencyPieChartProps
         </ResponsiveContainer>
       </div>
       
+      {/* Legend items with animation */}
+      <div className="mt-4 grid grid-cols-2 gap-2">
+        {data.map((entry, index) => (
+          <motion.div 
+            key={index}
+            className={`flex items-center p-2 rounded-md cursor-pointer ${index === activeIndex ? 'bg-white/10' : ''}`}
+            whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.1)' }}
+            onClick={() => setActiveIndex(index)}
+          >
+            <div 
+              className="w-3 h-3 rounded-full mr-2" 
+              style={{ backgroundColor: entry.fill }}
+            />
+            <span className="text-sm text-white">{entry.name}</span>
+          </motion.div>
+        ))}
+      </div>
+      
       {/* Interactive hint text */}
       <motion.p 
-        className="text-center text-xs text-gray-400 mt-2"
+        className="text-center text-xs text-gray-400 mt-4"
         initial={{ opacity: 0.7 }}
         animate={{ opacity: [0.7, 1, 0.7] }}
         transition={{ duration: 2, repeat: Infinity }}
       >
-        Hover over segments for details
+        Click segments for details
       </motion.p>
     </GlassCard>
   );

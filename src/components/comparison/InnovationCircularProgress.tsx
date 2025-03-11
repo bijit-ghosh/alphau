@@ -20,7 +20,7 @@ interface InnovationCircularProgressProps {
 }
 
 export function InnovationCircularProgress({ data }: InnovationCircularProgressProps) {
-  const getColor = (index: number, value: number) => {
+  const getColor = (index: number) => {
     // Base colors
     const baseColors = [
       "#0057B7", // Blue
@@ -42,37 +42,40 @@ export function InnovationCircularProgress({ data }: InnovationCircularProgressP
       <p className="text-gray-300 mb-6 mx-auto text-center max-w-[90%]">
         Innovation scores across investment processes
       </p>
-      <div className="grid grid-cols-2 gap-6 mt-2 mb-4">
+      
+      <div className="flex flex-col gap-8 mt-2 mb-4">
         {data.map((item, i) => (
           <motion.div 
             key={i} 
-            className="flex flex-col items-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            className="flex items-center gap-4"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: i * 0.1 }}
-            whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
+            whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
           >
             <CircularProgress 
               value={item.innovationScore} 
               max={100}
-              size={i === 3 ? 90 : 80} 
-              strokeWidth={10}
-              color={getColor(i, item.innovationScore)}
+              size={90} 
+              strokeWidth={12}
+              color={getColor(i)}
               backgroundColor="rgba(255,255,255,0.1)"
               textClassName="text-white text-lg font-bold"
               animate={true}
             />
-            <div className="flex flex-col items-center mt-3">
-              <span className="text-sm text-white font-medium mb-1">{item.feature}</span>
-              <motion.div 
-                className="h-1 w-16 rounded-full bg-gradient-to-r"
-                style={{ 
-                  backgroundImage: `linear-gradient(to right, ${getColor(i, item.innovationScore)}88, ${getColor(i, item.innovationScore)})`
-                }}
-                initial={{ width: 0 }}
-                animate={{ width: '4rem' }}
-                transition={{ duration: 0.7, delay: 0.3 + (i * 0.1) }}
-              />
+            
+            <div className="flex flex-col ml-2">
+              <span className="text-base text-white font-medium mb-1">{item.feature}</span>
+              <div className="relative w-full h-3 bg-white/10 rounded-full overflow-hidden">
+                <motion.div 
+                  className="absolute top-0 left-0 h-full rounded-full"
+                  style={{ backgroundColor: getColor(i) }}
+                  initial={{ width: 0 }}
+                  animate={{ width: `${item.innovationScore}%` }}
+                  transition={{ duration: 1, delay: 0.3 + (i * 0.1) }}
+                />
+              </div>
+              <span className="text-xs text-gray-300 mt-1">Score: {item.innovationScore}/100</span>
             </div>
           </motion.div>
         ))}
