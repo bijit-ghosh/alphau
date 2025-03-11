@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from "react";
 import { Check, LineChart, Zap, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -164,7 +163,9 @@ export function Comparison() {
               <Zap className="w-5 h-5 mr-2 text-alpha-yellow" />
               <h3 className="text-xl font-semibold text-white">Energy Efficiency</h3>
             </div>
-            <p className="text-gray-300 mb-6">Resource optimization by implementation area</p>
+            <p className="text-gray-300 mb-4 px-2 max-w-full break-words">
+              Resource optimization by implementation area
+            </p>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
