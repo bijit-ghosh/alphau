@@ -1,5 +1,6 @@
+
 import { useState, useEffect } from "react";
-import { Menu, X, Brain, Zap } from "lucide-react";
+import { Menu, X, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -38,11 +39,27 @@ export function Navbar() {
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <a href="#" className="flex items-center space-x-2 group">
-          <div className="relative flex items-center justify-center">
-            <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-alpha-blue to-alpha-purple opacity-70 blur-sm group-hover:opacity-100 transition-opacity duration-300"></div>
-            <div className="relative bg-alpha-darknavy rounded-full p-1.5 flex items-center justify-center">
-              <Brain className="h-6 w-6 text-white group-hover:text-alpha-purple transition-colors duration-300" />
-              <Zap className="h-4 w-4 absolute -top-1 -right-1 text-alpha-yellow" />
+          <div className="relative h-9 w-9">
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-pink-500 via-purple-500 to-cyan-400 opacity-90 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="h-5 w-5 rounded-full bg-alpha-darknavy"></div>
+            </div>
+            <div className="absolute inset-0">
+              <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-full w-full">
+                <path 
+                  d="M18 3C9.716 3 3 9.716 3 18c0 8.284 6.716 15 15 15 4.142 0 7.892-1.679 10.607-4.393l-4.243-4.243C22.179 26.55 20.142 27.5 18 27.5c-5.247 0-9.5-4.253-9.5-9.5 0-5.247 4.253-9.5 9.5-9.5 2.142 0 4.179 0.95 5.764 2.136l4.243-4.243C25.892 4.679 22.142 3 18 3z" 
+                  fill="black" 
+                  fillOpacity="0.65"
+                />
+                <path 
+                  d="M30 18h-6v9h3v-6h3v-3z" 
+                  fill="black" 
+                  fillOpacity="0.85"
+                />
+              </svg>
+            </div>
+            <div className="absolute top-0 right-0">
+              <Zap className="h-3 w-3 text-alpha-yellow" />
             </div>
           </div>
           <span className="font-display text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-alpha-blue to-alpha-purple">
