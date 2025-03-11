@@ -11,13 +11,15 @@ import {
   SelectValue 
 } from "@/components/ui/select";
 import { useAgent } from './AgentContext';
+import { ModelType } from './AgentContext';
+import { Brain, Cpu, Gauge } from 'lucide-react';
 
 interface NodeInspectorProps {
   node: any;
 }
 
 export function NodeInspector({ node }: NodeInspectorProps) {
-  const { nodes, edges } = useAgent();
+  const { nodes, edges, updateNodeData, availableModels } = useAgent();
   const [label, setLabel] = useState(node.data.label || '');
   
   // Update form when selected node changes
@@ -25,10 +27,20 @@ export function NodeInspector({ node }: NodeInspectorProps) {
     setLabel(node.data.label || '');
   }, [node]);
   
-  // Update node data when form changes
-  const updateNodeData = (key: string, value: any) => {
-    // This would be implemented in a real app to update the node's data
-    console.log(`Update node ${node.id} ${key} to ${value}`);
+  // Helper to check if node type uses AI models
+  const usesAIModel = (nodeType: string): boolean => {
+    return ['financialAnalysis', 'sentimentAnalysis', 'portfolioOptimization', 
+           'riskAssessment', 'alphaScoring', 'marketData'].includes(nodeType);
+  };
+
+  const handleLabelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newLabel = e.target.value;
+    setLabel(newLabel);
+    updateNodeData(node.id, { label: newLabel });
+  };
+
+  const handleSelectChange = (key: string, value: string) => {
+    updateNodeData(node.id, { [key]: value });
   };
 
   return (
@@ -46,13 +58,41 @@ export function NodeInspector({ node }: NodeInspectorProps) {
           <Input 
             id="node-name" 
             value={label} 
-            onChange={(e) => {
-              setLabel(e.target.value);
-              updateNodeData('label', e.target.value);
-            }}
+            onChange={handleLabelChange}
             className="h-8 text-sm bg-alpha-darknavy border-white/10 text-white"
           />
         </div>
+        
+        {/* Model selection for AI nodes */}
+        {usesAIModel(node.type) && (
+          <div className="space-y-2">
+            <Label htmlFor="model-type" className="text-xs text-white/80 flex items-center gap-1">
+              <Brain className="h-3 w-3" /> AI Model
+            </Label>
+            <Select 
+              defaultValue={node.data.modelType || 'gpt-4o'} 
+              onValueChange={(value) => handleSelectChange('modelType', value)}
+            >
+              <SelectTrigger id="model-type" className="h-8 text-sm bg-alpha-darknavy border-white/10 text-white">
+                <SelectValue placeholder="Select model" />
+              </SelectTrigger>
+              <SelectContent className="bg-alpha-darknavy border-white/10 text-white max-h-56">
+                <div className="p-1 text-xs text-white/50">Standard Models</div>
+                <SelectItem value="gpt-4o">GPT-4o (Balanced)</SelectItem>
+                <SelectItem value="gpt-4o-mini">GPT-4o Mini (Fast)</SelectItem>
+                <SelectItem value="claude-3-opus">Claude 3 Opus (Powerful)</SelectItem>
+                <SelectItem value="claude-3-sonnet">Claude 3 Sonnet (Balanced)</SelectItem>
+                <SelectItem value="llama-3-70b">Llama 3 70B (Open Source)</SelectItem>
+                <SelectItem value="gemini-pro">Gemini Pro (Balanced)</SelectItem>
+                <SelectItem value="mixtral-8x7b">Mixtral 8x7B (Fast)</SelectItem>
+                
+                <div className="p-1 text-xs text-white/50 mt-1">Specialized Models</div>
+                <SelectItem value="alphaU-sentiment-v2">AlphaU Sentiment v2</SelectItem>
+                <SelectItem value="alphaU-financial-v3">AlphaU Financial v3</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        )}
         
         {node.type === 'trigger' && (
           <>
@@ -60,7 +100,7 @@ export function NodeInspector({ node }: NodeInspectorProps) {
               <Label htmlFor="schedule" className="text-xs text-white/80">Schedule</Label>
               <Select 
                 defaultValue={node.data.schedule || 'daily'} 
-                onValueChange={(value) => updateNodeData('schedule', value)}
+                onValueChange={(value) => handleSelectChange('schedule', value)}
               >
                 <SelectTrigger id="schedule" className="h-8 text-sm bg-alpha-darknavy border-white/10 text-white">
                   <SelectValue placeholder="Select schedule" />
@@ -70,6 +110,7 @@ export function NodeInspector({ node }: NodeInspectorProps) {
                   <SelectItem value="daily">Daily</SelectItem>
                   <SelectItem value="weekly">Weekly</SelectItem>
                   <SelectItem value="monthly">Monthly</SelectItem>
+                  <SelectItem value="custom">Custom Cron</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -79,7 +120,7 @@ export function NodeInspector({ node }: NodeInspectorProps) {
               <Input 
                 id="trigger-time" 
                 defaultValue={node.data.time || '09:30'} 
-                onChange={(e) => updateNodeData('time', e.target.value)}
+                onChange={(e) => handleSelectChange('time', e.target.value)}
                 className="h-8 text-sm bg-alpha-darknavy border-white/10 text-white"
               />
             </div>
@@ -92,7 +133,7 @@ export function NodeInspector({ node }: NodeInspectorProps) {
               <Label htmlFor="data-source" className="text-xs text-white/80">Data Source</Label>
               <Select 
                 defaultValue={node.data.source || 'alphaUInternal'} 
-                onValueChange={(value) => updateNodeData('source', value)}
+                onValueChange={(value) => handleSelectChange('source', value)}
               >
                 <SelectTrigger id="data-source" className="h-8 text-sm bg-alpha-darknavy border-white/10 text-white">
                   <SelectValue placeholder="Select data source" />
@@ -102,6 +143,8 @@ export function NodeInspector({ node }: NodeInspectorProps) {
                   <SelectItem value="bloomberg">Bloomberg</SelectItem>
                   <SelectItem value="reuters">Reuters</SelectItem>
                   <SelectItem value="alphavantage">Alpha Vantage</SelectItem>
+                  <SelectItem value="yfinance">Yahoo Finance</SelectItem>
+                  <SelectItem value="iex">IEX Cloud</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -111,7 +154,7 @@ export function NodeInspector({ node }: NodeInspectorProps) {
               <Input 
                 id="data-symbols" 
                 defaultValue={node.data.symbols || 'AAPL,MSFT,GOOGL'} 
-                onChange={(e) => updateNodeData('symbols', e.target.value)}
+                onChange={(e) => handleSelectChange('symbols', e.target.value)}
                 className="h-8 text-sm bg-alpha-darknavy border-white/10 text-white"
               />
             </div>
@@ -124,7 +167,7 @@ export function NodeInspector({ node }: NodeInspectorProps) {
               <Label htmlFor="sentiment-sources" className="text-xs text-white/80">Data Sources</Label>
               <Select 
                 defaultValue={node.data.sentimentSource || 'all'} 
-                onValueChange={(value) => updateNodeData('sentimentSource', value)}
+                onValueChange={(value) => handleSelectChange('sentimentSource', value)}
               >
                 <SelectTrigger id="sentiment-sources" className="h-8 text-sm bg-alpha-darknavy border-white/10 text-white">
                   <SelectValue placeholder="Select sources" />
@@ -134,24 +177,8 @@ export function NodeInspector({ node }: NodeInspectorProps) {
                   <SelectItem value="news">Financial News</SelectItem>
                   <SelectItem value="social">Social Media</SelectItem>
                   <SelectItem value="earnings">Earnings Calls</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="sentiment-model" className="text-xs text-white/80">AI Model</Label>
-              <Select 
-                defaultValue={node.data.model || 'alphaU-sentiment-v2'} 
-                onValueChange={(value) => updateNodeData('model', value)}
-              >
-                <SelectTrigger id="sentiment-model" className="h-8 text-sm bg-alpha-darknavy border-white/10 text-white">
-                  <SelectValue placeholder="Select AI model" />
-                </SelectTrigger>
-                <SelectContent className="bg-alpha-darknavy border-white/10 text-white">
-                  <SelectItem value="alphaU-sentiment-v1">AlphaU Sentiment v1</SelectItem>
-                  <SelectItem value="alphaU-sentiment-v2">AlphaU Sentiment v2</SelectItem>
-                  <SelectItem value="gpt4">GPT-4</SelectItem>
-                  <SelectItem value="custom">Custom Model</SelectItem>
+                  <SelectItem value="sec">SEC Filings</SelectItem>
+                  <SelectItem value="reports">Analyst Reports</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -164,7 +191,7 @@ export function NodeInspector({ node }: NodeInspectorProps) {
               <Label htmlFor="output-type" className="text-xs text-white/80">Output Type</Label>
               <Select 
                 defaultValue={node.data.outputType || 'dashboard'} 
-                onValueChange={(value) => updateNodeData('outputType', value)}
+                onValueChange={(value) => handleSelectChange('outputType', value)}
               >
                 <SelectTrigger id="output-type" className="h-8 text-sm bg-alpha-darknavy border-white/10 text-white">
                   <SelectValue placeholder="Select output type" />
@@ -174,6 +201,8 @@ export function NodeInspector({ node }: NodeInspectorProps) {
                   <SelectItem value="email">Email Report</SelectItem>
                   <SelectItem value="api">API Endpoint</SelectItem>
                   <SelectItem value="database">Database</SelectItem>
+                  <SelectItem value="webhook">Webhook</SelectItem>
+                  <SelectItem value="slack">Slack Notification</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -182,7 +211,7 @@ export function NodeInspector({ node }: NodeInspectorProps) {
               <Label htmlFor="output-format" className="text-xs text-white/80">Format</Label>
               <Select 
                 defaultValue={node.data.format || 'json'} 
-                onValueChange={(value) => updateNodeData('format', value)}
+                onValueChange={(value) => handleSelectChange('format', value)}
               >
                 <SelectTrigger id="output-format" className="h-8 text-sm bg-alpha-darknavy border-white/10 text-white">
                   <SelectValue placeholder="Select format" />
@@ -192,6 +221,8 @@ export function NodeInspector({ node }: NodeInspectorProps) {
                   <SelectItem value="csv">CSV</SelectItem>
                   <SelectItem value="html">HTML</SelectItem>
                   <SelectItem value="pdf">PDF</SelectItem>
+                  <SelectItem value="image">Image</SelectItem>
+                  <SelectItem value="markdown">Markdown</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -208,6 +239,11 @@ export function NodeInspector({ node }: NodeInspectorProps) {
           <p>Connections: {
             edges.filter(e => e.source === node.id || e.target === node.id).length
           }</p>
+          {node.data.modelType && (
+            <p className="flex items-center gap-1 mt-1">
+              <Cpu className="h-3 w-3" /> Model: {node.data.modelType}
+            </p>
+          )}
         </div>
       </div>
     </div>

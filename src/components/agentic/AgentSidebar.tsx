@@ -10,16 +10,16 @@ import {
   Zap, 
   SendToBack, 
   Settings, 
-  Layers
+  Layers,
+  MessageSquare,
+  AlertCircle
 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
 import { NodeInspector } from './NodeInspector';
+import { Badge } from '@/components/ui/badge';
 
 export function AgentSidebar() {
-  const { selectedNode } = useAgent();
+  const { selectedNode, isRunning } = useAgent();
 
   const onDragStart = (event: React.DragEvent, nodeType: string) => {
     event.dataTransfer.setData('application/reactflow', nodeType);
@@ -67,7 +67,10 @@ export function AgentSidebar() {
                   <TrendingUp className="h-4 w-4 text-alpha-blue" />
                 </div>
                 <div>
-                  <div className="text-sm font-medium text-white">Market Data</div>
+                  <div className="text-sm font-medium text-white flex items-center gap-1">
+                    Market Data
+                    <Badge className="ml-1 text-[9px] py-0 h-4" variant="outline">AI</Badge>
+                  </div>
                   <div className="text-xs text-white/60">Fetch market data</div>
                 </div>
               </div>
@@ -81,7 +84,10 @@ export function AgentSidebar() {
                   <LineChart className="h-4 w-4 text-alpha-lightblue" />
                 </div>
                 <div>
-                  <div className="text-sm font-medium text-white">Financial Analysis</div>
+                  <div className="text-sm font-medium text-white flex items-center gap-1">
+                    Financial Analysis
+                    <Badge className="ml-1 text-[9px] py-0 h-4" variant="outline">AI</Badge>
+                  </div>
                   <div className="text-xs text-white/60">Analyze financial data</div>
                 </div>
               </div>
@@ -95,7 +101,10 @@ export function AgentSidebar() {
                   <Brain className="h-4 w-4 text-alpha-purple" />
                 </div>
                 <div>
-                  <div className="text-sm font-medium text-white">Sentiment Analysis</div>
+                  <div className="text-sm font-medium text-white flex items-center gap-1">
+                    Sentiment Analysis
+                    <Badge className="ml-1 text-[9px] py-0 h-4" variant="outline">AI</Badge>
+                  </div>
                   <div className="text-xs text-white/60">Analyze market sentiment</div>
                 </div>
               </div>
@@ -109,7 +118,10 @@ export function AgentSidebar() {
                   <LineChart className="h-4 w-4 text-alpha-green" />
                 </div>
                 <div>
-                  <div className="text-sm font-medium text-white">Portfolio Optimization</div>
+                  <div className="text-sm font-medium text-white flex items-center gap-1">
+                    Portfolio Optimization
+                    <Badge className="ml-1 text-[9px] py-0 h-4" variant="outline">AI</Badge>
+                  </div>
                   <div className="text-xs text-white/60">Optimize asset allocation</div>
                 </div>
               </div>
@@ -123,7 +135,10 @@ export function AgentSidebar() {
                   <Shield className="h-4 w-4 text-alpha-yellow" />
                 </div>
                 <div>
-                  <div className="text-sm font-medium text-white">Risk Assessment</div>
+                  <div className="text-sm font-medium text-white flex items-center gap-1">
+                    Risk Assessment
+                    <Badge className="ml-1 text-[9px] py-0 h-4" variant="outline">AI</Badge>
+                  </div>
                   <div className="text-xs text-white/60">Evaluate investment risks</div>
                 </div>
               </div>
@@ -137,7 +152,10 @@ export function AgentSidebar() {
                   <Gauge className="h-4 w-4 text-alpha-yellow" />
                 </div>
                 <div>
-                  <div className="text-sm font-medium text-white">Alpha Scoring</div>
+                  <div className="text-sm font-medium text-white flex items-center gap-1">
+                    Alpha Scoring
+                    <Badge className="ml-1 text-[9px] py-0 h-4" variant="outline">AI</Badge>
+                  </div>
                   <div className="text-xs text-white/60">Generate AlphaScore™</div>
                 </div>
               </div>
@@ -154,6 +172,32 @@ export function AgentSidebar() {
                   <div className="text-sm font-medium text-white">Output</div>
                   <div className="text-xs text-white/60">Process final results</div>
                 </div>
+              </div>
+            </div>
+            
+            {isRunning && (
+              <div className="mt-6 p-3 border border-alpha-green/20 bg-alpha-green/10 rounded-md animate-pulse">
+                <div className="flex items-center text-alpha-green mb-1">
+                  <AlertCircle className="h-4 w-4 mr-1" />
+                  <span className="text-xs font-medium">Workflow Running</span>
+                </div>
+                <p className="text-xs text-alpha-green/80">
+                  The workflow is currently being executed. Check the console for detailed progress.
+                </p>
+              </div>
+            )}
+            
+            <div className="mt-6">
+              <div className="flex items-center mb-2">
+                <MessageSquare className="h-4 w-4 mr-2 text-white/50" />
+                <h3 className="text-white/80 text-xs font-medium">AI Models Available</h3>
+              </div>
+              <div className="text-xs text-white/60 space-y-1">
+                <p>• GPT-4o (Balanced)</p>
+                <p>• Claude 3 Opus (Powerful)</p>
+                <p>• AlphaU Sentiment v2 (Specialized)</p>
+                <p>• And 6 more models...</p>
+                <p className="italic text-white/40 mt-2">Select a node to change its model</p>
               </div>
             </div>
           </div>
