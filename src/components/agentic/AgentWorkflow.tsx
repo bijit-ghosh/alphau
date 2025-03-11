@@ -21,6 +21,7 @@ export function AgentWorkflow() {
     onEdgesChange, 
     onConnect,
     setSelectedNode,
+    addNode
   } = useAgent();
   
   const { toast } = useToast();
@@ -49,16 +50,15 @@ export function AgentWorkflow() {
         y: event.clientY - reactFlowBounds.top,
       };
 
-      // Get the nodeType from the context
-      const agent = useAgent();
-      agent.addNode(type as any, position);
+      // Use the addNode function from the context that we destructured above
+      addNode(type as any, position);
 
       toast({
         title: "Node Added",
         description: `Added ${type} node to workflow`,
       });
     },
-    [toast]
+    [toast, addNode]
   );
 
   return (
