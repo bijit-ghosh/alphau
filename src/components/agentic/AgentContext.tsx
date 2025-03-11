@@ -184,7 +184,7 @@ export const AgentProvider = ({ children }: { children: React.ReactNode }) => {
         };
         break;
       default:
-        newNodeData = { label: type.charAt(0).toUpperCase() + type.slice(1) };
+        newNodeData = { label: type.toString().charAt(0).toUpperCase() + type.toString().slice(1) };
     }
     
     const newNode: Node = {

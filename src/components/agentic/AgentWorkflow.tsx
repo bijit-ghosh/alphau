@@ -7,6 +7,7 @@ import {
   MiniMap,
   Panel,
   useReactFlow,
+  ReactFlowProvider,
 } from '@xyflow/react';
 import { useAgent } from './AgentContext';
 import { nodeTypes, edgeTypes, ConnectionLine } from './nodes';
@@ -15,7 +16,8 @@ import { PlusIcon, ZapIcon } from 'lucide-react';
 
 import '@xyflow/react/dist/style.css';
 
-export function AgentWorkflow() {
+// Wrap the internal component with the ReactFlowProvider
+function AgentWorkflowContent() {
   const { 
     nodes, 
     edges, 
@@ -29,15 +31,15 @@ export function AgentWorkflow() {
   
   const { toast } = useToast();
   const reactFlowWrapper = useRef(null);
-  const { fitView } = useReactFlow();
+  const reactFlowInstance = useReactFlow();
 
   // Effect to fit view whenever nodes change
   useEffect(() => {
     const timer = setTimeout(() => {
-      fitView({ padding: 0.2 });
+      reactFlowInstance.fitView({ padding: 0.2 });
     }, 200);
     return () => clearTimeout(timer);
-  }, [nodes.length, fitView]);
+  }, [nodes.length, reactFlowInstance]);
 
   const onNodeClick = useCallback((event: React.MouseEvent, node: any) => {
     console.log('Node clicked:', node);
@@ -69,8 +71,7 @@ export function AgentWorkflow() {
         return;
       }
 
-      const { project } = useReactFlow();
-      const position = project({
+      const position = reactFlowInstance.project({
         x: event.clientX - reactFlowBounds.left,
         y: event.clientY - reactFlowBounds.top,
       });
@@ -85,7 +86,7 @@ export function AgentWorkflow() {
         description: `Added ${type} node to workflow`,
       });
     },
-    [toast, addNode, useReactFlow]
+    [toast, addNode, reactFlowInstance]
   );
 
   const handleRunTest = useCallback(() => {
@@ -150,5 +151,14 @@ export function AgentWorkflow() {
         </Panel>
       </ReactFlow>
     </div>
+  );
+}
+
+// Export component wrapped in ReactFlowProvider to fix the zustand error
+export function AgentWorkflow() {
+  return (
+    <ReactFlowProvider>
+      <AgentWorkflowContent />
+    </ReactFlowProvider>
   );
 }
