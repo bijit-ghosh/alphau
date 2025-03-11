@@ -54,10 +54,12 @@ export const comparisonData: ComparisonItem[] = [
 ];
 
 export const getBarChartData = (data: ComparisonItem[]) => {
-  return data.map(item => ({
+  return data.map((item, index) => ({
     name: item.feature,
     value: item.impactValue,
-    fill: "#0057B7"
+    fill: index === 0 ? '#0057B7' : 
+          index === 1 ? '#1D85FF' : 
+          index === 2 ? '#6C4BEF' : '#22C55E'
   }));
 };
 
