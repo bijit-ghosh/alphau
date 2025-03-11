@@ -1,6 +1,5 @@
-
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Brain } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -39,25 +38,8 @@ export function Navbar() {
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <a href="#" className="flex items-center space-x-2 group">
-          <div className="relative h-8 w-8">
-            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-full w-full">
-              <path
-                d="M16 4C9.373 4 4 9.373 4 16s5.373 12 12 12c6.627 0 12-5.373 12-12S22.627 4 16 4zm0 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S6 21.523 6 16 10.477 6 16 6z"
-                fill="url(#gradient)"
-              />
-              <path
-                d="M16 10c-1.105 0-2 0.895-2 2v7c0 1.105 0.895 2 2 2h5v-2h-5v-7h5c0-1.105-0.895-2-2-2h-3z"
-                fill="url(#gradient)"
-              />
-              <rect x="15" y="15" width="2" height="2" fill="black" />
-              <defs>
-                <linearGradient id="gradient" x1="4" y1="4" x2="28" y2="28" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stopColor="#FF3BFF" />
-                  <stop offset="50%" stopColor="#5C24FF" />
-                  <stop offset="100%" stopColor="#00E7FF" />
-                </linearGradient>
-              </defs>
-            </svg>
+          <div className="relative h-8 w-8 flex items-center justify-center">
+            <Brain className="w-full h-full stroke-[1.5] text-transparent bg-clip-text bg-gradient-to-r from-[#FF3BFF] via-[#5C24FF] to-[#00E7FF]" />
           </div>
           <span className="font-display text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#FF3BFF] to-[#00E7FF]">
             AlphaU
