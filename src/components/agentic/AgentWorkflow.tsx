@@ -13,6 +13,7 @@ import { useAgent } from './AgentContext';
 import { nodeTypes, edgeTypes, ConnectionLine } from './nodes';
 import { useToast } from '@/hooks/use-toast';
 import { PlusIcon, ZapIcon } from 'lucide-react';
+import { MarketplacePanel } from './MarketplacePanel';
 
 import '@xyflow/react/dist/style.css';
 
@@ -150,6 +151,7 @@ function AgentWorkflowContent() {
           </div>
         </Panel>
       </ReactFlow>
+      <MarketplacePanel />
     </div>
   );
 }

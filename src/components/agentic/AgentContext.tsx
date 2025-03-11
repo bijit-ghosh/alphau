@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useCallback } from 'react';
 import { Node, Edge, addEdge, Connection, applyNodeChanges, applyEdgeChanges } from '@xyflow/react';
 import { nodeTypes } from './nodes';
@@ -184,7 +183,10 @@ export const AgentProvider = ({ children }: { children: React.ReactNode }) => {
         };
         break;
       default:
-        newNodeData = { label: type.toString().charAt(0).toUpperCase() + type.toString().slice(1) };
+        const nodeTypeStr = String(type);
+        newNodeData = { 
+          label: nodeTypeStr.charAt(0).toUpperCase() + nodeTypeStr.slice(1) 
+        };
     }
     
     const newNode: Node = {
