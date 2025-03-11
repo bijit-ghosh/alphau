@@ -41,7 +41,12 @@ export function AgentWorkflow() {
 
       const type = event.dataTransfer.getData('application/reactflow');
       
-      if (!type) return;
+      if (!type) {
+        console.log('No type data found in drop event');
+        return;
+      }
+
+      console.log('Dropping node of type:', type);
 
       // Get the position where the node was dropped
       const reactFlowBounds = event.currentTarget.getBoundingClientRect();
@@ -49,6 +54,8 @@ export function AgentWorkflow() {
         x: event.clientX - reactFlowBounds.left,
         y: event.clientY - reactFlowBounds.top,
       };
+
+      console.log('Drop position:', position);
 
       // Use the addNode function from the context that we destructured above
       addNode(type as any, position);

@@ -1,5 +1,6 @@
 
-import { useEffect } from "react";
+import React from "react";
+import { Link } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { Features } from "@/components/Features";
@@ -9,70 +10,38 @@ import { CTASection } from "@/components/CTASection";
 import { Footer } from "@/components/Footer";
 
 const Index = () => {
-  useEffect(() => {
-    // Initialize intersection observer for animation-on-scroll
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("active");
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-    
-    // Target all elements with the animate-on-scroll class
-    document.querySelectorAll(".animate-on-scroll").forEach((element) => {
-      observer.observe(element);
-    });
-    
-    return () => {
-      document.querySelectorAll(".animate-on-scroll").forEach((element) => {
-        observer.unobserve(element);
-      });
-    };
-  }, []);
-
   return (
-    <>
-      <style>
-        {`
-          @keyframes gradient-x {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-          }
-          .animate-gradient-x {
-            animation: gradient-x 15s linear infinite;
-          }
-          .mask-gradient-to-r {
-            mask-image: linear-gradient(to right, transparent, white, transparent);
-          }
-          @keyframes gradientAnimation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-          }
-          @keyframes float-slow {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-          }
-          .animate-float-slow {
-            animation: float-slow 8s ease-in-out infinite;
-          }
-        `}
-      </style>
-      <div className="min-h-screen bg-alpha-navy text-white overflow-hidden">
-        <Navbar />
-        <Hero />
-        <Features />
-        <HowItWorks />
-        <Comparison />
-        <CTASection />
-        <Footer />
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+      <Hero />
+      <Features />
+      <HowItWorks />
+      <Comparison />
+      <CTASection />
+      
+      {/* Adding a quick navigation section to help with testing */}
+      <div className="py-8 bg-alpha-darknavy">
+        <div className="container mx-auto text-center">
+          <h2 className="text-2xl font-bold text-white mb-4">Test Navigation</h2>
+          <div className="flex justify-center gap-4">
+            <Link 
+              to="/dashboard" 
+              className="px-6 py-3 bg-alpha-blue rounded-md text-white hover:bg-alpha-blue/90 transition-colors"
+            >
+              Dashboard
+            </Link>
+            <Link 
+              to="/agent-studio" 
+              className="px-6 py-3 bg-alpha-purple rounded-md text-white hover:bg-alpha-purple/90 transition-colors"
+            >
+              Agent Studio
+            </Link>
+          </div>
+        </div>
       </div>
-    </>
+      
+      <Footer />
+    </div>
   );
 };
 
