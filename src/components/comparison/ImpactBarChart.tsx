@@ -61,7 +61,8 @@ export function ImpactBarChart({ data }: ImpactBarChartProps) {
                 <Cell 
                   key={`cell-${index}`} 
                   fill={entry.fill}
-                  radius={[0, 4, 4, 0]}
+                  // Fix: Use a single number for radius instead of array
+                  radius={4}
                 />
               ))}
             </Bar>
