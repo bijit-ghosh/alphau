@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from "react";
 import { Check, X, LineChart } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -128,7 +127,9 @@ export function Comparison() {
                       <div className="flex-shrink-0 p-1 mr-3 rounded-full bg-green-500/20">
                         <Check className="h-4 w-4 text-green-400" />
                       </div>
-                      {row.alphau}
+                      <span className="bg-alpha-navy/80 py-1 px-3 rounded-md">
+                        {row.alphau}
+                      </span>
                     </td>
                     <td className="px-6 py-5 text-white">
                       <span className="px-3 py-1 rounded-full text-sm bg-alpha-blue text-white font-medium border border-alpha-blue/50">
