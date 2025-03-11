@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -318,7 +319,7 @@ export function MarketplacePanel() {
                       model.provider === 'Mistral AI' ? 'bg-yellow-500/20' :
                       'bg-alpha-blue/20'
                     }`}>
-                      <Robot className="h-4 w-4 text-white" />
+                      <Bot className="h-4 w-4 text-white" />
                     </div>
                     <h4 className="text-white font-medium">{model.name}</h4>
                   </div>
