@@ -89,7 +89,7 @@ export function Comparison() {
                 {item.alphau}
               </div>
               <div className="mt-auto">
-                <span className="inline-block px-4 py-2 rounded-full text-sm bg-gradient-to-r from-alpha-blue/30 to-alpha-purple/30 border border-alpha-purple/20">
+                <span className="inline-block px-4 py-2 rounded-full text-sm bg-alpha-blue text-white font-medium border border-alpha-blue/50">
                   {item.impact}
                 </span>
               </div>
@@ -131,7 +131,7 @@ export function Comparison() {
                       {row.alphau}
                     </td>
                     <td className="px-6 py-5 text-white">
-                      <span className="px-3 py-1 rounded-full text-sm bg-gradient-to-r from-alpha-blue/30 to-alpha-purple/30 border border-alpha-purple/20">
+                      <span className="px-3 py-1 rounded-full text-sm bg-alpha-blue text-white font-medium border border-alpha-blue/50">
                         {row.impact}
                       </span>
                     </td>
