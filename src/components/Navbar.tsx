@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -38,18 +39,20 @@ export function Navbar() {
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <a href="#" className="flex items-center space-x-2 group">
-          <div className="relative h-9 w-9">
-            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#FF3BFF] via-[#5C24FF] to-[#0097FF] opacity-90 group-hover:opacity-100 transition-opacity duration-300">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-7 w-7">
-                  <path
-                    d="M20 5C11.716 5 5 11.716 5 20c0 8.284 6.716 15 15 15 4.142 0 7.892-1.679 10.607-4.393l-4.243-4.243C24.179 28.55 22.142 29.5 20 29.5c-5.247 0-9.5-4.253-9.5-9.5 0-5.247 4.253-9.5 9.5-9.5 2.142 0 4.179 0.95 5.764 2.136l4.243-4.243C27.892 6.679 24.142 5 20 5z"
-                    fill="black"
-                    fillOpacity="0.85"
-                  />
-                </svg>
-              </div>
-            </div>
+          <div className="relative h-8 w-8">
+            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-full w-full">
+              <path
+                d="M16 4C9.373 4 4 9.373 4 16s5.373 12 12 12c3.314 0 6.314-1.343 8.485-3.515l-2.828-2.828C20.143 23.171 18.171 24 16 24c-4.418 0-8-3.582-8-8s3.582-8 8-8c2.171 0 4.143.829 5.657 2.343l2.828-2.828C22.314 5.343 19.314 4 16 4z"
+                fill="url(#gradient)"
+              />
+              <defs>
+                <linearGradient id="gradient" x1="4" y1="4" x2="28" y2="28" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stopColor="#FF3BFF" />
+                  <stop offset="50%" stopColor="#5C24FF" />
+                  <stop offset="100%" stopColor="#0097FF" />
+                </linearGradient>
+              </defs>
+            </svg>
           </div>
           <span className="font-display text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#FF3BFF] to-[#0097FF]">
             AlphaU
