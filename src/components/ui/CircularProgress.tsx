@@ -17,8 +17,8 @@ interface CircularProgressProps {
 }
 
 export function CircularProgress({
-  value,
-  max,
+  value = 90, // Updated default value to 90
+  max = 100,
   size = 120,
   strokeWidth = 8,
   className,
