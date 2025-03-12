@@ -19,7 +19,7 @@ import {
 import { useAgent } from './AgentContext';
 import { nodeTypes, edgeTypes, ConnectionLine } from './nodes';
 import { useToast } from '@/hooks/use-toast';
-import { ZapIcon, Move, Magnet } from 'lucide-react';
+import { ZapIcon, Move } from 'lucide-react';
 
 import '@xyflow/react/dist/style.css';
 
@@ -122,7 +122,6 @@ function AgentWorkflowContent() {
     toast({
       title: "Connection Created",
       description: `Connected node ${params.source} to ${params.target}`,
-      className: "connection-toast",
     });
   }, [onConnect, toast]);
 
@@ -143,8 +142,8 @@ function AgentWorkflowContent() {
         connectionLineComponent={ConnectionLine}
         onDrop={onDrop}
         onDragOver={onDragOver}
-        onConnectStart={handleConnectionStart}
-        onConnectEnd={handleConnectionEnd}
+        onConnectionStart={handleConnectionStart}
+        onConnectionEnd={handleConnectionEnd}
         minZoom={0.2}
         maxZoom={1.5}
         defaultEdgeOptions={{

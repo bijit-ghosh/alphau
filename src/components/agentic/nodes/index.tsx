@@ -1,4 +1,5 @@
-import React, { memo, useEffect, useState } from 'react';
+
+import React, { memo } from 'react';
 import { Handle, Position } from '@xyflow/react';
 import { 
   TrendingUp, 
@@ -9,8 +10,7 @@ import {
   Zap, 
   SendToBack, 
   ArrowRight,
-  Bell,
-  Sparkles
+  Bell
 } from 'lucide-react';
 
 const handleStyle = { 
@@ -26,39 +26,25 @@ const nodeBaseStyle = `
 `;
 
 // Market Data Node
-export const MarketDataNode = memo(({ data }: { data: any }) => {
-  const [isLoading, setIsLoading] = useState(false);
-  
-  useEffect(() => {
-    // Simulate data loading effect
-    if (data.isProcessing) {
-      setIsLoading(true);
-      const timer = setTimeout(() => setIsLoading(false), 2000);
-      return () => clearTimeout(timer);
-    }
-  }, [data.isProcessing]);
-
-  return (
-    <div className={`${nodeBaseStyle} bg-gradient-to-r from-alpha-blue/80 to-alpha-purple/80 ${isLoading ? 'animate-pulse' : ''}`}>
-      <div className="flex items-center mb-2">
-        <TrendingUp className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
-        <div className="font-medium">{data.label || 'Market Data'}</div>
-      </div>
-      
-      <div className="text-xs text-white/80">
-        <p>Fetches real-time market data from financial APIs</p>
-      </div>
-      
-      <Handle
-        type="source"
-        position={Position.Right}
-        style={handleStyle}
-        id="output"
-        className="source-handle"
-      />
+export const MarketDataNode = memo(({ data }: { data: any }) => (
+  <div className={`${nodeBaseStyle} bg-gradient-to-r from-alpha-blue/80 to-alpha-purple/80`}>
+    <div className="flex items-center mb-2">
+      <TrendingUp className="w-4 h-4 mr-2" />
+      <div className="font-medium">{data.label || 'Market Data'}</div>
     </div>
-  );
-});
+    
+    <div className="text-xs text-white/80">
+      <p>Fetches real-time market data from financial APIs</p>
+    </div>
+    
+    <Handle
+      type="source"
+      position={Position.Right}
+      style={handleStyle}
+      id="output"
+    />
+  </div>
+));
 
 // Historical Data Node
 export const HistoricalDataNode = memo(({ data }: { data: any }) => (
@@ -328,39 +314,18 @@ export const AlertNode = memo(({ data }: { data: any }) => (
   </div>
 ));
 
-// Connection Line component with enhanced visuals
+// Connection Line component for better visual connection
 export const ConnectionLine = ({ fromX, fromY, toX, toY }: any) => {
   return (
     <g>
-      <defs>
-        <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#0057B7" />
-          <stop offset="50%" stopColor="#6C4BEF" />
-          <stop offset="100%" stopColor="#0057B7" />
-        </linearGradient>
-      </defs>
       <path
         fill="none"
-        stroke="url(#connectionGradient)"
+        stroke="#0057B7"
         strokeWidth={2}
         className="animated"
-        strokeDasharray="5,5"
         d={`M${fromX},${fromY} C${fromX + 50},${fromY} ${toX - 50},${toY} ${toX},${toY}`}
-        style={{
-          animation: 'flowingDash 1s linear infinite'
-        }}
       />
-      <circle cx={toX} cy={toY} fill="#6C4BEF" r={3} className="animate-pulse" />
-      <Sparkles 
-        style={{
-          position: 'absolute',
-          transform: `translate(${(fromX + toX) / 2 - 8}px, ${(fromY + toY) / 2 - 8}px)`,
-          width: '16px',
-          height: '16px',
-          color: '#6C4BEF',
-        }}
-        className="animate-pulse"
-      />
+      <circle cx={toX} cy={toY} fill="#0057B7" r={3} />
     </g>
   );
 };
@@ -381,7 +346,7 @@ export const nodeTypes = {
   alertNode: AlertNode,
 };
 
-// Enhanced edge with dynamic visuals
+// Define the edge types
 export const CustomEdge = ({
   id,
   sourceX,
@@ -399,28 +364,14 @@ export const CustomEdge = ({
 
   return (
     <>
-      <defs>
-        <linearGradient id="edge-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#0057B7" />
-          <stop offset="50%" stopColor="#6C4BEF" />
-          <stop offset="100%" stopColor="#0057B7" />
-        </linearGradient>
-        
-        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="3" result="blur" />
-          <feComposite in="SourceGraphic" in2="blur" operator="over" />
-        </filter>
-      </defs>
-      
       <path
         id={id}
         style={style}
         className="react-flow__edge-path"
         d={edgePath}
         strokeWidth={2}
-        stroke="url(#edge-gradient)"
+        stroke="#0057B7"
       />
-      
       <path
         d={edgePath}
         strokeWidth={2}
@@ -428,17 +379,7 @@ export const CustomEdge = ({
         strokeDasharray="5,5"
         className="animate-pulse"
         style={{ animationDuration: "3s" }}
-        filter="url(#glow)"
       />
-      
-      <circle r="3" fill="#6C4BEF" filter="url(#glow)">
-        <animateMotion
-          dur="2s"
-          repeatCount="indefinite"
-          path={edgePath}
-        />
-      </circle>
-      
       <ArrowRight
         className="text-alpha-blue animate-pulse"
         style={{
