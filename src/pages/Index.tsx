@@ -6,6 +6,8 @@ import { Hero } from "@/components/Hero";
 import { Features } from "@/components/Features";
 import { HowItWorks } from "@/components/HowItWorks";
 import { Comparison } from "@/components/Comparison";
+import { TransparencySection } from "@/components/TransparencySection";
+import { EnterpriseSecuritySection } from "@/components/EnterpriseSecuritySection";
 import { CTASection } from "@/components/CTASection";
 import { Footer } from "@/components/Footer";
 
@@ -17,6 +19,8 @@ const Index = () => {
       <Features />
       <HowItWorks />
       <Comparison />
+      <TransparencySection />
+      <EnterpriseSecuritySection />
       <CTASection />
       
       {/* Adding a quick navigation section to help with testing */}
