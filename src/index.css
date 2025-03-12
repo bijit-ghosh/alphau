@@ -93,12 +93,47 @@
   }
 }
 
+/* Dynamic connection visuals */
+.react-flow__edge-path {
+  stroke-width: 2;
+  filter: drop-shadow(0 0 8px rgba(108, 75, 239, 0.4));
+}
+
+.react-flow__connection-path {
+  stroke: #0057B7;
+  stroke-width: 2;
+  filter: drop-shadow(0 0 6px rgba(0, 87, 183, 0.6));
+}
+
+.connection-toast {
+  background: linear-gradient(to right, rgba(108, 75, 239, 0.2), rgba(0, 87, 183, 0.2)) !important;
+  border: 1px solid rgba(108, 75, 239, 0.3) !important;
+}
+
+/* Attraction effect styles */
+.react-flow__edge.animated .react-flow__edge-path {
+  stroke-dasharray: 5, 5;
+  animation: flowingDash 1s linear infinite;
+}
+
+@keyframes flowingDash {
+  from {
+    stroke-dashoffset: 10;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Magnetic attraction effect when nodes are close */
 .react-flow__node {
+  transition: transform 0.3s ease-out;
   cursor: grab;
 }
 
 .react-flow__node:active {
   cursor: grabbing;
+  transition: transform 0.1s ease-out;
 }
 
 .react-flow__handle {
@@ -106,18 +141,54 @@
   height: 8px;
   background-color: #fff;
   border: 1px solid #0057B7;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .react-flow__handle:hover {
   background-color: #0057B7;
+  transform: scale(1.4);
+  box-shadow: 0 0 15px rgba(108, 75, 239, 0.8);
+  z-index: 10;
 }
 
-.react-flow__edge-path {
-  stroke-width: 2;
+/* Energy flow effect along edges */
+.react-flow__edge.energized .react-flow__edge-path {
+  stroke: url(#edge-gradient);
+  animation: energyPulse 3s infinite;
 }
 
-.react-flow__connection-path {
-  stroke: #0057B7;
-  stroke-width: 2;
+@keyframes energyPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 2px rgba(108, 75, 239, 0.8));
+    stroke-width: 2;
+  }
+  50% {
+    filter: drop-shadow(0 0 8px rgba(108, 75, 239, 0.8));
+    stroke-width: 3;
+  }
 }
 
+/* Node connection success effect */
+.node-connect-success {
+  animation: successPulse 0.6s ease-out;
+}
+
+@keyframes successPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
+    transform: scale(1.05);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+    transform: scale(1);
+  }
+}
+
+/* Dynamic glow around active nodes */
+.react-flow__node.selected {
+  box-shadow: 0 0 0 2px #6C4BEF, 0 0 20px rgba(108, 75, 239, 0.4) !important;
+}
