@@ -11,10 +11,7 @@ import {
   Node,
   Edge,
   XYPosition,
-  Connection,
-  OnConnectStart,
-  NodeMouseHandler,
-  ConnectionLineType
+  Connection
 } from '@xyflow/react';
 import { useAgent } from './AgentContext';
 import { nodeTypes, edgeTypes, ConnectionLine } from './nodes';
@@ -110,9 +107,12 @@ function AgentWorkflowContent() {
     document.body.classList.remove('connecting');
   }, []);
 
-  // Fixed type definition for onConnectStart handler
-  const handleConnectStart: OnConnectStart = useCallback((_, { nodeId, handleType }) => {
+  const handleConnectStart = useCallback((e: React.MouseEvent, { nodeId, handleType }: { nodeId: string, handleType: string }) => {
     console.log('Connection started from:', nodeId, handleType);
+  }, []);
+
+  const handleConnectStop = useCallback((e: MouseEvent) => {
+    console.log('Connection stopped');
   }, []);
 
   const handleConnect = useCallback((params: Connection) => {
@@ -134,6 +134,7 @@ function AgentWorkflowContent() {
         onEdgesChange={onEdgesChange}
         onConnect={handleConnect}
         onConnectStart={handleConnectStart}
+        onConnectStop={handleConnectStop}
         onNodeClick={onNodeClick}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
