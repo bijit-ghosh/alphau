@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Menu, X, BrainCog, LayoutDashboard, Phone, Mail, MapPin, Briefcase } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -97,7 +98,7 @@ export function Navbar() {
               <DialogTrigger asChild>
                 <Button 
                   variant="outline" 
-                  className="hidden md:inline-flex border-alpha-purple/30 text-white hover:bg-alpha-purple/10"
+                  className="md:inline-flex border-alpha-purple/30 text-white hover:bg-alpha-purple/10"
                 >
                   <Briefcase className="mr-1 h-4 w-4" /> Careers
                 </Button>
