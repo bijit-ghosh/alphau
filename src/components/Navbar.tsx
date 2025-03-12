@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Menu, X, BrainCog, LayoutDashboard, Phone, Mail, MapPin, Briefcase } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -94,7 +93,6 @@ export function Navbar() {
               ))}
             </div>
             
-            {/* Careers Button & Dialog */}
             <Dialog open={careersOpen} onOpenChange={setCareersOpen}>
               <DialogTrigger asChild>
                 <Button 
@@ -137,22 +135,10 @@ export function Navbar() {
                       </div>
                     </div>
                   ))}
-                  
-                  <div className="pt-4 text-center">
-                    <p className="text-sm text-gray-400 mb-4">Don't see a position that fits your skills?</p>
-                    <Button 
-                      variant="outline"
-                      className="w-full border-alpha-purple/30 text-white hover:bg-alpha-purple/10"
-                      onClick={() => window.location.href = 'mailto:careers@alphau.ai?subject=General Application Inquiry'}
-                    >
-                      Send Open Application
-                    </Button>
-                  </div>
                 </div>
               </DialogContent>
             </Dialog>
             
-            {/* Contact Dialog */}
             <Dialog open={contactOpen} onOpenChange={setContactOpen}>
               <DialogTrigger asChild>
                 <Button
@@ -262,7 +248,6 @@ export function Navbar() {
               )
             ))}
             
-            {/* Careers button for mobile */}
             <Button
               variant="outline"
               className="w-full border-alpha-purple/30 text-white hover:bg-alpha-purple/10 justify-start"
