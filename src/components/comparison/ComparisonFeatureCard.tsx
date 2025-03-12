@@ -38,10 +38,9 @@ export function ComparisonFeatureCard({ feature, alphau, impact }: ComparisonFea
         
         <div className="mt-auto">
           <motion.span 
-            className="inline-block px-4 py-2 rounded-full text-sm bg-alpha-blue text-white font-medium border border-alpha-blue/50"
+            className="inline-block px-4 py-2 rounded-full text-sm bg-gradient-to-r from-alpha-blue to-alpha-purple text-white font-medium border border-alpha-purple/30"
             whileHover={{ 
-              backgroundColor: '#1D85FF', 
-              boxShadow: '0 0 12px rgba(29, 133, 255, 0.5)'
+              boxShadow: '0 0 12px rgba(108, 75, 239, 0.5)'
             }}
           >
             {impact}

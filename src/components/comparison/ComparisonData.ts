@@ -45,9 +45,9 @@ export const comparisonData: ComparisonItem[] = [
     feature: "Decision Execution",
     traditional: "Subjective decision making",
     alphau: "Data-driven AlphaScore™",
-    impact: "85% more accurate decisions",
+    impact: "95% more accurate",
     highlight: true,
-    impactValue: 85,
+    impactValue: 95,
     energyEfficiency: 90,
     innovationScore: 95,
   }
