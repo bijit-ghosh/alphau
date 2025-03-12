@@ -26,6 +26,17 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
+// Define a proper type for node objects to avoid TypeScript errors
+interface NodeItem {
+  type: string;
+  icon: React.ReactNode;
+  bgColor: string;
+  label: string;
+  description: string;
+  category: string;
+  ai?: boolean; // Make ai property optional
+}
+
 export function AgentSidebar() {
   const { selectedNode, isRunning } = useAgent();
   const [activeNodeCategory, setActiveNodeCategory] = useState<string>('all');
@@ -40,8 +51,8 @@ export function AgentSidebar() {
     setActiveNodeCategory(category);
   };
 
-  const filteredNodes = () => {
-    const nodes = {
+  const filteredNodes = (): NodeItem[] => {
+    const nodes: Record<string, NodeItem> = {
       trigger: {
         type: 'trigger',
         icon: <Zap className="h-4 w-4 text-alpha-purple" />,
