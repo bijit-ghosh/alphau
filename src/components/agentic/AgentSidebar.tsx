@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useAgent } from './AgentContext';
 import { 
   TrendingUp, 
@@ -12,18 +12,162 @@ import {
   Settings, 
   Layers,
   MessageSquare,
-  AlertCircle
+  AlertCircle,
+  Database,
+  Server,
+  Share,
+  FileSpreadsheet,
+  BarChart,
+  Mail
 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { NodeInspector } from './NodeInspector';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 export function AgentSidebar() {
   const { selectedNode, isRunning } = useAgent();
+  const [activeNodeCategory, setActiveNodeCategory] = useState<string>('all');
+  const [searchTerm, setSearchTerm] = useState('');
 
   const onDragStart = (event: React.DragEvent, nodeType: string) => {
     event.dataTransfer.setData('application/reactflow', nodeType);
     event.dataTransfer.effectAllowed = 'move';
+  };
+
+  const filterNodes = (category: string) => {
+    setActiveNodeCategory(category);
+  };
+
+  const filteredNodes = () => {
+    const nodes = {
+      trigger: {
+        type: 'trigger',
+        icon: <Zap className="h-4 w-4 text-alpha-purple" />,
+        bgColor: 'bg-alpha-purple/20',
+        label: 'Trigger',
+        description: 'Start workflow execution',
+        category: 'core'
+      },
+      marketData: {
+        type: 'marketData',
+        icon: <TrendingUp className="h-4 w-4 text-alpha-blue" />,
+        bgColor: 'bg-alpha-blue/20',
+        label: 'Market Data',
+        description: 'Fetch market data',
+        category: 'finance',
+        ai: true
+      },
+      financialAnalysis: {
+        type: 'financialAnalysis',
+        icon: <LineChart className="h-4 w-4 text-alpha-lightblue" />,
+        bgColor: 'bg-alpha-lightblue/20',
+        label: 'Financial Analysis',
+        description: 'Analyze financial data',
+        category: 'finance',
+        ai: true
+      },
+      sentimentAnalysis: {
+        type: 'sentimentAnalysis',
+        icon: <Brain className="h-4 w-4 text-alpha-purple" />,
+        bgColor: 'bg-alpha-purple/20',
+        label: 'Sentiment Analysis',
+        description: 'Analyze market sentiment',
+        category: 'finance',
+        ai: true
+      },
+      portfolioOptimization: {
+        type: 'portfolioOptimization',
+        icon: <LineChart className="h-4 w-4 text-alpha-green" />,
+        bgColor: 'bg-alpha-green/20',
+        label: 'Portfolio Optimization',
+        description: 'Optimize asset allocation',
+        category: 'finance',
+        ai: true
+      },
+      riskAssessment: {
+        type: 'riskAssessment',
+        icon: <Shield className="h-4 w-4 text-alpha-yellow" />,
+        bgColor: 'bg-alpha-yellow/20',
+        label: 'Risk Assessment',
+        description: 'Evaluate investment risks',
+        category: 'finance',
+        ai: true
+      },
+      alphaScoring: {
+        type: 'alphaScoring',
+        icon: <Gauge className="h-4 w-4 text-alpha-yellow" />,
+        bgColor: 'bg-alpha-yellow/20',
+        label: 'Alpha Scoring',
+        description: 'Generate AlphaScore™',
+        category: 'finance',
+        ai: true
+      },
+      databaseConnector: {
+        type: 'databaseConnector',
+        icon: <Database className="h-4 w-4 text-blue-400" />,
+        bgColor: 'bg-blue-400/20',
+        label: 'Database Connector',
+        description: 'Connect to databases',
+        category: 'integration'
+      },
+      apiIntegration: {
+        type: 'apiIntegration',
+        icon: <Share className="h-4 w-4 text-purple-400" />,
+        bgColor: 'bg-purple-400/20',
+        label: 'API Integration',
+        description: 'Connect to external APIs',
+        category: 'integration'
+      },
+      dataTransformation: {
+        type: 'dataTransformation',
+        icon: <FileSpreadsheet className="h-4 w-4 text-green-400" />,
+        bgColor: 'bg-green-400/20',
+        label: 'Data Transformation',
+        description: 'Transform data formats',
+        category: 'integration'
+      },
+      analyticsEngine: {
+        type: 'analyticsEngine',
+        icon: <BarChart className="h-4 w-4 text-amber-400" />,
+        bgColor: 'bg-amber-400/20',
+        label: 'Analytics Engine',
+        description: 'Advanced data analytics',
+        category: 'analytics'
+      },
+      notificationSystem: {
+        type: 'notificationSystem',
+        icon: <Mail className="h-4 w-4 text-blue-400" />,
+        bgColor: 'bg-blue-400/20',
+        label: 'Notification System',
+        description: 'Send alerts and reports',
+        category: 'integration'
+      },
+      output: {
+        type: 'output',
+        icon: <SendToBack className="h-4 w-4 text-gray-500" />,
+        bgColor: 'bg-gray-500/20',
+        label: 'Output',
+        description: 'Process final results',
+        category: 'core'
+      }
+    };
+    
+    // Filter by search term
+    const searchFilteredNodes = Object.values(nodes).filter(node => 
+      node.label.toLowerCase().includes(searchTerm.toLowerCase()) || 
+      node.description.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    
+    // Filter by category
+    if (activeNodeCategory === 'all') {
+      return searchFilteredNodes;
+    } else if (activeNodeCategory === 'ai') {
+      return searchFilteredNodes.filter(node => node.ai === true);
+    } else {
+      return searchFilteredNodes.filter(node => node.category === activeNodeCategory);
+    }
   };
 
   return (
@@ -41,138 +185,82 @@ export function AgentSidebar() {
         <TabsContent value="nodes" className="flex-1 overflow-auto p-0">
           <div className="p-4">
             <h3 className="text-white text-sm font-medium mb-2">AlphaU Node Types</h3>
-            <p className="text-white/60 text-xs mb-4">Drag nodes to the canvas to build your workflow</p>
+            <p className="text-white/60 text-xs mb-3">Drag nodes to the canvas to build your workflow</p>
+            
+            <div className="relative mb-3">
+              <Input
+                placeholder="Search nodes..."
+                className="bg-alpha-navy/50 border-white/10 text-white text-sm"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            
+            <div className="flex flex-wrap gap-1 mb-3">
+              <Button 
+                size="sm" 
+                variant={activeNodeCategory === 'all' ? 'default' : 'outline'}
+                className="h-7 text-xs"
+                onClick={() => filterNodes('all')}
+              >
+                All
+              </Button>
+              <Button 
+                size="sm" 
+                variant={activeNodeCategory === 'finance' ? 'default' : 'outline'}
+                className="h-7 text-xs"
+                onClick={() => filterNodes('finance')}
+              >
+                Finance
+              </Button>
+              <Button 
+                size="sm" 
+                variant={activeNodeCategory === 'integration' ? 'default' : 'outline'}
+                className="h-7 text-xs"
+                onClick={() => filterNodes('integration')}
+              >
+                Integration
+              </Button>
+              <Button 
+                size="sm" 
+                variant={activeNodeCategory === 'analytics' ? 'default' : 'outline'}
+                className="h-7 text-xs"
+                onClick={() => filterNodes('analytics')}
+              >
+                Analytics
+              </Button>
+              <Button 
+                size="sm" 
+                variant={activeNodeCategory === 'ai' ? 'default' : 'outline'}
+                className="h-7 text-xs"
+                onClick={() => filterNodes('ai')}
+              >
+                AI Nodes
+              </Button>
+            </div>
           
             <div className="space-y-2">
-              <div 
-                className="flex items-center p-2 bg-alpha-blue/10 rounded-md cursor-move hover:bg-alpha-blue/20 border border-white/10"
-                draggable
-                onDragStart={(e) => onDragStart(e, 'trigger')}
-              >
-                <div className="p-1 mr-2 rounded bg-alpha-purple/20">
-                  <Zap className="h-4 w-4 text-alpha-purple" />
-                </div>
-                <div>
-                  <div className="text-sm font-medium text-white">Trigger</div>
-                  <div className="text-xs text-white/60">Start workflow execution</div>
-                </div>
-              </div>
-              
-              <div 
-                className="flex items-center p-2 bg-alpha-blue/10 rounded-md cursor-move hover:bg-alpha-blue/20 border border-white/10"
-                draggable
-                onDragStart={(e) => onDragStart(e, 'marketData')}
-              >
-                <div className="p-1 mr-2 rounded bg-alpha-blue/20">
-                  <TrendingUp className="h-4 w-4 text-alpha-blue" />
-                </div>
-                <div>
-                  <div className="text-sm font-medium text-white flex items-center gap-1">
-                    Market Data
-                    <Badge className="ml-1 text-[9px] py-0 h-4" variant="outline">AI</Badge>
+              {filteredNodes().map((node) => (
+                <div 
+                  key={node.type}
+                  className="flex items-center p-2 bg-alpha-blue/10 rounded-md cursor-move hover:bg-alpha-blue/20 border border-white/10"
+                  draggable
+                  onDragStart={(e) => onDragStart(e, node.type)}
+                >
+                  <div className={`p-1 mr-2 rounded ${node.bgColor}`}>
+                    {node.icon}
                   </div>
-                  <div className="text-xs text-white/60">Fetch market data</div>
-                </div>
-              </div>
-              
-              <div 
-                className="flex items-center p-2 bg-alpha-blue/10 rounded-md cursor-move hover:bg-alpha-blue/20 border border-white/10"
-                draggable
-                onDragStart={(e) => onDragStart(e, 'financialAnalysis')}
-              >
-                <div className="p-1 mr-2 rounded bg-alpha-lightblue/20">
-                  <LineChart className="h-4 w-4 text-alpha-lightblue" />
-                </div>
-                <div>
-                  <div className="text-sm font-medium text-white flex items-center gap-1">
-                    Financial Analysis
-                    <Badge className="ml-1 text-[9px] py-0 h-4" variant="outline">AI</Badge>
+                  <div>
+                    <div className="text-sm font-medium text-white flex items-center gap-1">
+                      {node.label}
+                      {node.ai && (
+                        <Badge className="ml-1 text-[9px] py-0 h-4" variant="outline">AI</Badge>
+                      )}
+                    </div>
+                    <div className="text-xs text-white/60">{node.description}</div>
                   </div>
-                  <div className="text-xs text-white/60">Analyze financial data</div>
                 </div>
-              </div>
-              
-              <div 
-                className="flex items-center p-2 bg-alpha-blue/10 rounded-md cursor-move hover:bg-alpha-blue/20 border border-white/10"
-                draggable
-                onDragStart={(e) => onDragStart(e, 'sentimentAnalysis')}
-              >
-                <div className="p-1 mr-2 rounded bg-alpha-purple/20">
-                  <Brain className="h-4 w-4 text-alpha-purple" />
-                </div>
-                <div>
-                  <div className="text-sm font-medium text-white flex items-center gap-1">
-                    Sentiment Analysis
-                    <Badge className="ml-1 text-[9px] py-0 h-4" variant="outline">AI</Badge>
-                  </div>
-                  <div className="text-xs text-white/60">Analyze market sentiment</div>
-                </div>
-              </div>
-              
-              <div 
-                className="flex items-center p-2 bg-alpha-blue/10 rounded-md cursor-move hover:bg-alpha-blue/20 border border-white/10"
-                draggable
-                onDragStart={(e) => onDragStart(e, 'portfolioOptimization')}
-              >
-                <div className="p-1 mr-2 rounded bg-alpha-green/20">
-                  <LineChart className="h-4 w-4 text-alpha-green" />
-                </div>
-                <div>
-                  <div className="text-sm font-medium text-white flex items-center gap-1">
-                    Portfolio Optimization
-                    <Badge className="ml-1 text-[9px] py-0 h-4" variant="outline">AI</Badge>
-                  </div>
-                  <div className="text-xs text-white/60">Optimize asset allocation</div>
-                </div>
-              </div>
-              
-              <div 
-                className="flex items-center p-2 bg-alpha-blue/10 rounded-md cursor-move hover:bg-alpha-blue/20 border border-white/10"
-                draggable
-                onDragStart={(e) => onDragStart(e, 'riskAssessment')}
-              >
-                <div className="p-1 mr-2 rounded bg-alpha-yellow/20">
-                  <Shield className="h-4 w-4 text-alpha-yellow" />
-                </div>
-                <div>
-                  <div className="text-sm font-medium text-white flex items-center gap-1">
-                    Risk Assessment
-                    <Badge className="ml-1 text-[9px] py-0 h-4" variant="outline">AI</Badge>
-                  </div>
-                  <div className="text-xs text-white/60">Evaluate investment risks</div>
-                </div>
-              </div>
-              
-              <div 
-                className="flex items-center p-2 bg-alpha-blue/10 rounded-md cursor-move hover:bg-alpha-blue/20 border border-white/10"
-                draggable
-                onDragStart={(e) => onDragStart(e, 'alphaScoring')}
-              >
-                <div className="p-1 mr-2 rounded bg-alpha-yellow/20">
-                  <Gauge className="h-4 w-4 text-alpha-yellow" />
-                </div>
-                <div>
-                  <div className="text-sm font-medium text-white flex items-center gap-1">
-                    Alpha Scoring
-                    <Badge className="ml-1 text-[9px] py-0 h-4" variant="outline">AI</Badge>
-                  </div>
-                  <div className="text-xs text-white/60">Generate AlphaScore™</div>
-                </div>
-              </div>
-              
-              <div 
-                className="flex items-center p-2 bg-alpha-blue/10 rounded-md cursor-move hover:bg-alpha-blue/20 border border-white/10"
-                draggable
-                onDragStart={(e) => onDragStart(e, 'output')}
-              >
-                <div className="p-1 mr-2 rounded bg-gray-500/20">
-                  <SendToBack className="h-4 w-4 text-gray-500" />
-                </div>
-                <div>
-                  <div className="text-sm font-medium text-white">Output</div>
-                  <div className="text-xs text-white/60">Process final results</div>
-                </div>
-              </div>
+              ))}
             </div>
             
             {isRunning && (

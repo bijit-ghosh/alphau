@@ -21,7 +21,14 @@ import {
   Code,
   LayoutDashboard,
   Network,
-  Layers
+  Layers,
+  Globe,
+  Trello,
+  Mail,
+  MessageSquare,
+  Calendar,
+  Clock,
+  FileText
 } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -32,7 +39,7 @@ import { useAgent } from './AgentContext';
 type ModelCategory = 'popular' | 'language' | 'vision' | 'specialized';
 
 // Tool categories
-type ToolCategory = 'finance' | 'data-integration' | 'analytics' | 'bi' | 'utility';
+type ToolCategory = 'finance' | 'data-integration' | 'analytics' | 'bi' | 'utility' | 'communication' | 'document';
 
 interface ModelItem {
   id: string;
@@ -176,6 +183,20 @@ const tools: ToolItem[] = [
     category: 'finance',
     tags: ['optimization', 'risk']
   },
+  {
+    id: 'economic-indicators',
+    name: 'Economic Indicators',
+    description: 'Access to global economic indicators and forecasts',
+    category: 'finance',
+    tags: ['economy', 'forecasts']
+  },
+  {
+    id: 'crypto-analytics',
+    name: 'Crypto Analytics',
+    description: 'Advanced cryptocurrency market analytics and insights',
+    category: 'finance',
+    tags: ['crypto', 'blockchain']
+  },
   
   // Data Integration tools
   {
@@ -207,6 +228,27 @@ const tools: ToolItem[] = [
     description: 'Extract structured data from PDF, CSV, Excel, and more',
     category: 'data-integration',
     tags: ['file', 'extraction']
+  },
+  {
+    id: 'web-scraper',
+    name: 'Web Scraper',
+    description: 'Extract data from websites and web applications',
+    category: 'data-integration',
+    tags: ['web', 'scraping']
+  },
+  {
+    id: 'cloud-storage',
+    name: 'Cloud Storage Connector',
+    description: 'Connect to AWS S3, Google Cloud Storage, Azure Blob Storage',
+    category: 'data-integration',
+    tags: ['cloud', 'storage']
+  },
+  {
+    id: 'erp-connector',
+    name: 'ERP Connector',
+    description: 'Integrate with popular ERP systems like SAP, Oracle, NetSuite',
+    category: 'data-integration',
+    tags: ['erp', 'enterprise']
   },
   
   // Analytics tools
@@ -240,6 +282,27 @@ const tools: ToolItem[] = [
     category: 'analytics',
     tags: ['anomaly', 'detection']
   },
+  {
+    id: 'predictive-analytics',
+    name: 'Predictive Analytics',
+    description: 'Forecast future trends and behaviors using historical data',
+    category: 'analytics',
+    tags: ['prediction', 'forecasting']
+  },
+  {
+    id: 'text-analytics',
+    name: 'Text Analytics',
+    description: 'Extract insights from text data with NLP techniques',
+    category: 'analytics',
+    tags: ['nlp', 'text']
+  },
+  {
+    id: 'statistical-analytics',
+    name: 'Statistical Analytics',
+    description: 'Perform robust statistical analysis on your data',
+    category: 'analytics',
+    tags: ['statistics', 'analysis']
+  },
   
   // BI tools
   {
@@ -272,6 +335,76 @@ const tools: ToolItem[] = [
     category: 'bi',
     tags: ['integration', 'export']
   },
+  {
+    id: 'kpi-tracker',
+    name: 'KPI Tracker',
+    description: 'Monitor key performance indicators with customizable alerts',
+    category: 'bi',
+    tags: ['kpi', 'metrics']
+  },
+  {
+    id: 'embedded-analytics',
+    name: 'Embedded Analytics',
+    description: 'Embed analytics and dashboards into any application',
+    category: 'bi',
+    tags: ['embedded', 'integration']
+  },
+  
+  // Communication tools
+  {
+    id: 'email-sender',
+    name: 'Email Sender',
+    description: 'Send personalized emails and newsletters based on workflow results',
+    category: 'communication',
+    tags: ['email', 'notification'],
+    isPopular: true
+  },
+  {
+    id: 'slack-integration',
+    name: 'Slack Integration',
+    description: 'Post messages and alerts directly to Slack channels',
+    category: 'communication',
+    tags: ['slack', 'notification'],
+    isPopular: true
+  },
+  {
+    id: 'teams-connector',
+    name: 'Microsoft Teams Connector',
+    description: 'Send notifications and alerts to Microsoft Teams',
+    category: 'communication',
+    tags: ['teams', 'microsoft']
+  },
+  {
+    id: 'sms-gateway',
+    name: 'SMS Gateway',
+    description: 'Send text message alerts and notifications',
+    category: 'communication',
+    tags: ['sms', 'mobile']
+  },
+  
+  // Document tools
+  {
+    id: 'document-generator',
+    name: 'Document Generator',
+    description: 'Create PDF, Word, and Excel documents from workflow data',
+    category: 'document',
+    tags: ['pdf', 'office'],
+    isPopular: true
+  },
+  {
+    id: 'document-analyzer',
+    name: 'Document Analyzer',
+    description: 'Extract data and insights from uploaded documents',
+    category: 'document',
+    tags: ['extraction', 'analysis']
+  },
+  {
+    id: 'contract-analyzer',
+    name: 'Contract Analyzer',
+    description: 'Analyze legal contracts for key terms and risks',
+    category: 'document',
+    tags: ['legal', 'contracts']
+  },
   
   // Utility tools
   {
@@ -294,6 +427,20 @@ const tools: ToolItem[] = [
     description: 'Send alerts and notifications via various channels',
     category: 'utility',
     tags: ['alerts', 'communication']
+  },
+  {
+    id: 'webhook-handler',
+    name: 'Webhook Handler',
+    description: 'Create and manage webhooks for external system integration',
+    category: 'utility',
+    tags: ['webhook', 'integration']
+  },
+  {
+    id: 'event-listener',
+    name: 'Event Listener',
+    description: 'Listen for and respond to external events and triggers',
+    category: 'utility',
+    tags: ['events', 'automation']
   }
 ];
 
@@ -337,6 +484,8 @@ export function MarketplacePanel() {
       case 'data-integration': return <Share className="h-4 w-4 text-white" />;
       case 'analytics': return <ChartLine className="h-4 w-4 text-white" />;
       case 'bi': return <LayoutDashboard className="h-4 w-4 text-white" />;
+      case 'communication': return <MessageSquare className="h-4 w-4 text-white" />;
+      case 'document': return <FileText className="h-4 w-4 text-white" />;
       case 'utility': return <Zap className="h-4 w-4 text-white" />;
       default: return <Zap className="h-4 w-4 text-white" />;
     }
@@ -349,8 +498,24 @@ export function MarketplacePanel() {
       case 'data-integration': return 'bg-blue-500/20';
       case 'analytics': return 'bg-purple-500/20';
       case 'bi': return 'bg-amber-500/20';
+      case 'communication': return 'bg-red-500/20';
+      case 'document': return 'bg-teal-500/20';
       case 'utility': return 'bg-alpha-blue/20';
       default: return 'bg-alpha-blue/20';
+    }
+  };
+
+  // Function to get text color based on tool category
+  const getCategoryTextColor = (category: ToolCategory) => {
+    switch(category) {
+      case 'finance': return 'border-alpha-green text-alpha-green hover:bg-alpha-green/10';
+      case 'data-integration': return 'border-blue-400 text-blue-400 hover:bg-blue-400/10';
+      case 'analytics': return 'border-purple-400 text-purple-400 hover:bg-purple-400/10';
+      case 'bi': return 'border-amber-400 text-amber-400 hover:bg-amber-400/10';
+      case 'communication': return 'border-red-400 text-red-400 hover:bg-red-400/10';
+      case 'document': return 'border-teal-400 text-teal-400 hover:bg-teal-400/10';
+      case 'utility': return 'border-alpha-blue text-alpha-blue hover:bg-alpha-blue/10';
+      default: return 'border-alpha-blue text-alpha-blue hover:bg-alpha-blue/10';
     }
   };
 
@@ -422,6 +587,8 @@ export function MarketplacePanel() {
             <SelectItem value="data-integration">Data Integration</SelectItem>
             <SelectItem value="analytics">Analytics</SelectItem>
             <SelectItem value="bi">Business Intelligence</SelectItem>
+            <SelectItem value="communication">Communication</SelectItem>
+            <SelectItem value="document">Document Processing</SelectItem>
             <SelectItem value="utility">Utility Tools</SelectItem>
           </SelectContent>
         </Select>
@@ -496,7 +663,7 @@ export function MarketplacePanel() {
           </TabsContent>
           
           <TabsContent value="tools" className="p-4">
-            <div className="grid grid-cols-4 gap-2 mb-4">
+            <div className="grid grid-cols-7 gap-2 mb-4">
               <Button 
                 size="sm" 
                 variant={categoryFilter === 'all' ? 'default' : 'outline'}
@@ -539,7 +706,25 @@ export function MarketplacePanel() {
                 onClick={() => setCategoryFilter('bi')}
               >
                 <LayoutDashboard className="h-3 w-3 mr-1" />
-                Business Intelligence
+                BI
+              </Button>
+              <Button 
+                size="sm" 
+                variant={categoryFilter === 'communication' ? 'default' : 'outline'}
+                className="h-8 text-xs"
+                onClick={() => setCategoryFilter('communication')}
+              >
+                <MessageSquare className="h-3 w-3 mr-1" />
+                Communication
+              </Button>
+              <Button 
+                size="sm" 
+                variant={categoryFilter === 'document' ? 'default' : 'outline'}
+                className="h-8 text-xs"
+                onClick={() => setCategoryFilter('document')}
+              >
+                <FileText className="h-3 w-3 mr-1" />
+                Documents
               </Button>
               <Button 
                 size="sm" 
@@ -553,7 +738,7 @@ export function MarketplacePanel() {
               <Button 
                 size="sm" 
                 variant={categoryFilter === 'popular' ? 'default' : 'outline'}
-                className="h-8 text-xs"
+                className="h-8 text-xs col-span-2"
                 onClick={() => setCategoryFilter('popular')}
               >
                 <Star className="h-3 w-3 mr-1" />
@@ -590,13 +775,7 @@ export function MarketplacePanel() {
                     <Button 
                       size="sm" 
                       variant="outline"
-                      className={`h-7 text-xs ${
-                        tool.category === 'finance' ? 'border-alpha-green text-alpha-green hover:bg-alpha-green/10' : 
-                        tool.category === 'data-integration' ? 'border-blue-400 text-blue-400 hover:bg-blue-400/10' :
-                        tool.category === 'analytics' ? 'border-purple-400 text-purple-400 hover:bg-purple-400/10' :
-                        tool.category === 'bi' ? 'border-amber-400 text-amber-400 hover:bg-amber-400/10' :
-                        'border-alpha-blue text-alpha-blue hover:bg-alpha-blue/10'
-                      }`}
+                      className={`h-7 text-xs ${getCategoryTextColor(tool.category)}`}
                     >
                       <Zap className="h-3 w-3 mr-1" />
                       Add to Flow
