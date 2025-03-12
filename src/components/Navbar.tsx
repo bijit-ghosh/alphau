@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { Menu, X, BrainCog, LayoutDashboard, Phone, Mail, MapPin } from "lucide-react";
+import { Menu, X, BrainCog, LayoutDashboard, Phone, Mail, MapPin, Briefcase } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Link } from "react-router-dom";
@@ -11,6 +11,7 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
+  const [careersOpen, setCareersOpen] = useState(false);
   const isMobile = useIsMobile();
   
   useEffect(() => {
@@ -33,6 +34,12 @@ export function Navbar() {
     { name: "How It Works", href: "#how-it-works" },
     { name: "Comparison", href: "#comparison" },
     { name: "Dashboard", href: "/dashboard", isExternal: true },
+  ];
+  
+  const openPositions = [
+    { title: "Gen AI Engineer", department: "Engineering", location: "Jersey City, NJ / Remote" },
+    { title: "Data Engineer", department: "Data", location: "Jersey City, NJ / Remote" },
+    { title: "Full Stack Engineer", department: "Engineering", location: "Jersey City, NJ / Remote" },
   ];
   
   return (
@@ -87,6 +94,65 @@ export function Navbar() {
               ))}
             </div>
             
+            {/* Careers Button & Dialog */}
+            <Dialog open={careersOpen} onOpenChange={setCareersOpen}>
+              <DialogTrigger asChild>
+                <Button 
+                  variant="outline" 
+                  className="hidden md:inline-flex border-alpha-yellow/30 text-white hover:bg-alpha-yellow/10"
+                >
+                  <Briefcase className="mr-1 h-4 w-4" /> Careers
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md bg-alpha-darknavy border border-alpha-yellow/20">
+                <DialogHeader>
+                  <DialogTitle className="text-xl font-bold text-white">
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-alpha-yellow to-alpha-blue">
+                      Join Our Team
+                    </span>
+                  </DialogTitle>
+                  <DialogDescription className="text-gray-300">
+                    Explore career opportunities at AlphaU and be part of the future of AI.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4 pt-4">
+                  {openPositions.map((position, index) => (
+                    <div 
+                      key={index} 
+                      className="p-4 border border-white/10 rounded-lg hover:bg-white/5 transition-colors cursor-pointer group"
+                    >
+                      <h3 className="font-semibold text-white group-hover:text-alpha-yellow transition-colors">{position.title}</h3>
+                      <div className="flex justify-between mt-2 text-sm">
+                        <span className="text-gray-400">{position.department}</span>
+                        <span className="text-gray-400">{position.location}</span>
+                      </div>
+                      <div className="mt-3 pt-3 border-t border-white/5 flex justify-end">
+                        <Button 
+                          size="sm" 
+                          className="bg-gradient-to-r from-alpha-yellow to-alpha-blue hover:opacity-90 transition-opacity text-xs"
+                          onClick={() => window.location.href = 'mailto:careers@alphau.ai?subject=Application for ' + position.title}
+                        >
+                          Apply Now
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                  
+                  <div className="pt-4 text-center">
+                    <p className="text-sm text-gray-400 mb-4">Don't see a position that fits your skills?</p>
+                    <Button 
+                      variant="outline"
+                      className="w-full border-alpha-yellow/30 text-white hover:bg-alpha-yellow/10"
+                      onClick={() => window.location.href = 'mailto:careers@alphau.ai?subject=General Application Inquiry'}
+                    >
+                      Send Open Application
+                    </Button>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
+            
+            {/* Contact Dialog */}
             <Dialog open={contactOpen} onOpenChange={setContactOpen}>
               <DialogTrigger asChild>
                 <Button
@@ -165,7 +231,7 @@ export function Navbar() {
         <div
           className={cn(
             "absolute top-full left-0 right-0 bg-alpha-darknavy/95 backdrop-blur-lg shadow-lg transition-all duration-300 overflow-hidden",
-            mobileMenuOpen ? "max-h-[400px] border-t border-white/5" : "max-h-0"
+            mobileMenuOpen ? "max-h-[600px] border-t border-white/5" : "max-h-0"
           )}
         >
           <div className="px-4 py-4 flex flex-col space-y-4">
@@ -195,6 +261,18 @@ export function Navbar() {
                 </a>
               )
             ))}
+            
+            {/* Careers button for mobile */}
+            <Button
+              variant="outline"
+              className="w-full border-alpha-yellow/30 text-white hover:bg-alpha-yellow/10 justify-start"
+              onClick={() => {
+                setCareersOpen(true);
+                setMobileMenuOpen(false);
+              }}
+            >
+              <Briefcase className="mr-2 h-4 w-4" /> Careers
+            </Button>
             
             <Dialog open={contactOpen} onOpenChange={setContactOpen}>
               <DialogTrigger asChild>
