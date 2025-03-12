@@ -1,32 +1,11 @@
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useAgent } from './AgentContext';
-import { 
-  TrendingUp, 
-  Brain, 
-  LineChart, 
-  Shield, 
-  Gauge, 
-  Zap, 
-  SendToBack, 
-  Settings, 
-  Layers,
-  MessageSquare,
-  AlertCircle,
-  Database,
-  Server,
-  Share,
-  FileSpreadsheet,
-  BarChart,
-  Mail
-} from 'lucide-react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { NodeInspector } from './NodeInspector';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Search, Brain, ChevronDown, ChevronRight, TrendingUp, LineChart, Shield, Gauge, Zap, SendToBack } from 'lucide-react';
+import { Badge } from "@/components/ui/badge";
+import { NodeType } from './AgentContext';
 
-// Define a proper type for node objects to avoid TypeScript errors
+// Define a consistent interface for all node items
 interface NodeItem {
   type: string;
   icon: React.ReactNode;
@@ -34,288 +13,265 @@ interface NodeItem {
   label: string;
   description: string;
   category: string;
-  ai?: boolean; // Make ai property optional
+  ai?: boolean;
 }
 
 export function AgentSidebar() {
-  const { selectedNode, isRunning } = useAgent();
-  const [activeNodeCategory, setActiveNodeCategory] = useState<string>('all');
-  const [searchTerm, setSearchTerm] = useState('');
+  const { selectedNode, setSelectedNode } = useAgent();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({
+    'Data Sources': true,
+    'Analysis': true,
+    'Processing': true,
+    'Output': true
+  });
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
+
+  // Node types available in the sidebar
+  const nodeItems: NodeItem[] = [
+    // Data Source Nodes
+    { 
+      type: 'marketData', 
+      icon: <TrendingUp size={18} />, 
+      bgColor: 'from-alpha-blue/80 to-alpha-purple/80',
+      label: 'Market Data',
+      description: 'Fetches real-time market data',
+      category: 'Data Sources'
+    },
+    { 
+      type: 'historicalData', 
+      icon: <TrendingUp size={18} />, 
+      bgColor: 'from-alpha-blue/80 to-alpha-lightblue/80',
+      label: 'Historical Data',
+      description: 'Retrieves historical financial data',
+      category: 'Data Sources'
+    },
+    { 
+      type: 'newsData', 
+      icon: <TrendingUp size={18} />, 
+      bgColor: 'from-alpha-purple/80 to-alpha-blue/80',
+      label: 'News Data',
+      description: 'Fetches financial news and press releases',
+      category: 'Data Sources',
+      ai: true
+    },
+    
+    // Analysis Nodes
+    { 
+      type: 'financialAnalysis', 
+      icon: <LineChart size={18} />, 
+      bgColor: 'from-alpha-blue/80 to-alpha-lightblue/80',
+      label: 'Financial Analysis',
+      description: 'Analyzes financial metrics',
+      category: 'Analysis',
+      ai: true
+    },
+    { 
+      type: 'sentimentAnalysis', 
+      icon: <Brain size={18} />, 
+      bgColor: 'from-alpha-purple/80 to-alpha-blue/80',
+      label: 'Sentiment Analysis',
+      description: 'Analyzes market sentiment',
+      category: 'Analysis',
+      ai: true
+    },
+    { 
+      type: 'technicalAnalysis', 
+      icon: <LineChart size={18} />, 
+      bgColor: 'from-alpha-green/80 to-alpha-blue/80',
+      label: 'Technical Analysis',
+      description: 'Chart pattern and technical indicator analysis',
+      category: 'Analysis'
+    },
+    
+    // Processing Nodes
+    { 
+      type: 'portfolioOptimization', 
+      icon: <LineChart size={18} />, 
+      bgColor: 'from-alpha-green/80 to-alpha-blue/80',
+      label: 'Portfolio Optimization',
+      description: 'Optimizes portfolio allocation',
+      category: 'Processing',
+      ai: true
+    },
+    { 
+      type: 'riskAssessment', 
+      icon: <Shield size={18} />, 
+      bgColor: 'from-alpha-yellow/80 to-alpha-green/80',
+      label: 'Risk Assessment',
+      description: 'Evaluates investment risks',
+      category: 'Processing',
+      ai: true
+    },
+    { 
+      type: 'alphaScoring', 
+      icon: <Gauge size={18} />, 
+      bgColor: 'from-alpha-lightblue/80 to-alpha-yellow/80',
+      label: 'Alpha Scoring',
+      description: 'Generates proprietary AlphaScore™',
+      category: 'Processing',
+      ai: true
+    },
+    
+    // Flow Control and Output
+    { 
+      type: 'trigger', 
+      icon: <Zap size={18} />, 
+      bgColor: 'from-alpha-purple/90 to-alpha-blue/90',
+      label: 'Trigger',
+      description: 'Starts workflow execution',
+      category: 'Output'
+    },
+    { 
+      type: 'output', 
+      icon: <SendToBack size={18} />, 
+      bgColor: 'from-[#333] to-[#111]',
+      label: 'Output',
+      description: 'Delivers final results',
+      category: 'Output'
+    },
+    { 
+      type: 'alertNode', 
+      icon: <SendToBack size={18} />, 
+      bgColor: 'from-alpha-yellow/80 to-alpha-red/80',
+      label: 'Alert',
+      description: 'Sends alerts based on conditions',
+      category: 'Output'
+    },
+  ];
+
+  // Filter nodes based on search query and active filter
+  const filteredNodes = useMemo(() => {
+    return nodeItems.filter(node => {
+      const matchesSearch = searchQuery === '' || 
+        node.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        node.description.toLowerCase().includes(searchQuery.toLowerCase());
+        
+      const matchesFilter = activeFilter === null || 
+        (activeFilter === 'AI' && node.ai) || 
+        (activeFilter !== 'AI' && node.category === activeFilter);
+        
+      return matchesSearch && matchesFilter;
+    });
+  }, [nodeItems, searchQuery, activeFilter]);
+
+  // Group nodes by category
+  const groupedNodes = useMemo(() => {
+    const groups: Record<string, NodeItem[]> = {};
+    
+    filteredNodes.forEach(node => {
+      if (!groups[node.category]) {
+        groups[node.category] = [];
+      }
+      groups[node.category].push(node);
+    });
+    
+    return groups;
+  }, [filteredNodes]);
+
+  const toggleCategory = (category: string) => {
+    setExpandedCategories(prev => ({
+      ...prev,
+      [category]: !prev[category]
+    }));
+  };
+
+  const handleFilterClick = (filter: string) => {
+    setActiveFilter(prev => prev === filter ? null : filter);
+  };
 
   const onDragStart = (event: React.DragEvent, nodeType: string) => {
+    console.log(`Started dragging node of type: ${nodeType}`);
     event.dataTransfer.setData('application/reactflow', nodeType);
     event.dataTransfer.effectAllowed = 'move';
   };
 
-  const filterNodes = (category: string) => {
-    setActiveNodeCategory(category);
-  };
-
-  const filteredNodes = (): NodeItem[] => {
-    const nodes: Record<string, NodeItem> = {
-      trigger: {
-        type: 'trigger',
-        icon: <Zap className="h-4 w-4 text-alpha-purple" />,
-        bgColor: 'bg-alpha-purple/20',
-        label: 'Trigger',
-        description: 'Start workflow execution',
-        category: 'core'
-      },
-      marketData: {
-        type: 'marketData',
-        icon: <TrendingUp className="h-4 w-4 text-alpha-blue" />,
-        bgColor: 'bg-alpha-blue/20',
-        label: 'Market Data',
-        description: 'Fetch market data',
-        category: 'finance',
-        ai: true
-      },
-      financialAnalysis: {
-        type: 'financialAnalysis',
-        icon: <LineChart className="h-4 w-4 text-alpha-lightblue" />,
-        bgColor: 'bg-alpha-lightblue/20',
-        label: 'Financial Analysis',
-        description: 'Analyze financial data',
-        category: 'finance',
-        ai: true
-      },
-      sentimentAnalysis: {
-        type: 'sentimentAnalysis',
-        icon: <Brain className="h-4 w-4 text-alpha-purple" />,
-        bgColor: 'bg-alpha-purple/20',
-        label: 'Sentiment Analysis',
-        description: 'Analyze market sentiment',
-        category: 'finance',
-        ai: true
-      },
-      portfolioOptimization: {
-        type: 'portfolioOptimization',
-        icon: <LineChart className="h-4 w-4 text-alpha-green" />,
-        bgColor: 'bg-alpha-green/20',
-        label: 'Portfolio Optimization',
-        description: 'Optimize asset allocation',
-        category: 'finance',
-        ai: true
-      },
-      riskAssessment: {
-        type: 'riskAssessment',
-        icon: <Shield className="h-4 w-4 text-alpha-yellow" />,
-        bgColor: 'bg-alpha-yellow/20',
-        label: 'Risk Assessment',
-        description: 'Evaluate investment risks',
-        category: 'finance',
-        ai: true
-      },
-      alphaScoring: {
-        type: 'alphaScoring',
-        icon: <Gauge className="h-4 w-4 text-alpha-yellow" />,
-        bgColor: 'bg-alpha-yellow/20',
-        label: 'Alpha Scoring',
-        description: 'Generate AlphaScore™',
-        category: 'finance',
-        ai: true
-      },
-      databaseConnector: {
-        type: 'databaseConnector',
-        icon: <Database className="h-4 w-4 text-blue-400" />,
-        bgColor: 'bg-blue-400/20',
-        label: 'Database Connector',
-        description: 'Connect to databases',
-        category: 'integration'
-      },
-      apiIntegration: {
-        type: 'apiIntegration',
-        icon: <Share className="h-4 w-4 text-purple-400" />,
-        bgColor: 'bg-purple-400/20',
-        label: 'API Integration',
-        description: 'Connect to external APIs',
-        category: 'integration'
-      },
-      dataTransformation: {
-        type: 'dataTransformation',
-        icon: <FileSpreadsheet className="h-4 w-4 text-green-400" />,
-        bgColor: 'bg-green-400/20',
-        label: 'Data Transformation',
-        description: 'Transform data formats',
-        category: 'integration'
-      },
-      analyticsEngine: {
-        type: 'analyticsEngine',
-        icon: <BarChart className="h-4 w-4 text-amber-400" />,
-        bgColor: 'bg-amber-400/20',
-        label: 'Analytics Engine',
-        description: 'Advanced data analytics',
-        category: 'analytics'
-      },
-      notificationSystem: {
-        type: 'notificationSystem',
-        icon: <Mail className="h-4 w-4 text-blue-400" />,
-        bgColor: 'bg-blue-400/20',
-        label: 'Notification System',
-        description: 'Send alerts and reports',
-        category: 'integration'
-      },
-      output: {
-        type: 'output',
-        icon: <SendToBack className="h-4 w-4 text-gray-500" />,
-        bgColor: 'bg-gray-500/20',
-        label: 'Output',
-        description: 'Process final results',
-        category: 'core'
-      }
-    };
-    
-    // Filter by search term
-    const searchFilteredNodes = Object.values(nodes).filter(node => 
-      node.label.toLowerCase().includes(searchTerm.toLowerCase()) || 
-      node.description.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    
-    // Filter by category
-    if (activeNodeCategory === 'all') {
-      return searchFilteredNodes;
-    } else if (activeNodeCategory === 'ai') {
-      return searchFilteredNodes.filter(node => node.ai === true);
-    } else {
-      return searchFilteredNodes.filter(node => node.category === activeNodeCategory);
-    }
-  };
-
   return (
-    <div className="w-64 h-full bg-alpha-darknavy border-r border-white/5 flex flex-col overflow-auto">
-      <Tabs defaultValue="nodes" className="h-full flex flex-col">
-        <TabsList className="grid grid-cols-2 bg-alpha-darknavy border-b border-white/5">
-          <TabsTrigger value="nodes" className="data-[state=active]:bg-alpha-blue/10">
-            <Layers className="h-4 w-4 mr-2" /> Nodes
-          </TabsTrigger>
-          <TabsTrigger value="inspector" className="data-[state=active]:bg-alpha-blue/10">
-            <Settings className="h-4 w-4 mr-2" /> Inspector
-          </TabsTrigger>
-        </TabsList>
+    <div className="w-72 bg-alpha-darknavy border-r border-white/10 h-full flex flex-col">
+      <div className="p-4 border-b border-white/10">
+        <div className="relative">
+          <Search className="absolute left-2 top-2.5 h-4 w-4 text-white/50" />
+          <input
+            type="text"
+            placeholder="Search components..."
+            className="w-full bg-alpha-navy/30 text-white border border-white/10 rounded-md pl-8 pr-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-alpha-blue/50"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
         
-        <TabsContent value="nodes" className="flex-1 overflow-auto p-0">
-          <div className="p-4">
-            <h3 className="text-white text-sm font-medium mb-2">AlphaU Node Types</h3>
-            <p className="text-white/60 text-xs mb-3">Drag nodes to the canvas to build your workflow</p>
-            
-            <div className="relative mb-3">
-              <Input
-                placeholder="Search nodes..."
-                className="bg-alpha-navy/50 border-white/10 text-white text-sm"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
+        <div className="flex flex-wrap gap-1 mt-3">
+          <Badge 
+            variant={activeFilter === 'AI' ? "default" : "outline"}
+            className={`cursor-pointer ${activeFilter === 'AI' ? 'bg-alpha-blue' : 'bg-alpha-navy/30 hover:bg-alpha-navy/50'}`}
+            onClick={() => handleFilterClick('AI')}
+          >
+            <Brain className="h-3 w-3 mr-1" />
+            AI Nodes
+          </Badge>
+          {['Data Sources', 'Analysis', 'Processing', 'Output'].map(category => (
+            <Badge 
+              key={category}
+              variant={activeFilter === category ? "default" : "outline"}
+              className={`cursor-pointer ${activeFilter === category ? 'bg-alpha-blue' : 'bg-alpha-navy/30 hover:bg-alpha-navy/50'}`}
+              onClick={() => handleFilterClick(category)}
+            >
+              {category}
+            </Badge>
+          ))}
+        </div>
+      </div>
+      
+      <div className="flex-1 overflow-y-auto overflow-x-hidden py-2">
+        {Object.entries(groupedNodes).map(([category, nodes]) => (
+          <div key={category} className="mb-2">
+            <div 
+              className="flex items-center px-4 py-2 cursor-pointer text-white hover:bg-white/5"
+              onClick={() => toggleCategory(category)}
+            >
+              {expandedCategories[category] ? 
+                <ChevronDown className="h-4 w-4 mr-2 text-white/70" /> : 
+                <ChevronRight className="h-4 w-4 mr-2 text-white/70" />
+              }
+              <span className="text-sm font-medium">{category}</span>
+              <Badge className="ml-2 bg-alpha-navy/50 text-xs">{nodes.length}</Badge>
             </div>
             
-            <div className="flex flex-wrap gap-1 mb-3">
-              <Button 
-                size="sm" 
-                variant={activeNodeCategory === 'all' ? 'default' : 'outline'}
-                className="h-7 text-xs"
-                onClick={() => filterNodes('all')}
-              >
-                All
-              </Button>
-              <Button 
-                size="sm" 
-                variant={activeNodeCategory === 'finance' ? 'default' : 'outline'}
-                className="h-7 text-xs"
-                onClick={() => filterNodes('finance')}
-              >
-                Finance
-              </Button>
-              <Button 
-                size="sm" 
-                variant={activeNodeCategory === 'integration' ? 'default' : 'outline'}
-                className="h-7 text-xs"
-                onClick={() => filterNodes('integration')}
-              >
-                Integration
-              </Button>
-              <Button 
-                size="sm" 
-                variant={activeNodeCategory === 'analytics' ? 'default' : 'outline'}
-                className="h-7 text-xs"
-                onClick={() => filterNodes('analytics')}
-              >
-                Analytics
-              </Button>
-              <Button 
-                size="sm" 
-                variant={activeNodeCategory === 'ai' ? 'default' : 'outline'}
-                className="h-7 text-xs"
-                onClick={() => filterNodes('ai')}
-              >
-                AI Nodes
-              </Button>
-            </div>
-          
-            <div className="space-y-2">
-              {filteredNodes().map((node) => (
-                <div 
-                  key={node.type}
-                  className="flex items-center p-2 bg-alpha-blue/10 rounded-md cursor-move hover:bg-alpha-blue/20 border border-white/10"
-                  draggable
-                  onDragStart={(e) => onDragStart(e, node.type)}
-                >
-                  <div className={`p-1 mr-2 rounded ${node.bgColor}`}>
-                    {node.icon}
-                  </div>
-                  <div>
-                    <div className="text-sm font-medium text-white flex items-center gap-1">
-                      {node.label}
-                      {node.ai && (
-                        <Badge className="ml-1 text-[9px] py-0 h-4" variant="outline">AI</Badge>
-                      )}
+            {expandedCategories[category] && (
+              <div className="pl-4 pr-2 space-y-2 my-2">
+                {nodes.map((node) => (
+                  <div
+                    key={node.type}
+                    className={`
+                      p-3 rounded-md cursor-grab bg-gradient-to-r ${node.bgColor}
+                      border border-white/10 text-white
+                      hover:shadow-md transition-shadow
+                    `}
+                    draggable
+                    onDragStart={(event) => onDragStart(event, node.type)}
+                  >
+                    <div className="flex items-center">
+                      <div className="bg-white/10 rounded-full p-1.5 mr-2">
+                        {node.icon}
+                      </div>
+                      <div>
+                        <h3 className="text-sm font-medium">{node.label}</h3>
+                        <p className="text-xs text-white/70 mt-0.5">{node.description}</p>
+                      </div>
                     </div>
-                    <div className="text-xs text-white/60">{node.description}</div>
+                    {node.ai && (
+                      <Badge className="mt-2 bg-alpha-blue/40 text-xs">
+                        <Brain className="h-2.5 w-2.5 mr-1" />
+                        AI Powered
+                      </Badge>
+                    )}
                   </div>
-                </div>
-              ))}
-            </div>
-            
-            {isRunning && (
-              <div className="mt-6 p-3 border border-alpha-green/20 bg-alpha-green/10 rounded-md animate-pulse">
-                <div className="flex items-center text-alpha-green mb-1">
-                  <AlertCircle className="h-4 w-4 mr-1" />
-                  <span className="text-xs font-medium">Workflow Running</span>
-                </div>
-                <p className="text-xs text-alpha-green/80">
-                  The workflow is currently being executed. Check the console for detailed progress.
-                </p>
+                ))}
               </div>
             )}
-            
-            <div className="mt-6">
-              <div className="flex items-center mb-2">
-                <MessageSquare className="h-4 w-4 mr-2 text-white/50" />
-                <h3 className="text-white/80 text-xs font-medium">AI Models Available</h3>
-              </div>
-              <div className="text-xs text-white/60 space-y-1">
-                <p>• GPT-4o (Balanced)</p>
-                <p>• Claude 3 Opus (Powerful)</p>
-                <p>• AlphaU Sentiment v2 (Specialized)</p>
-                <p>• And 6 more models...</p>
-                <p className="italic text-white/40 mt-2">Select a node to change its model</p>
-              </div>
-            </div>
           </div>
-        </TabsContent>
-        
-        <TabsContent value="inspector" className="flex-1 overflow-auto p-4">
-          {selectedNode ? (
-            <NodeInspector node={selectedNode} />
-          ) : (
-            <div className="flex flex-col items-center justify-center h-full text-center p-4">
-              <Settings className="h-10 w-10 text-white/20 mb-2" />
-              <h3 className="text-white/60 text-sm">No node selected</h3>
-              <p className="text-white/40 text-xs mt-1">
-                Select a node in the workflow to configure it
-              </p>
-            </div>
-          )}
-        </TabsContent>
-      </Tabs>
+        ))}
+      </div>
     </div>
   );
 }

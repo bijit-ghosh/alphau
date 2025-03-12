@@ -1,18 +1,23 @@
+
 import React, { createContext, useContext, useState, useCallback } from 'react';
 import { Node, Edge, addEdge, Connection, applyNodeChanges, applyEdgeChanges } from '@xyflow/react';
 import { nodeTypes } from './nodes';
-import { toast } from '@/hooks/use-toast';
+import { useToast } from '@/hooks/use-toast';
 
 // Initial node types specific to AlphaU
 export type NodeType = 
   | 'marketData' 
+  | 'historicalData'
+  | 'newsData'
   | 'financialAnalysis' 
   | 'sentimentAnalysis'
+  | 'technicalAnalysis'
   | 'portfolioOptimization'
   | 'riskAssessment'
   | 'alphaScoring'
   | 'trigger'
-  | 'output';
+  | 'output'
+  | 'alertNode';
 
 // Model types available for the AI nodes
 export type ModelType =
@@ -69,6 +74,7 @@ export const AgentProvider = ({ children }: { children: React.ReactNode }) => {
   const [selectedNode, setSelectedNode] = useState<Node | null>(null);
   const [workflowName, setWorkflowName] = useState<string>('New AlphaU Workflow');
   const [isRunning, setIsRunning] = useState<boolean>(false);
+  const { toast } = useToast();
   
   const availableModels: ModelType[] = [
     'gpt-4o',
@@ -133,6 +139,22 @@ export const AgentProvider = ({ children }: { children: React.ReactNode }) => {
           modelType: 'alphaU-financial-v3'
         };
         break;
+      case 'historicalData':
+        newNodeData = { 
+          label: 'Historical Data',
+          period: '5y',
+          interval: 'daily',
+          symbols: 'AAPL,MSFT,GOOGL'
+        };
+        break;
+      case 'newsData':
+        newNodeData = { 
+          label: 'News Data',
+          sources: 'all',
+          keywords: 'finance,markets',
+          modelType: 'alphaU-sentiment-v2'
+        };
+        break;
       case 'sentimentAnalysis':
         newNodeData = { 
           label: 'Sentiment Analysis',
@@ -145,6 +167,13 @@ export const AgentProvider = ({ children }: { children: React.ReactNode }) => {
           label: 'Financial Analysis',
           indicators: 'all',
           modelType: 'gpt-4o'
+        };
+        break;
+      case 'technicalAnalysis':
+        newNodeData = { 
+          label: 'Technical Analysis',
+          indicators: 'MA,RSI,MACD',
+          timeframe: 'daily'
         };
         break;
       case 'portfolioOptimization':
@@ -166,6 +195,14 @@ export const AgentProvider = ({ children }: { children: React.ReactNode }) => {
           label: 'Alpha Scoring',
           weightings: 'default',
           modelType: 'alphaU-financial-v3'
+        };
+        break;
+      case 'alertNode':
+        newNodeData = { 
+          label: 'Alert',
+          condition: 'price > threshold',
+          channel: 'email',
+          recipients: 'user@example.com'
         };
         break;
       case 'output':
@@ -198,7 +235,12 @@ export const AgentProvider = ({ children }: { children: React.ReactNode }) => {
     
     setNodes((nds) => [...nds, newNode]);
     console.log('Added new node:', newNode);
-  }, []);
+    
+    toast({
+      title: "Node Added",
+      description: `Added ${newNode.data.label} node to workflow`,
+    });
+  }, [toast]);
 
   const saveWorkflow = useCallback(() => {
     // In a real app, this would save to a backend
@@ -213,7 +255,7 @@ export const AgentProvider = ({ children }: { children: React.ReactNode }) => {
       title: "Workflow Saved",
       description: `${workflowName} has been saved successfully`,
     });
-  }, [workflowName, nodes, edges]);
+  }, [workflowName, nodes, edges, toast]);
 
   const runWorkflow = useCallback(() => {
     // In a real app, this would trigger the workflow execution
@@ -268,7 +310,7 @@ export const AgentProvider = ({ children }: { children: React.ReactNode }) => {
         });
       }, 1000);
     }
-  }, [workflowName, nodes, edges]);
+  }, [workflowName, nodes, edges, toast]);
 
   return (
     <AgentContext.Provider

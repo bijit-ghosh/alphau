@@ -1,3 +1,4 @@
+
 import React, { useCallback, useRef, useEffect } from 'react';
 import {
   ReactFlow,
@@ -9,13 +10,13 @@ import {
   ReactFlowProvider,
   Node,
   Edge,
-  XYPosition
+  XYPosition,
+  Connection
 } from '@xyflow/react';
 import { useAgent } from './AgentContext';
 import { nodeTypes, edgeTypes, ConnectionLine } from './nodes';
 import { useToast } from '@/hooks/use-toast';
-import { PlusIcon, ZapIcon } from 'lucide-react';
-import { MarketplacePanel } from './MarketplacePanel';
+import { ZapIcon, Move } from 'lucide-react';
 
 import '@xyflow/react/dist/style.css';
 
@@ -96,6 +97,34 @@ function AgentWorkflowContent() {
     });
   }, [runWorkflow, toast]);
 
+  const handleConnectionStart = useCallback(() => {
+    // Visual feedback when starting a connection
+    document.body.classList.add('connecting');
+  }, []);
+
+  const handleConnectionEnd = useCallback(() => {
+    // Remove visual feedback when connection ends
+    document.body.classList.remove('connecting');
+  }, []);
+
+  const handleConnectStart = useCallback((e: React.MouseEvent, { nodeId, handleType }: { nodeId: string, handleType: string }) => {
+    console.log('Connection started from:', nodeId, handleType);
+  }, []);
+
+  const handleConnectStop = useCallback((e: MouseEvent) => {
+    console.log('Connection stopped');
+  }, []);
+
+  const handleConnect = useCallback((params: Connection) => {
+    console.log('Connection created:', params);
+    onConnect(params);
+    
+    toast({
+      title: "Connection Created",
+      description: `Connected node ${params.source} to ${params.target}`,
+    });
+  }, [onConnect, toast]);
+
   return (
     <div className="flex-1 h-full bg-gradient-to-br from-alpha-darknavy to-black" ref={reactFlowWrapper}>
       <ReactFlow
@@ -103,7 +132,9 @@ function AgentWorkflowContent() {
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
+        onConnect={handleConnect}
+        onConnectStart={handleConnectStart}
+        onConnectStop={handleConnectStop}
         onNodeClick={onNodeClick}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
@@ -112,6 +143,8 @@ function AgentWorkflowContent() {
         connectionLineComponent={ConnectionLine}
         onDrop={onDrop}
         onDragOver={onDragOver}
+        onConnectionStart={handleConnectionStart}
+        onConnectionEnd={handleConnectionEnd}
         minZoom={0.2}
         maxZoom={1.5}
         defaultEdgeOptions={{
@@ -136,8 +169,9 @@ function AgentWorkflowContent() {
         />
         <Panel position="top-right" className="mr-20">
           <div className="flex space-x-2">
-            <div className="text-xs text-white/50 bg-alpha-navy/50 rounded p-1 border border-white/10">
-              Drag nodes from sidebar to create your workflow
+            <div className="flex items-center text-xs text-white/50 bg-alpha-navy/50 rounded p-1 border border-white/10">
+              <Move size={12} className="mr-1" />
+              <span>Drag nodes from sidebar and connect them to create workflow</span>
             </div>
             <button 
               onClick={handleRunTest}
@@ -149,7 +183,6 @@ function AgentWorkflowContent() {
           </div>
         </Panel>
       </ReactFlow>
-      <MarketplacePanel />
     </div>
   );
 }
