@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Shield, Lock, Shield2, Server } from "lucide-react";
+import { Shield, Lock, ShieldCheck, Server } from "lucide-react";
 import { motion } from "framer-motion";
 import { GlassCard } from "./ui/GlassCard";
 
@@ -13,7 +13,7 @@ export function EnterpriseSecuritySection() {
     },
     {
       title: "SOC2 II",
-      icon: <Shield2 className="h-8 w-8 text-white" />,
+      icon: <Shield className="h-8 w-8 text-white" />,
       description: "Advanced compliance with Service Organization Control 2 Type II certification"
     },
     {
