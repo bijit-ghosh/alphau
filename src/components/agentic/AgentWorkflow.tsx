@@ -111,10 +111,6 @@ function AgentWorkflowContent() {
     console.log('Connection started from:', nodeId, handleType);
   }, []);
 
-  const handleConnectStop = useCallback((e: MouseEvent) => {
-    console.log('Connection stopped');
-  }, []);
-
   const handleConnect = useCallback((params: Connection) => {
     console.log('Connection created:', params);
     onConnect(params);
@@ -134,7 +130,6 @@ function AgentWorkflowContent() {
         onEdgesChange={onEdgesChange}
         onConnect={handleConnect}
         onConnectStart={handleConnectStart}
-        onConnectStop={handleConnectStop}
         onNodeClick={onNodeClick}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
