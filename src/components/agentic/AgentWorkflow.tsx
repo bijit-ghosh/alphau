@@ -1,4 +1,3 @@
-
 import React, { useCallback, useRef, useEffect } from 'react';
 import {
   ReactFlow,
@@ -100,19 +99,13 @@ function AgentWorkflowContent() {
     });
   }, [runWorkflow, toast]);
 
-  const handleConnectionStart = useCallback(() => {
-    // Visual feedback when starting a connection
+  const handleConnectionStart: OnConnectStart = useCallback((_, { nodeId, handleType }) => {
+    console.log('Connection started from:', nodeId, handleType);
     document.body.classList.add('connecting');
   }, []);
 
-  const handleConnectionEnd = useCallback(() => {
-    // Remove visual feedback when connection ends
+  const handleConnectEnd = useCallback(() => {
     document.body.classList.remove('connecting');
-  }, []);
-
-  // Fixed type definition for onConnectStart handler
-  const handleConnectStart: OnConnectStart = useCallback((_, { nodeId, handleType }) => {
-    console.log('Connection started from:', nodeId, handleType);
   }, []);
 
   const handleConnect = useCallback((params: Connection) => {
@@ -135,6 +128,7 @@ function AgentWorkflowContent() {
         onEdgesChange={onEdgesChange}
         onConnect={handleConnect}
         onConnectStart={handleConnectStart}
+        onConnectEnd={handleConnectEnd}
         onNodeClick={onNodeClick}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
@@ -143,8 +137,6 @@ function AgentWorkflowContent() {
         connectionLineComponent={ConnectionLine}
         onDrop={onDrop}
         onDragOver={onDragOver}
-        onConnectStart={handleConnectionStart}
-        onConnectEnd={handleConnectionEnd}
         minZoom={0.2}
         maxZoom={1.5}
         defaultEdgeOptions={{
