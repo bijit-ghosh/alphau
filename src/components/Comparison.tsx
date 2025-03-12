@@ -42,10 +42,10 @@ export function Comparison() {
   const pieData = getPieChartData();
 
   return (
-    <div id="comparison" className="py-20 px-4 md:px-8 bg-gradient-to-b from-alpha-navy/5 to-alpha-navy/20 relative overflow-hidden">
+    <div id="comparison" className="py-20 px-4 md:px-8 bg-alpha-darknavy relative overflow-hidden">
       {/* Background decoration elements */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-alpha-blue/5 rounded-full filter blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-alpha-purple/5 rounded-full filter blur-3xl translate-x-1/2 translate-y-1/2"></div>
+      <div className="absolute top-0 left-0 w-96 h-96 bg-alpha-blue/10 rounded-full filter blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-alpha-purple/10 rounded-full filter blur-3xl translate-x-1/2 translate-y-1/2"></div>
       
       <div className="max-w-4xl mx-auto relative z-10">
         <motion.div 
@@ -96,3 +96,4 @@ export function Comparison() {
     </div>
   );
 }
+
