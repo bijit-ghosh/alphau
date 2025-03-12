@@ -1,4 +1,3 @@
-
 import React, { useCallback, useRef, useEffect } from 'react';
 import {
   ReactFlow,
@@ -11,7 +10,8 @@ import {
   Node,
   Edge,
   XYPosition,
-  Connection
+  Connection,
+  OnConnectStart
 } from '@xyflow/react';
 import { useAgent } from './AgentContext';
 import { nodeTypes, edgeTypes, ConnectionLine } from './nodes';
@@ -97,17 +97,7 @@ function AgentWorkflowContent() {
     });
   }, [runWorkflow, toast]);
 
-  const handleConnectionStart = useCallback(() => {
-    // Visual feedback when starting a connection
-    document.body.classList.add('connecting');
-  }, []);
-
-  const handleConnectionEnd = useCallback(() => {
-    // Remove visual feedback when connection ends
-    document.body.classList.remove('connecting');
-  }, []);
-
-  const handleConnectStart = useCallback((e: React.MouseEvent, { nodeId, handleType }: { nodeId: string, handleType: string }) => {
+  const handleConnectionStart: OnConnectStart = useCallback((event, { nodeId, handleType }) => {
     console.log('Connection started from:', nodeId, handleType);
   }, []);
 
