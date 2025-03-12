@@ -26,7 +26,7 @@ const Index = () => {
       {/* Adding a quick navigation section to help with testing */}
       <div className="py-8 bg-alpha-darknavy">
         <div className="container mx-auto text-center">
-          <h2 className="text-2xl font-bold text-white mb-4">Test Navigation</h2>
+          <h2 className="text-2xl font-bold text-white mb-4">Quick Access</h2>
           <div className="flex justify-center gap-4">
             <Link 
               to="/dashboard" 
