@@ -1,3 +1,4 @@
+
 import React, { useCallback, useRef, useEffect } from 'react';
 import {
   ReactFlow,
@@ -119,7 +120,7 @@ function AgentWorkflowContent() {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={handleConnect}
-        onConnectStart={handleConnectStart}
+        onConnectStart={handleConnectionStart}
         onNodeClick={onNodeClick}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
@@ -128,8 +129,6 @@ function AgentWorkflowContent() {
         connectionLineComponent={ConnectionLine}
         onDrop={onDrop}
         onDragOver={onDragOver}
-        onConnectionStart={handleConnectionStart}
-        onConnectionEnd={handleConnectionEnd}
         minZoom={0.2}
         maxZoom={1.5}
         defaultEdgeOptions={{
