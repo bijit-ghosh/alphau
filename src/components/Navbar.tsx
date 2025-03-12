@@ -99,15 +99,15 @@ export function Navbar() {
               <DialogTrigger asChild>
                 <Button 
                   variant="outline" 
-                  className="hidden md:inline-flex border-alpha-yellow/30 text-white hover:bg-alpha-yellow/10"
+                  className="hidden md:inline-flex border-alpha-purple/30 text-white hover:bg-alpha-purple/10"
                 >
                   <Briefcase className="mr-1 h-4 w-4" /> Careers
                 </Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-md bg-alpha-darknavy border border-alpha-yellow/20">
+              <DialogContent className="sm:max-w-md bg-alpha-darknavy border border-alpha-purple/20">
                 <DialogHeader>
                   <DialogTitle className="text-xl font-bold text-white">
-                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-alpha-yellow to-alpha-blue">
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#FF3BFF] to-[#00E7FF]">
                       Join Our Team
                     </span>
                   </DialogTitle>
@@ -121,7 +121,7 @@ export function Navbar() {
                       key={index} 
                       className="p-4 border border-white/10 rounded-lg hover:bg-white/5 transition-colors cursor-pointer group"
                     >
-                      <h3 className="font-semibold text-white group-hover:text-alpha-yellow transition-colors">{position.title}</h3>
+                      <h3 className="font-semibold text-white group-hover:text-[#FF3BFF] transition-colors">{position.title}</h3>
                       <div className="flex justify-between mt-2 text-sm">
                         <span className="text-gray-400">{position.department}</span>
                         <span className="text-gray-400">{position.location}</span>
@@ -129,7 +129,7 @@ export function Navbar() {
                       <div className="mt-3 pt-3 border-t border-white/5 flex justify-end">
                         <Button 
                           size="sm" 
-                          className="bg-gradient-to-r from-alpha-yellow to-alpha-blue hover:opacity-90 transition-opacity text-xs"
+                          className="bg-gradient-to-r from-[#FF3BFF] to-[#00E7FF] hover:opacity-90 transition-opacity text-xs"
                           onClick={() => window.location.href = 'mailto:careers@alphau.ai?subject=Application for ' + position.title}
                         >
                           Apply Now
@@ -142,7 +142,7 @@ export function Navbar() {
                     <p className="text-sm text-gray-400 mb-4">Don't see a position that fits your skills?</p>
                     <Button 
                       variant="outline"
-                      className="w-full border-alpha-yellow/30 text-white hover:bg-alpha-yellow/10"
+                      className="w-full border-alpha-purple/30 text-white hover:bg-alpha-purple/10"
                       onClick={() => window.location.href = 'mailto:careers@alphau.ai?subject=General Application Inquiry'}
                     >
                       Send Open Application
@@ -176,7 +176,7 @@ export function Navbar() {
                 <div className="space-y-4 pt-4">
                   <div className="flex items-start space-x-3">
                     <div className="p-2 rounded-full bg-alpha-purple/10">
-                      <MapPin className="h-5 w-5 text-alpha-purple" />
+                      <MapPin className="h-5 w-5 text-[#FF3BFF]" />
                     </div>
                     <div>
                       <h4 className="font-medium text-white">Address</h4>
@@ -186,7 +186,7 @@ export function Navbar() {
                   
                   <div className="flex items-start space-x-3">
                     <div className="p-2 rounded-full bg-alpha-blue/10">
-                      <Phone className="h-5 w-5 text-alpha-blue" />
+                      <Phone className="h-5 w-5 text-[#00E7FF]" />
                     </div>
                     <div>
                       <h4 className="font-medium text-white">Phone</h4>
@@ -196,7 +196,7 @@ export function Navbar() {
                   
                   <div className="flex items-start space-x-3">
                     <div className="p-2 rounded-full bg-gradient-to-r from-alpha-blue/10 to-alpha-purple/10">
-                      <Mail className="h-5 w-5 text-transparent bg-clip-text bg-gradient-to-r from-alpha-blue to-alpha-purple" />
+                      <Mail className="h-5 w-5 text-transparent bg-clip-text bg-gradient-to-r from-[#00E7FF] to-[#FF3BFF]" />
                     </div>
                     <div>
                       <h4 className="font-medium text-white">Email</h4>
@@ -206,7 +206,7 @@ export function Navbar() {
                   
                   <div className="pt-4">
                     <Button 
-                      className="w-full bg-gradient-to-r from-alpha-blue to-alpha-purple hover:opacity-90 transition-opacity"
+                      className="w-full bg-gradient-to-r from-[#00E7FF] to-[#FF3BFF] hover:opacity-90 transition-opacity"
                       onClick={() => window.location.href = 'mailto:info@alphau.ai'}
                     >
                       Email Us Now
@@ -265,7 +265,7 @@ export function Navbar() {
             {/* Careers button for mobile */}
             <Button
               variant="outline"
-              className="w-full border-alpha-yellow/30 text-white hover:bg-alpha-yellow/10 justify-start"
+              className="w-full border-alpha-purple/30 text-white hover:bg-alpha-purple/10 justify-start"
               onClick={() => {
                 setCareersOpen(true);
                 setMobileMenuOpen(false);
