@@ -53,7 +53,7 @@ export function Features() {
       color: "from-blue-400 to-alpha-blue",
     },
     {
-      title: "70% Faster Processing",
+      title: "Faster Processing",
       description: "Automate deal execution with AI to dramatically reduce processing time and increase efficiency.",
       icon: <Clock className="h-6 w-6" />,
       color: "from-green-400 to-alpha-green",
