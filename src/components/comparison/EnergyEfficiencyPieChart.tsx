@@ -59,7 +59,7 @@ export function EnergyEfficiencyPieChart({ data }: EnergyEfficiencyPieChartProps
     <GlassCard className="p-6 animate-on-scroll" highlightTop highlightColor="from-alpha-yellow to-alpha-purple">
       <div className="flex items-center mb-4">
         <Zap className="w-5 h-5 mr-2 text-alpha-yellow" />
-        <h3 className="text-xl font-semibold text-white">Resource Optimization</h3>
+        <h3 className="text-xl font-semibold text-white">Energy Efficiency</h3>
       </div>
       <p className="text-gray-300 mb-6 mx-auto text-center max-w-[90%]">
         Resource optimization by implementation area
