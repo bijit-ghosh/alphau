@@ -2,15 +2,20 @@ import { useState, useEffect } from "react";
 import { Menu, X, BrainCog, LayoutDashboard, Phone, Mail, MapPin, Briefcase } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { SignedIn, SignedOut, UserButton, useClerk } from "@clerk/clerk-react";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
   const [careersOpen, setCareersOpen] = useState(false);
   const isMobile = useIsMobile();
+  const { signOut } = useClerk();
+  const navigate = useNavigate();
+  
   useEffect(() => {
     const handleScroll = () => {
       const isScrolled = window.scrollY > 10;
@@ -23,6 +28,7 @@ export function Navbar() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [scrolled]);
+  
   const navLinks = [{
     name: "Home",
     href: "#home"
@@ -40,6 +46,7 @@ export function Navbar() {
     href: "/dashboard",
     isExternal: true
   }];
+  
   const openPositions = [{
     title: "Gen AI Engineer",
     department: "Engineering",
@@ -53,6 +60,12 @@ export function Navbar() {
     department: "Engineering",
     location: "Jersey City, NJ / Remote"
   }];
+  
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+  };
+  
   return <nav className={cn("fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-3 px-4 md:px-8", scrolled ? "bg-alpha-darknavy/80 backdrop-blur-lg shadow-md" : "bg-transparent")}>
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <a href="#" className="flex items-center space-x-2 group">
@@ -170,11 +183,30 @@ export function Navbar() {
               </DialogContent>
             </Dialog>
             
-            <Link to="/login">
-              <Button className="hidden md:inline-flex h-10 px-6 py-2 rounded-full bg-gradient-to-r from-alpha-blue to-alpha-purple text-white font-medium text-sm transition-all hover:shadow-md hover:shadow-alpha-purple/20 hover:brightness-110 hover:scale-105">
-                Sign In
-              </Button>
-            </Link>
+            <SignedIn>
+              <div className="flex items-center space-x-4">
+                <UserButton 
+                  appearance={{
+                    elements: {
+                      userButtonAvatarBox: "border-2 border-white/20 hover:border-white/40 transition-colors",
+                      userButtonPopoverCard: "bg-alpha-darknavy border border-alpha-purple/20",
+                      userButtonPopoverActionButton: "text-white hover:bg-white/10",
+                      userButtonPopoverActionButtonText: "text-white",
+                      userButtonPopoverFooter: "border-t border-white/10"
+                    }
+                  }}
+                  afterSignOutUrl="/"
+                />
+              </div>
+            </SignedIn>
+            
+            <SignedOut>
+              <Link to="/sign-in">
+                <Button className="hidden md:inline-flex h-10 px-6 py-2 rounded-full bg-gradient-to-r from-alpha-blue to-alpha-purple text-white font-medium text-sm transition-all hover:shadow-md hover:shadow-alpha-purple/20 hover:brightness-110 hover:scale-105">
+                  Sign In
+                </Button>
+              </Link>
+            </SignedOut>
           </div>}
       </div>
       
@@ -206,11 +238,23 @@ export function Navbar() {
               </DialogTrigger>
             </Dialog>
             
-            <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
-              <Button className="w-full bg-gradient-to-r from-alpha-blue to-alpha-purple text-white hover:opacity-90 transition-opacity">
-                Sign In
+            <SignedIn>
+              <Button 
+                variant="outline" 
+                className="w-full border-alpha-purple/30 text-white hover:bg-alpha-purple/10 justify-start"
+                onClick={handleSignOut}
+              >
+                Sign Out
               </Button>
-            </Link>
+            </SignedIn>
+            
+            <SignedOut>
+              <Link to="/sign-in" onClick={() => setMobileMenuOpen(false)}>
+                <Button className="w-full bg-gradient-to-r from-alpha-blue to-alpha-purple text-white hover:opacity-90 transition-opacity">
+                  Sign In
+                </Button>
+              </Link>
+            </SignedOut>
           </div>
         </div>}
     </nav>;
