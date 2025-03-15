@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import { useAgent } from './AgentContext';
 import { ModelType } from './AgentContext';
-import { Brain, Cpu, Gauge } from 'lucide-react';
+import { Brain, Cpu, Gauge, Target, ShieldCheck, Calculator, BarChart4, ExternalLink, FileText, Workflow } from 'lucide-react';
 
 interface NodeInspectorProps {
   node: any;
@@ -30,7 +30,10 @@ export function NodeInspector({ node }: NodeInspectorProps) {
   // Helper to check if node type uses AI models
   const usesAIModel = (nodeType: string): boolean => {
     return ['financialAnalysis', 'sentimentAnalysis', 'portfolioOptimization', 
-           'riskAssessment', 'alphaScoring', 'marketData'].includes(nodeType);
+           'riskAssessment', 'alphaScoring', 'marketData', 'investmentSourcing',
+           'dealScreening', 'dueDiligence', 'complianceRisk', 'valuationModeling',
+           'scenarioAnalysis', 'portfolioManagement', 'performanceAnalysis',
+           'exitStrategy', 'liquidityAnalysis', 'investmentOrchestration'].includes(nodeType);
   };
 
   const handleLabelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,6 +44,33 @@ export function NodeInspector({ node }: NodeInspectorProps) {
 
   const handleSelectChange = (key: string, value: string) => {
     updateNodeData(node.id, { [key]: value });
+  };
+
+  // Get icon based on node type
+  const getNodeIcon = () => {
+    switch (node.type) {
+      case 'investmentSourcing':
+      case 'dealScreening':
+        return <Target className="h-3 w-3" />;
+      case 'dueDiligence':
+      case 'complianceRisk':
+        return <ShieldCheck className="h-3 w-3" />;
+      case 'valuationModeling':
+      case 'scenarioAnalysis':
+        return <Calculator className="h-3 w-3" />;
+      case 'portfolioManagement':
+      case 'performanceAnalysis':
+        return <BarChart4 className="h-3 w-3" />;
+      case 'exitStrategy':
+      case 'liquidityAnalysis':
+        return <ExternalLink className="h-3 w-3" />;
+      case 'investmentReport':
+        return <FileText className="h-3 w-3" />;
+      case 'investmentOrchestration':
+        return <Workflow className="h-3 w-3" />;
+      default:
+        return <Brain className="h-3 w-3" />;
+    }
   };
 
   return (
@@ -94,137 +124,200 @@ export function NodeInspector({ node }: NodeInspectorProps) {
           </div>
         )}
         
-        {node.type === 'trigger' && (
+        {/* Investment Sourcing settings */}
+        {node.type === 'investmentSourcing' && (
           <>
             <div className="space-y-2">
-              <Label htmlFor="schedule" className="text-xs text-white/80">Schedule</Label>
+              <Label htmlFor="data-sources" className="text-xs text-white/80">Data Sources</Label>
               <Select 
-                defaultValue={node.data.schedule || 'daily'} 
-                onValueChange={(value) => handleSelectChange('schedule', value)}
+                defaultValue={node.data.dataSources || 'all'} 
+                onValueChange={(value) => handleSelectChange('dataSources', value)}
               >
-                <SelectTrigger id="schedule" className="h-8 text-sm bg-alpha-darknavy border-white/10 text-white">
-                  <SelectValue placeholder="Select schedule" />
-                </SelectTrigger>
-                <SelectContent className="bg-alpha-darknavy border-white/10 text-white">
-                  <SelectItem value="hourly">Hourly</SelectItem>
-                  <SelectItem value="daily">Daily</SelectItem>
-                  <SelectItem value="weekly">Weekly</SelectItem>
-                  <SelectItem value="monthly">Monthly</SelectItem>
-                  <SelectItem value="custom">Custom Cron</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="trigger-time" className="text-xs text-white/80">Trigger Time</Label>
-              <Input 
-                id="trigger-time" 
-                defaultValue={node.data.time || '09:30'} 
-                onChange={(e) => handleSelectChange('time', e.target.value)}
-                className="h-8 text-sm bg-alpha-darknavy border-white/10 text-white"
-              />
-            </div>
-          </>
-        )}
-        
-        {node.type === 'marketData' && (
-          <>
-            <div className="space-y-2">
-              <Label htmlFor="data-source" className="text-xs text-white/80">Data Source</Label>
-              <Select 
-                defaultValue={node.data.source || 'alphaUInternal'} 
-                onValueChange={(value) => handleSelectChange('source', value)}
-              >
-                <SelectTrigger id="data-source" className="h-8 text-sm bg-alpha-darknavy border-white/10 text-white">
-                  <SelectValue placeholder="Select data source" />
-                </SelectTrigger>
-                <SelectContent className="bg-alpha-darknavy border-white/10 text-white">
-                  <SelectItem value="alphaUInternal">AlphaU Internal Data</SelectItem>
-                  <SelectItem value="bloomberg">Bloomberg</SelectItem>
-                  <SelectItem value="reuters">Reuters</SelectItem>
-                  <SelectItem value="alphavantage">Alpha Vantage</SelectItem>
-                  <SelectItem value="yfinance">Yahoo Finance</SelectItem>
-                  <SelectItem value="iex">IEX Cloud</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="data-symbols" className="text-xs text-white/80">Symbols (comma separated)</Label>
-              <Input 
-                id="data-symbols" 
-                defaultValue={node.data.symbols || 'AAPL,MSFT,GOOGL'} 
-                onChange={(e) => handleSelectChange('symbols', e.target.value)}
-                className="h-8 text-sm bg-alpha-darknavy border-white/10 text-white"
-              />
-            </div>
-          </>
-        )}
-        
-        {node.type === 'sentimentAnalysis' && (
-          <>
-            <div className="space-y-2">
-              <Label htmlFor="sentiment-sources" className="text-xs text-white/80">Data Sources</Label>
-              <Select 
-                defaultValue={node.data.sentimentSource || 'all'} 
-                onValueChange={(value) => handleSelectChange('sentimentSource', value)}
-              >
-                <SelectTrigger id="sentiment-sources" className="h-8 text-sm bg-alpha-darknavy border-white/10 text-white">
-                  <SelectValue placeholder="Select sources" />
+                <SelectTrigger id="data-sources" className="h-8 text-sm bg-alpha-darknavy border-white/10 text-white">
+                  <SelectValue placeholder="Select data sources" />
                 </SelectTrigger>
                 <SelectContent className="bg-alpha-darknavy border-white/10 text-white">
                   <SelectItem value="all">All Sources</SelectItem>
-                  <SelectItem value="news">Financial News</SelectItem>
-                  <SelectItem value="social">Social Media</SelectItem>
-                  <SelectItem value="earnings">Earnings Calls</SelectItem>
-                  <SelectItem value="sec">SEC Filings</SelectItem>
-                  <SelectItem value="reports">Analyst Reports</SelectItem>
+                  <SelectItem value="financial">Financial Data</SelectItem>
+                  <SelectItem value="alternative">Alternative Data</SelectItem>
+                  <SelectItem value="proprietary">Proprietary Database</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="target-sectors" className="text-xs text-white/80">Target Sectors</Label>
+              <Input 
+                id="target-sectors" 
+                defaultValue={node.data.targetSectors || 'technology,healthcare,finance'} 
+                onChange={(e) => handleSelectChange('targetSectors', e.target.value)}
+                className="h-8 text-sm bg-alpha-darknavy border-white/10 text-white"
+              />
+            </div>
+          </>
+        )}
+        
+        {/* Due Diligence settings */}
+        {node.type === 'dueDiligence' && (
+          <>
+            <div className="space-y-2">
+              <Label htmlFor="diligence-areas" className="text-xs text-white/80">Diligence Areas</Label>
+              <Input 
+                id="diligence-areas" 
+                defaultValue={node.data.diligenceAreas || 'legal,financial,operational'} 
+                onChange={(e) => handleSelectChange('diligenceAreas', e.target.value)}
+                className="h-8 text-sm bg-alpha-darknavy border-white/10 text-white"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="diligence-depth" className="text-xs text-white/80">Diligence Depth</Label>
+              <Select 
+                defaultValue={node.data.depth || 'comprehensive'} 
+                onValueChange={(value) => handleSelectChange('depth', value)}
+              >
+                <SelectTrigger id="diligence-depth" className="h-8 text-sm bg-alpha-darknavy border-white/10 text-white">
+                  <SelectValue placeholder="Select depth" />
+                </SelectTrigger>
+                <SelectContent className="bg-alpha-darknavy border-white/10 text-white">
+                  <SelectItem value="basic">Basic</SelectItem>
+                  <SelectItem value="standard">Standard</SelectItem>
+                  <SelectItem value="comprehensive">Comprehensive</SelectItem>
+                  <SelectItem value="forensic">Forensic</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </>
         )}
         
-        {node.type === 'output' && (
+        {/* Valuation Modeling settings */}
+        {node.type === 'valuationModeling' && (
           <>
             <div className="space-y-2">
-              <Label htmlFor="output-type" className="text-xs text-white/80">Output Type</Label>
+              <Label htmlFor="valuation-methods" className="text-xs text-white/80">Valuation Methods</Label>
+              <Input 
+                id="valuation-methods" 
+                defaultValue={node.data.valuationMethods || 'DCF,comparables,multiples'} 
+                onChange={(e) => handleSelectChange('valuationMethods', e.target.value)}
+                className="h-8 text-sm bg-alpha-darknavy border-white/10 text-white"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="discount-rate" className="text-xs text-white/80">Discount Rate</Label>
+              <Input 
+                id="discount-rate" 
+                defaultValue={node.data.discountRate || '10%'} 
+                onChange={(e) => handleSelectChange('discountRate', e.target.value)}
+                className="h-8 text-sm bg-alpha-darknavy border-white/10 text-white"
+              />
+            </div>
+          </>
+        )}
+        
+        {/* Portfolio Management settings */}
+        {node.type === 'portfolioManagement' && (
+          <>
+            <div className="space-y-2">
+              <Label htmlFor="metrics" className="text-xs text-white/80">Key Metrics</Label>
+              <Input 
+                id="metrics" 
+                defaultValue={node.data.metrics || 'revenue,profitability,growth'} 
+                onChange={(e) => handleSelectChange('metrics', e.target.value)}
+                className="h-8 text-sm bg-alpha-darknavy border-white/10 text-white"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="frequency" className="text-xs text-white/80">Update Frequency</Label>
               <Select 
-                defaultValue={node.data.outputType || 'dashboard'} 
-                onValueChange={(value) => handleSelectChange('outputType', value)}
+                defaultValue={node.data.frequency || 'monthly'} 
+                onValueChange={(value) => handleSelectChange('frequency', value)}
               >
-                <SelectTrigger id="output-type" className="h-8 text-sm bg-alpha-darknavy border-white/10 text-white">
-                  <SelectValue placeholder="Select output type" />
+                <SelectTrigger id="frequency" className="h-8 text-sm bg-alpha-darknavy border-white/10 text-white">
+                  <SelectValue placeholder="Select frequency" />
                 </SelectTrigger>
                 <SelectContent className="bg-alpha-darknavy border-white/10 text-white">
-                  <SelectItem value="dashboard">Dashboard</SelectItem>
-                  <SelectItem value="email">Email Report</SelectItem>
-                  <SelectItem value="api">API Endpoint</SelectItem>
-                  <SelectItem value="database">Database</SelectItem>
-                  <SelectItem value="webhook">Webhook</SelectItem>
-                  <SelectItem value="slack">Slack Notification</SelectItem>
+                  <SelectItem value="daily">Daily</SelectItem>
+                  <SelectItem value="weekly">Weekly</SelectItem>
+                  <SelectItem value="monthly">Monthly</SelectItem>
+                  <SelectItem value="quarterly">Quarterly</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </>
+        )}
+        
+        {/* Exit Strategy settings */}
+        {node.type === 'exitStrategy' && (
+          <>
+            <div className="space-y-2">
+              <Label htmlFor="exit-options" className="text-xs text-white/80">Exit Options</Label>
+              <Input 
+                id="exit-options" 
+                defaultValue={node.data.exitOptions || 'IPO,M&A,secondary'} 
+                onChange={(e) => handleSelectChange('exitOptions', e.target.value)}
+                className="h-8 text-sm bg-alpha-darknavy border-white/10 text-white"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="timing-analysis" className="text-xs text-white/80">Include Timing Analysis</Label>
+              <Select 
+                defaultValue={node.data.timingAnalysis || 'true'} 
+                onValueChange={(value) => handleSelectChange('timingAnalysis', value)}
+              >
+                <SelectTrigger id="timing-analysis" className="h-8 text-sm bg-alpha-darknavy border-white/10 text-white">
+                  <SelectValue placeholder="Select option" />
+                </SelectTrigger>
+                <SelectContent className="bg-alpha-darknavy border-white/10 text-white">
+                  <SelectItem value="true">Yes</SelectItem>
+                  <SelectItem value="false">No</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </>
+        )}
+        
+        {/* Investment Report settings */}
+        {node.type === 'investmentReport' && (
+          <>
+            <div className="space-y-2">
+              <Label htmlFor="report-type" className="text-xs text-white/80">Report Type</Label>
+              <Select 
+                defaultValue={node.data.reportType || 'comprehensive'} 
+                onValueChange={(value) => handleSelectChange('reportType', value)}
+              >
+                <SelectTrigger id="report-type" className="h-8 text-sm bg-alpha-darknavy border-white/10 text-white">
+                  <SelectValue placeholder="Select report type" />
+                </SelectTrigger>
+                <SelectContent className="bg-alpha-darknavy border-white/10 text-white">
+                  <SelectItem value="summary">Summary</SelectItem>
+                  <SelectItem value="standard">Standard</SelectItem>
+                  <SelectItem value="comprehensive">Comprehensive</SelectItem>
+                  <SelectItem value="executive">Executive</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="output-format" className="text-xs text-white/80">Format</Label>
-              <Select 
-                defaultValue={node.data.format || 'json'} 
-                onValueChange={(value) => handleSelectChange('format', value)}
-              >
-                <SelectTrigger id="output-format" className="h-8 text-sm bg-alpha-darknavy border-white/10 text-white">
-                  <SelectValue placeholder="Select format" />
-                </SelectTrigger>
-                <SelectContent className="bg-alpha-darknavy border-white/10 text-white">
-                  <SelectItem value="json">JSON</SelectItem>
-                  <SelectItem value="csv">CSV</SelectItem>
-                  <SelectItem value="html">HTML</SelectItem>
-                  <SelectItem value="pdf">PDF</SelectItem>
-                  <SelectItem value="image">Image</SelectItem>
-                  <SelectItem value="markdown">Markdown</SelectItem>
-                </SelectContent>
-              </Select>
+              <Label htmlFor="format" className="text-xs text-white/80">Format</Label>
+              <Input 
+                id="format" 
+                defaultValue={node.data.format || 'pdf,dashboard'} 
+                onChange={(e) => handleSelectChange('format', e.target.value)}
+                className="h-8 text-sm bg-alpha-darknavy border-white/10 text-white"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="recipients" className="text-xs text-white/80">Recipients</Label>
+              <Input 
+                id="recipients" 
+                defaultValue={node.data.recipients || 'investment committee'} 
+                onChange={(e) => handleSelectChange('recipients', e.target.value)}
+                className="h-8 text-sm bg-alpha-darknavy border-white/10 text-white"
+              />
             </div>
           </>
         )}
@@ -242,6 +335,11 @@ export function NodeInspector({ node }: NodeInspectorProps) {
           {node.data.modelType && (
             <p className="flex items-center gap-1 mt-1">
               <Cpu className="h-3 w-3" /> Model: {node.data.modelType}
+            </p>
+          )}
+          {node.type.includes('investment') && (
+            <p className="flex items-center gap-1 mt-1">
+              {getNodeIcon()} Type: Investment Lifecycle Node
             </p>
           )}
         </div>

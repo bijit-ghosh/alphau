@@ -1,4 +1,3 @@
-
 import React, { memo } from 'react';
 import { Handle, Position } from '@xyflow/react';
 import { 
@@ -10,7 +9,19 @@ import {
   Zap, 
   SendToBack, 
   ArrowRight,
-  Bell
+  Bell,
+  Target,
+  ShieldCheck,
+  Calculator,
+  BarChart4,
+  ExternalLink,
+  PieChart,
+  Workflow,
+  Briefcase,
+  AlertTriangle,
+  FileText,
+  CandlestickChart,
+  DollarSign
 } from 'lucide-react';
 
 const handleStyle = { 
@@ -314,6 +325,318 @@ export const AlertNode = memo(({ data }: { data: any }) => (
   </div>
 ));
 
+// Investment Sourcing Node
+export const InvestmentSourcingNode = memo(({ data }: { data: any }) => (
+  <div className={`${nodeBaseStyle} bg-gradient-to-r from-alpha-blue/80 to-alpha-purple/80`}>
+    <div className="flex items-center mb-2">
+      <Target className="w-4 h-4 mr-2" />
+      <div className="font-medium">{data.label || 'Deal Sourcing'}</div>
+    </div>
+    
+    <div className="text-xs text-white/80">
+      <p>Identifies high-potential investment targets</p>
+    </div>
+    
+    <Handle
+      type="source"
+      position={Position.Right}
+      style={handleStyle}
+      id="output"
+    />
+  </div>
+));
+
+// Deal Screening Node
+export const DealScreeningNode = memo(({ data }: { data: any }) => (
+  <div className={`${nodeBaseStyle} bg-gradient-to-r from-alpha-purple/80 to-alpha-blue/80`}>
+    <div className="flex items-center mb-2">
+      <Briefcase className="w-4 h-4 mr-2" />
+      <div className="font-medium">{data.label || 'Deal Screening'}</div>
+    </div>
+    
+    <div className="text-xs text-white/80">
+      <p>Ranks and filters investment opportunities</p>
+    </div>
+    
+    <Handle
+      type="target"
+      position={Position.Left}
+      style={handleStyle}
+      id="input"
+    />
+    <Handle
+      type="source"
+      position={Position.Right}
+      style={handleStyle}
+      id="output"
+    />
+  </div>
+));
+
+// Due Diligence Node
+export const DueDiligenceNode = memo(({ data }: { data: any }) => (
+  <div className={`${nodeBaseStyle} bg-gradient-to-r from-alpha-green/80 to-alpha-blue/80`}>
+    <div className="flex items-center mb-2">
+      <ShieldCheck className="w-4 h-4 mr-2" />
+      <div className="font-medium">{data.label || 'Due Diligence'}</div>
+    </div>
+    
+    <div className="text-xs text-white/80">
+      <p>Comprehensive risk assessment of target</p>
+    </div>
+    
+    <Handle
+      type="target"
+      position={Position.Left}
+      style={handleStyle}
+      id="input"
+    />
+    <Handle
+      type="source"
+      position={Position.Right}
+      style={handleStyle}
+      id="output"
+    />
+  </div>
+));
+
+// Risk Assessment Node
+export const ComplianceRiskNode = memo(({ data }: { data: any }) => (
+  <div className={`${nodeBaseStyle} bg-gradient-to-r from-alpha-yellow/80 to-alpha-red/80`}>
+    <div className="flex items-center mb-2">
+      <AlertTriangle className="w-4 h-4 mr-2" />
+      <div className="font-medium">{data.label || 'Compliance Risk'}</div>
+    </div>
+    
+    <div className="text-xs text-white/80">
+      <p>Identifies regulatory and legal risk factors</p>
+    </div>
+    
+    <Handle
+      type="target"
+      position={Position.Left}
+      style={handleStyle}
+      id="input"
+    />
+    <Handle
+      type="source"
+      position={Position.Right}
+      style={handleStyle}
+      id="output"
+    />
+  </div>
+));
+
+// Valuation Modeling Node
+export const ValuationModelingNode = memo(({ data }: { data: any }) => (
+  <div className={`${nodeBaseStyle} bg-gradient-to-r from-alpha-blue/80 to-alpha-lightblue/80`}>
+    <div className="flex items-center mb-2">
+      <Calculator className="w-4 h-4 mr-2" />
+      <div className="font-medium">{data.label || 'Valuation Modeling'}</div>
+    </div>
+    
+    <div className="text-xs text-white/80">
+      <p>Multi-method financial valuation models</p>
+    </div>
+    
+    <Handle
+      type="target"
+      position={Position.Left}
+      style={handleStyle}
+      id="input"
+    />
+    <Handle
+      type="source"
+      position={Position.Right}
+      style={handleStyle}
+      id="output"
+    />
+  </div>
+));
+
+// Scenario Analysis Node
+export const ScenarioAnalysisNode = memo(({ data }: { data: any }) => (
+  <div className={`${nodeBaseStyle} bg-gradient-to-r from-alpha-lightblue/80 to-alpha-green/80`}>
+    <div className="flex items-center mb-2">
+      <CandlestickChart className="w-4 h-4 mr-2" />
+      <div className="font-medium">{data.label || 'Scenario Analysis'}</div>
+    </div>
+    
+    <div className="text-xs text-white/80">
+      <p>What-if analysis and Monte Carlo simulations</p>
+    </div>
+    
+    <Handle
+      type="target"
+      position={Position.Left}
+      style={handleStyle}
+      id="input"
+    />
+    <Handle
+      type="source"
+      position={Position.Right}
+      style={handleStyle}
+      id="output"
+    />
+  </div>
+));
+
+// Portfolio Management Node
+export const PortfolioManagementNode = memo(({ data }: { data: any }) => (
+  <div className={`${nodeBaseStyle} bg-gradient-to-r from-alpha-blue/80 to-alpha-purple/80`}>
+    <div className="flex items-center mb-2">
+      <BarChart4 className="w-4 h-4 mr-2" />
+      <div className="font-medium">{data.label || 'Portfolio Management'}</div>
+    </div>
+    
+    <div className="text-xs text-white/80">
+      <p>Post-investment performance tracking</p>
+    </div>
+    
+    <Handle
+      type="target"
+      position={Position.Left}
+      style={handleStyle}
+      id="input"
+    />
+    <Handle
+      type="source"
+      position={Position.Right}
+      style={handleStyle}
+      id="output"
+    />
+  </div>
+));
+
+// Performance Analysis Node
+export const PerformanceAnalysisNode = memo(({ data }: { data: any }) => (
+  <div className={`${nodeBaseStyle} bg-gradient-to-r from-alpha-lightblue/80 to-alpha-purple/80`}>
+    <div className="flex items-center mb-2">
+      <PieChart className="w-4 h-4 mr-2" />
+      <div className="font-medium">{data.label || 'Performance Analysis'}</div>
+    </div>
+    
+    <div className="text-xs text-white/80">
+      <p>Analyzes key metrics and KPIs</p>
+    </div>
+    
+    <Handle
+      type="target"
+      position={Position.Left}
+      style={handleStyle}
+      id="input"
+    />
+    <Handle
+      type="source"
+      position={Position.Right}
+      style={handleStyle}
+      id="output"
+    />
+  </div>
+));
+
+// Exit Strategy Node
+export const ExitStrategyNode = memo(({ data }: { data: any }) => (
+  <div className={`${nodeBaseStyle} bg-gradient-to-r from-alpha-purple/80 to-alpha-green/80`}>
+    <div className="flex items-center mb-2">
+      <ExternalLink className="w-4 h-4 mr-2" />
+      <div className="font-medium">{data.label || 'Exit Strategy'}</div>
+    </div>
+    
+    <div className="text-xs text-white/80">
+      <p>Optimizes exit timing and methods</p>
+    </div>
+    
+    <Handle
+      type="target"
+      position={Position.Left}
+      style={handleStyle}
+      id="input"
+    />
+    <Handle
+      type="source"
+      position={Position.Right}
+      style={handleStyle}
+      id="output"
+    />
+  </div>
+));
+
+// Liquidity Analysis Node
+export const LiquidityAnalysisNode = memo(({ data }: { data: any }) => (
+  <div className={`${nodeBaseStyle} bg-gradient-to-r from-alpha-green/80 to-alpha-yellow/80`}>
+    <div className="flex items-center mb-2">
+      <DollarSign className="w-4 h-4 mr-2" />
+      <div className="font-medium">{data.label || 'Liquidity Analysis'}</div>
+    </div>
+    
+    <div className="text-xs text-white/80">
+      <p>Analyzes cash flow and capital reallocation</p>
+    </div>
+    
+    <Handle
+      type="target"
+      position={Position.Left}
+      style={handleStyle}
+      id="input"
+    />
+    <Handle
+      type="source"
+      position={Position.Right}
+      style={handleStyle}
+      id="output"
+    />
+  </div>
+));
+
+// Investment Report Node
+export const InvestmentReportNode = memo(({ data }: { data: any }) => (
+  <div className={`${nodeBaseStyle} bg-gradient-to-r from-[#333] to-[#111]`}>
+    <div className="flex items-center mb-2">
+      <FileText className="w-4 h-4 mr-2" />
+      <div className="font-medium">{data.label || 'Investment Report'}</div>
+    </div>
+    
+    <div className="text-xs text-white/80">
+      <p>Generates comprehensive investment reporting</p>
+    </div>
+    
+    <Handle
+      type="target"
+      position={Position.Left}
+      style={handleStyle}
+      id="input"
+    />
+  </div>
+));
+
+// Orchestration Node
+export const InvestmentOrchestrationNode = memo(({ data }: { data: any }) => (
+  <div className={`${nodeBaseStyle} bg-gradient-to-r from-alpha-blue/90 to-alpha-purple/90`}>
+    <div className="flex items-center mb-2">
+      <Workflow className="w-4 h-4 mr-2" />
+      <div className="font-medium">{data.label || 'Full Lifecycle Orchestration'}</div>
+    </div>
+    
+    <div className="text-xs text-white/80">
+      <p>Orchestrates end-to-end investment workflow</p>
+    </div>
+    
+    <Handle
+      type="target"
+      position={Position.Left}
+      style={handleStyle}
+      id="input"
+    />
+    <Handle
+      type="source"
+      position={Position.Right}
+      style={handleStyle}
+      id="output"
+    />
+  </div>
+));
+
 // Connection Line component for better visual connection
 export const ConnectionLine = ({ fromX, fromY, toX, toY }: any) => {
   return (
@@ -344,6 +667,20 @@ export const nodeTypes = {
   trigger: TriggerNode,
   output: OutputNode,
   alertNode: AlertNode,
+  
+  // Investment lifecycle nodes
+  investmentSourcing: InvestmentSourcingNode,
+  dealScreening: DealScreeningNode,
+  dueDiligence: DueDiligenceNode,
+  complianceRisk: ComplianceRiskNode,
+  valuationModeling: ValuationModelingNode,
+  scenarioAnalysis: ScenarioAnalysisNode,
+  portfolioManagement: PortfolioManagementNode,
+  performanceAnalysis: PerformanceAnalysisNode,
+  exitStrategy: ExitStrategyNode,
+  liquidityAnalysis: LiquidityAnalysisNode,
+  investmentReport: InvestmentReportNode,
+  investmentOrchestration: InvestmentOrchestrationNode
 };
 
 // Define the edge types
