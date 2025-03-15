@@ -1,8 +1,10 @@
 
 import React from 'react';
-import { useUser } from '@clerk/clerk-react';
+import { useUser, SignInButton } from '@clerk/clerk-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { LogIn } from 'lucide-react';
 
 const UserProfile = () => {
   const { user, isLoaded } = useUser();
@@ -12,7 +14,26 @@ const UserProfile = () => {
   }
 
   if (!user) {
-    return <div className="flex justify-center p-4">Not signed in</div>;
+    return (
+      <Card className="w-full max-w-md mx-auto">
+        <CardHeader>
+          <CardTitle className="text-center">Sign In</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="text-center text-muted-foreground">
+            <p>Please sign in to access your profile and dashboard features.</p>
+          </div>
+          <div className="flex justify-center pt-4">
+            <SignInButton mode="modal">
+              <Button className="w-full sm:w-auto flex items-center justify-center gap-2">
+                <LogIn className="w-4 h-4" />
+                <span>Sign In / Sign Up</span>
+              </Button>
+            </SignInButton>
+          </div>
+        </CardContent>
+      </Card>
+    );
   }
 
   return (
