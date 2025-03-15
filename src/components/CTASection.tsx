@@ -1,7 +1,9 @@
 
 import { useState } from "react";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check, LogIn } from "lucide-react";
 import { toast } from "sonner";
+import { SignedIn, SignedOut, SignInButton } from "@clerk/clerk-react";
+import { Button } from "@/components/ui/button";
 
 export function CTASection() {
   const [email, setEmail] = useState("");
@@ -46,6 +48,24 @@ export function CTASection() {
                 </div>
               ))}
             </div>
+
+            {/* Sign-in section, only shown to users who aren't already signed in */}
+            <SignedOut>
+              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-4 mb-8">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-white font-medium">Already a customer?</h3>
+                    <p className="text-gray-300 text-sm">Sign in to access your dashboard</p>
+                  </div>
+                  <SignInButton mode="modal">
+                    <Button className="bg-gradient-to-r from-alpha-blue to-alpha-purple hover:opacity-90 transition-opacity flex items-center gap-2">
+                      <LogIn className="h-4 w-4" />
+                      <span>Sign In</span>
+                    </Button>
+                  </SignInButton>
+                </div>
+              </div>
+            </SignedOut>
           </div>
           
           <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 md:p-8 shadow-glass">
