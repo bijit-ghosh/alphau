@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useCallback } from 'react';
 import { Node, Edge, addEdge, Connection, applyNodeChanges, applyEdgeChanges } from '@xyflow/react';
 import { nodeTypes } from './nodes';
@@ -16,20 +17,7 @@ export type NodeType =
   | 'alphaScoring'
   | 'trigger'
   | 'output'
-  | 'alertNode'
-  // Investment lifecycle nodes
-  | 'investmentSourcing'
-  | 'dealScreening'
-  | 'dueDiligence'
-  | 'complianceRisk'
-  | 'valuationModeling'
-  | 'scenarioAnalysis'
-  | 'portfolioManagement'
-  | 'performanceAnalysis'
-  | 'exitStrategy'
-  | 'liquidityAnalysis'
-  | 'investmentReport'
-  | 'investmentOrchestration';
+  | 'alertNode';
 
 // Model types available for the AI nodes
 export type ModelType =
@@ -43,39 +31,22 @@ export type ModelType =
   | 'alphaU-sentiment-v2'
   | 'alphaU-financial-v3';
 
-// Default nodes for a new workflow with investment lifecycle example
+// Default nodes for a new workflow
 const initialNodes: Node[] = [
   {
     id: 'trigger-1',
     type: 'trigger',
     data: { 
-      label: 'Investment Cycle Trigger',
+      label: 'Market Open Trigger',
       schedule: 'daily',
       time: '09:30',
     },
     position: { x: 250, y: 100 },
   },
-  {
-    id: 'investment-orchestration-1',
-    type: 'investmentOrchestration',
-    data: { 
-      label: 'Investment Lifecycle Orchestration',
-      modelType: 'alphaU-financial-v3'
-    },
-    position: { x: 600, y: 100 },
-  },
 ];
 
-// Default edge connecting the trigger to the orchestration node
-const initialEdges: Edge[] = [
-  {
-    id: 'edge-trigger-orchestration',
-    source: 'trigger-1',
-    target: 'investment-orchestration-1',
-    type: 'custom',
-    animated: true,
-  }
-];
+// Default edges for a new workflow
+const initialEdges: Edge[] = [];
 
 interface AgentContextType {
   nodes: Node[];
@@ -226,11 +197,12 @@ export const AgentProvider = ({ children }: { children: React.ReactNode }) => {
           modelType: 'alphaU-financial-v3'
         };
         break;
-      case 'trigger':
+      case 'alertNode':
         newNodeData = { 
-          label: 'Trigger',
-          schedule: 'daily',
-          time: '09:30'
+          label: 'Alert',
+          condition: 'price > threshold',
+          channel: 'email',
+          recipients: 'user@example.com'
         };
         break;
       case 'output':
@@ -240,108 +212,11 @@ export const AgentProvider = ({ children }: { children: React.ReactNode }) => {
           format: 'json'
         };
         break;
-      case 'alertNode':
+      case 'trigger':
         newNodeData = { 
-          label: 'Alert',
-          condition: 'price > threshold',
-          channel: 'email',
-          recipients: 'user@example.com'
-        };
-        break;
-      case 'investmentSourcing':
-        newNodeData = { 
-          label: 'Deal Sourcing',
-          dataSources: 'all',
-          targetSectors: 'technology,healthcare,finance',
-          modelType: 'alphaU-financial-v3'
-        };
-        break;
-      case 'dealScreening':
-        newNodeData = { 
-          label: 'Deal Screening',
-          screeningCriteria: 'growth,profitability,market',
-          rankingMethod: 'weighted',
-          modelType: 'gpt-4o'
-        };
-        break;
-      case 'dueDiligence':
-        newNodeData = { 
-          label: 'Due Diligence',
-          diligenceAreas: 'legal,financial,operational',
-          depth: 'comprehensive',
-          modelType: 'claude-3-opus'
-        };
-        break;
-      case 'complianceRisk':
-        newNodeData = { 
-          label: 'Compliance Risk',
-          riskTypes: 'regulatory,legal,fraud',
-          jurisdiction: 'global',
-          modelType: 'alphaU-financial-v3'
-        };
-        break;
-      case 'valuationModeling':
-        newNodeData = { 
-          label: 'Valuation Modeling',
-          valuationMethods: 'DCF,comparables,multiples',
-          discountRate: '10%',
-          modelType: 'alphaU-financial-v3'
-        };
-        break;
-      case 'scenarioAnalysis':
-        newNodeData = { 
-          label: 'Scenario Analysis',
-          scenarios: 'base,bull,bear',
-          simulationType: 'Monte Carlo',
-          iterations: '1000',
-          modelType: 'claude-3-opus'
-        };
-        break;
-      case 'portfolioManagement':
-        newNodeData = { 
-          label: 'Portfolio Management',
-          metrics: 'revenue,profitability,growth',
-          frequency: 'monthly',
-          modelType: 'alphaU-financial-v3'
-        };
-        break;
-      case 'performanceAnalysis':
-        newNodeData = { 
-          label: 'Performance Analysis',
-          kpis: 'CAC,LTV,churn,margins',
-          benchmarks: 'industry,historical',
-          modelType: 'gpt-4o'
-        };
-        break;
-      case 'exitStrategy':
-        newNodeData = { 
-          label: 'Exit Strategy',
-          exitOptions: 'IPO,M&A,secondary',
-          timingAnalysis: 'true',
-          modelType: 'alphaU-financial-v3'
-        };
-        break;
-      case 'liquidityAnalysis':
-        newNodeData = { 
-          label: 'Liquidity Analysis',
-          cashFlowModeling: 'true',
-          reallocationStrategy: 'balanced',
-          modelType: 'alphaU-financial-v3'
-        };
-        break;
-      case 'investmentReport':
-        newNodeData = { 
-          label: 'Investment Report',
-          reportType: 'comprehensive',
-          format: 'pdf,dashboard',
-          recipients: 'investment committee'
-        };
-        break;
-      case 'investmentOrchestration':
-        newNodeData = { 
-          label: 'Investment Lifecycle Orchestration',
-          stages: 'all',
-          modelType: 'alphaU-financial-v3'
+          label: 'Trigger',
+          schedule: 'daily',
+          time: '09:30'
         };
         break;
       default:
