@@ -1,10 +1,11 @@
+
 import { useState, useEffect } from "react";
-import { Menu, X, BrainCog, LayoutDashboard, Phone, Mail, MapPin, Briefcase } from "lucide-react";
+import { Menu, X, BrainCog, LayoutDashboard, Phone, Mail, MapPin, Briefcase, LogIn } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { SignedIn, SignedOut, UserButton, useClerk } from "@clerk/clerk-react";
+import { SignedIn, SignedOut, UserButton, SignInButton, useClerk } from "@clerk/clerk-react";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 export function Navbar() {
@@ -128,7 +129,7 @@ export function Navbar() {
             
             <Dialog open={contactOpen} onOpenChange={setContactOpen}>
               <DialogTrigger asChild>
-                <Button variant="outline" className="hidden md:inline-flex border-alpha-purple/30 hover:bg-alpha-purple/10 text-gray-900">
+                <Button variant="outline" className="hidden md:inline-flex border-alpha-purple/30 hover:bg-alpha-purple/10 text-white">
                   Contact Us
                 </Button>
               </DialogTrigger>
@@ -201,11 +202,11 @@ export function Navbar() {
             </SignedIn>
             
             <SignedOut>
-              <Link to="/sign-in">
+              <SignInButton mode="modal">
                 <Button className="hidden md:inline-flex h-10 px-6 py-2 rounded-full bg-gradient-to-r from-alpha-blue to-alpha-purple text-white font-medium text-sm transition-all hover:shadow-md hover:shadow-alpha-purple/20 hover:brightness-110 hover:scale-105">
-                  Sign In
+                  <LogIn className="mr-2 h-4 w-4" /> Sign In
                 </Button>
-              </Link>
+              </SignInButton>
             </SignedOut>
           </div>}
       </div>
@@ -249,11 +250,11 @@ export function Navbar() {
             </SignedIn>
             
             <SignedOut>
-              <Link to="/sign-in" onClick={() => setMobileMenuOpen(false)}>
+              <SignInButton mode="modal">
                 <Button className="w-full bg-gradient-to-r from-alpha-blue to-alpha-purple text-white hover:opacity-90 transition-opacity">
-                  Sign In
+                  <LogIn className="mr-2 h-4 w-4" /> Sign In
                 </Button>
-              </Link>
+              </SignInButton>
             </SignedOut>
           </div>
         </div>}
