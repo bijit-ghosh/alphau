@@ -10,7 +10,12 @@ import {
   Zap, 
   SendToBack, 
   ArrowRight,
-  Bell
+  Bell,
+  Search,
+  Filter,
+  BarChart2,
+  FileText,
+  Briefcase
 } from 'lucide-react';
 
 const handleStyle = { 
@@ -250,6 +255,135 @@ export const AlphaScoringNode = memo(({ data }: { data: any }) => (
   </div>
 ));
 
+// Deal Sourcing Node
+export const DealSourcingNode = memo(({ data }: { data: any }) => (
+  <div className={`${nodeBaseStyle} bg-gradient-to-r from-alpha-blue/80 to-alpha-purple/80`}>
+    <div className="flex items-center mb-2">
+      <Search className="w-4 h-4 mr-2" />
+      <div className="font-medium">{data.label || 'Deal Sourcing'}</div>
+    </div>
+    
+    <div className="text-xs text-white/80">
+      <p>Identifies potential investment opportunities from multiple sources</p>
+    </div>
+    
+    <Handle
+      type="source"
+      position={Position.Right}
+      style={handleStyle}
+      id="output"
+    />
+  </div>
+));
+
+// Deal Screening Node
+export const DealScreeningNode = memo(({ data }: { data: any }) => (
+  <div className={`${nodeBaseStyle} bg-gradient-to-r from-alpha-purple/80 to-alpha-lightblue/80`}>
+    <div className="flex items-center mb-2">
+      <Filter className="w-4 h-4 mr-2" />
+      <div className="font-medium">{data.label || 'Deal Screening'}</div>
+    </div>
+    
+    <div className="text-xs text-white/80">
+      <p>Evaluates and filters deals based on investment criteria</p>
+    </div>
+    
+    <Handle
+      type="target"
+      position={Position.Left}
+      style={handleStyle}
+      id="input"
+    />
+    <Handle
+      type="source"
+      position={Position.Right}
+      style={handleStyle}
+      id="output"
+    />
+  </div>
+));
+
+// Valuation Node
+export const ValuationNode = memo(({ data }: { data: any }) => (
+  <div className={`${nodeBaseStyle} bg-gradient-to-r from-alpha-green/80 to-alpha-yellow/80`}>
+    <div className="flex items-center mb-2">
+      <BarChart2 className="w-4 h-4 mr-2" />
+      <div className="font-medium">{data.label || 'Valuation'}</div>
+    </div>
+    
+    <div className="text-xs text-white/80">
+      <p>Financial modeling and valuation analysis</p>
+    </div>
+    
+    <Handle
+      type="target"
+      position={Position.Left}
+      style={handleStyle}
+      id="input"
+    />
+    <Handle
+      type="source"
+      position={Position.Right}
+      style={handleStyle}
+      id="output"
+    />
+  </div>
+));
+
+// Due Diligence Node
+export const DueDiligenceNode = memo(({ data }: { data: any }) => (
+  <div className={`${nodeBaseStyle} bg-gradient-to-r from-alpha-yellow/80 to-alpha-red/80`}>
+    <div className="flex items-center mb-2">
+      <FileText className="w-4 h-4 mr-2" />
+      <div className="font-medium">{data.label || 'Due Diligence'}</div>
+    </div>
+    
+    <div className="text-xs text-white/80">
+      <p>Comprehensive due diligence and risk assessment</p>
+    </div>
+    
+    <Handle
+      type="target"
+      position={Position.Left}
+      style={handleStyle}
+      id="input"
+    />
+    <Handle
+      type="source"
+      position={Position.Right}
+      style={handleStyle}
+      id="output"
+    />
+  </div>
+));
+
+// Portfolio Monitoring Node
+export const PortfolioMonitoringNode = memo(({ data }: { data: any }) => (
+  <div className={`${nodeBaseStyle} bg-gradient-to-r from-alpha-blue/80 to-alpha-green/80`}>
+    <div className="flex items-center mb-2">
+      <Briefcase className="w-4 h-4 mr-2" />
+      <div className="font-medium">{data.label || 'Portfolio Monitoring'}</div>
+    </div>
+    
+    <div className="text-xs text-white/80">
+      <p>Tracks and analyzes portfolio company performance</p>
+    </div>
+    
+    <Handle
+      type="target"
+      position={Position.Left}
+      style={handleStyle}
+      id="input"
+    />
+    <Handle
+      type="source"
+      position={Position.Right}
+      style={handleStyle}
+      id="output"
+    />
+  </div>
+));
+
 // Trigger Node
 export const TriggerNode = memo(({ data }: { data: any }) => (
   <div className={`${nodeBaseStyle} bg-gradient-to-r from-alpha-purple/90 to-alpha-blue/90`}>
@@ -344,6 +478,12 @@ export const nodeTypes = {
   trigger: TriggerNode,
   output: OutputNode,
   alertNode: AlertNode,
+  // New investment workflow nodes
+  dealSourcing: DealSourcingNode,
+  dealScreening: DealScreeningNode,
+  valuation: ValuationNode,
+  dueDiligence: DueDiligenceNode,
+  portfolioMonitoring: PortfolioMonitoringNode
 };
 
 // Define the edge types

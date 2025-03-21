@@ -17,7 +17,13 @@ export type NodeType =
   | 'alphaScoring'
   | 'trigger'
   | 'output'
-  | 'alertNode';
+  | 'alertNode'
+  // Investment workflow specific nodes
+  | 'dealSourcing'
+  | 'dealScreening'
+  | 'valuation'
+  | 'dueDiligence'
+  | 'portfolioMonitoring';
 
 // Model types available for the AI nodes
 export type ModelType =
@@ -29,17 +35,20 @@ export type ModelType =
   | 'gemini-pro'
   | 'mixtral-8x7b'
   | 'alphaU-sentiment-v2'
-  | 'alphaU-financial-v3';
+  | 'alphaU-financial-v3'
+  | 'alphaU-valuation-v1'
+  | 'alphaU-duediligence-v2';
 
 // Default nodes for a new workflow
 const initialNodes: Node[] = [
   {
-    id: 'trigger-1',
-    type: 'trigger',
+    id: 'dealSourcing-1',
+    type: 'dealSourcing',
     data: { 
-      label: 'Market Open Trigger',
-      schedule: 'daily',
-      time: '09:30',
+      label: 'Investment Sourcing',
+      sources: 'all',
+      criteria: 'SaaS, B2B, $2M-$10M ARR, North America',
+      modelType: 'alphaU-financial-v3',
     },
     position: { x: 250, y: 100 },
   },
@@ -72,7 +81,7 @@ export const AgentProvider = ({ children }: { children: React.ReactNode }) => {
   const [nodes, setNodes] = useState<Node[]>(initialNodes);
   const [edges, setEdges] = useState<Edge[]>(initialEdges);
   const [selectedNode, setSelectedNode] = useState<Node | null>(null);
-  const [workflowName, setWorkflowName] = useState<string>('New AlphaU Workflow');
+  const [workflowName, setWorkflowName] = useState<string>('AlphaU Investment Analysis Workflow');
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const { toast } = useToast();
   
@@ -85,7 +94,9 @@ export const AgentProvider = ({ children }: { children: React.ReactNode }) => {
     'gemini-pro',
     'mixtral-8x7b',
     'alphaU-sentiment-v2',
-    'alphaU-financial-v3'
+    'alphaU-financial-v3',
+    'alphaU-valuation-v1',
+    'alphaU-duediligence-v2'
   ];
 
   const onNodesChange = useCallback((changes: any) => {
@@ -217,6 +228,48 @@ export const AgentProvider = ({ children }: { children: React.ReactNode }) => {
           label: 'Trigger',
           schedule: 'daily',
           time: '09:30'
+        };
+        break;
+      // Investment workflow specific node types
+      case 'dealSourcing':
+        newNodeData = { 
+          label: 'Deal Sourcing',
+          sources: 'Crunchbase,PitchBook,AlphaU Data',
+          criteria: 'SaaS, B2B, $2M-$10M ARR',
+          modelType: 'alphaU-financial-v3'
+        };
+        break;
+      case 'dealScreening':
+        newNodeData = { 
+          label: 'Deal Screening',
+          criteria: 'Growth rate > 80%, retention > 90%',
+          threshold: 'min_score=70',
+          modelType: 'alphaU-financial-v3'
+        };
+        break;
+      case 'valuation':
+        newNodeData = { 
+          label: 'Valuation Analysis',
+          methods: 'DCF,Comparables,Monte Carlo',
+          scenarios: 'base,upside,downside',
+          modelType: 'alphaU-valuation-v1'
+        };
+        break;
+      case 'dueDiligence':
+        newNodeData = { 
+          label: 'Due Diligence',
+          areas: 'legal,financial,technical,team',
+          depth: 'comprehensive',
+          modelType: 'alphaU-duediligence-v2'
+        };
+        break;
+      case 'portfolioMonitoring':
+        newNodeData = { 
+          label: 'Portfolio Monitoring',
+          metrics: 'ARR,CAC,LTV,Burn Rate',
+          frequency: 'monthly',
+          alerts: 'on',
+          modelType: 'alphaU-financial-v3'
         };
         break;
       default:
